@@ -5,14 +5,14 @@ declare(strict_types=1);
 namespace Tests\Fakers;
 
 use AliYavari\PersianFaker\Contracts\DataLoaderInterface;
-use AliYavari\PersianFaker\DataLoader;
 use AliYavari\PersianFaker\Exceptions\InvalidGenderException;
 use AliYavari\PersianFaker\Fakers\TitleFaker;
+use AliYavari\PersianFaker\Loaders\DataLoader;
 use PHPUnit\Framework\TestCase;
 
 class TitleFakerTest extends TestCase
 {
-    /** @var DataLoaderInterface<array<string, list<string>>> */
+    /** @var DataLoaderInterface<string, list<string>> */
     protected DataLoaderInterface $loader;
 
     /** @var list<string> */
@@ -25,7 +25,6 @@ class TitleFakerTest extends TestCase
     {
         parent::setUp();
 
-        /** @phpstan-ignore-next-line */
         $this->loader = new DataLoader('person.titles');
 
         [

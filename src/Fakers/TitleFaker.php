@@ -23,7 +23,7 @@ class TitleFaker implements FakerInterface
     protected array $titles;
 
     /**
-     * @param  DataLoaderInterface<array<string, list<string>>>  $loader
+     * @param  DataLoaderInterface<string, list<string>>  $loader
      */
     public function __construct(DataLoaderInterface $loader, protected ?string $gender = null)
     {

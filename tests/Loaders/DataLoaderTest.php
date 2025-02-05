@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Tests\Data;
+namespace Tests\Loaders;
 
-use AliYavari\PersianFaker\DataLoader;
 use AliYavari\PersianFaker\Exceptions\FileNotFoundException;
 use AliYavari\PersianFaker\Exceptions\InvalidDataKeyException;
 use AliYavari\PersianFaker\Exceptions\InvalidDataPathException;
+use AliYavari\PersianFaker\Loaders\DataLoader;
 use PHPUnit\Framework\TestCase;
 use ReflectionMethod;
 use TypeError;
@@ -90,7 +90,7 @@ class DataLoaderTest extends TestCase
         $fileName = 'wrongFile';
 
         $this->expectException(FileNotFoundException::class);
-        $this->expectExceptionMessage(sprintf('The file %s is not found.', dirname(__DIR__).'/src/Data/wrongFile.php'));
+        $this->expectExceptionMessage(sprintf('The file %s is not found.', dirname(__DIR__, 2).'/src/Data/wrongFile.php'));
 
         $loader = new DataLoader('');
         $this->callProtectedMethod($loader, 'loadFile', [$fileName]);
@@ -138,7 +138,7 @@ class DataLoaderTest extends TestCase
     // ---------------
 
     /**
-     * @param  DataLoader<mixed>  $obj
+     * @param  DataLoader<string, mixed>  $obj
      * @param  list<mixed>  $args
      */
     protected function callProtectedMethod(DataLoader $obj, string $method, array $args = []): mixed

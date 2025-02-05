@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace AliYavari\PersianFaker;
+namespace AliYavari\PersianFaker\Loaders;
 
 use AliYavari\PersianFaker\Contracts\DataLoaderInterface;
 use AliYavari\PersianFaker\Exceptions\FileNotFoundException;
@@ -16,9 +16,10 @@ use AliYavari\PersianFaker\Exceptions\InvalidDataPathException;
  *                        where "filename" refers to the data file, and the subsequent keys
  *                        specify the nested values to retrieve.
  *
- * @template TValue
+ * @template TKey of array-key
+ * @template TData
  *
- * @implements DataLoaderInterface<array<sting, TValue>>
+ * @implements DataLoaderInterface<TKey, TData>
  */
 class DataLoader implements DataLoaderInterface
 {
@@ -29,7 +30,7 @@ class DataLoader implements DataLoaderInterface
     /**
      * Retrieves the data associated with the specified path.
      *
-     * @return array<string, TValue>|TValue
+     * @return array<TKey, TData>
      */
     public function get()
     {
@@ -37,6 +38,7 @@ class DataLoader implements DataLoaderInterface
 
         $array = $this->loadFile($fileName);
 
+        /** @var array<TKey, TData> */
         return $this->getArrayDataByNestedKeys($array, $keys);
     }
 
@@ -60,11 +62,11 @@ class DataLoader implements DataLoaderInterface
     }
 
     /**
-     * @return array<string, TValue>
+     * @return array<string, mixed>
      */
     protected function loadFile(string $fileName)
     {
-        $filePath = __DIR__."/Data/$fileName.php";
+        $filePath = dirname(__DIR__)."/Data/$fileName.php";
 
         if (! file_exists($filePath)) {
             throw new FileNotFoundException(sprintf('The file %s is not found.', $filePath));
@@ -74,9 +76,9 @@ class DataLoader implements DataLoaderInterface
     }
 
     /**
-     * @param  array<string, TValue>  $array
-     * @param  list<string>  $keys
-     * @return array<string, TValue>|TValue
+     * TODO fix generic types for this method.
+     *
+     * @phpstan-ignore-next-line
      */
     protected function getArrayDataByNestedKeys(array $array, array $keys)
     {
@@ -92,7 +94,6 @@ class DataLoader implements DataLoaderInterface
             return $content;
         }
 
-        /**@phpstan-ignore-next-line */
         return $this->getArrayDataByNestedKeys($content, $keys);
     }
 }

@@ -137,10 +137,6 @@ class DataLoaderTest extends TestCase
     // Helper methods
     // ---------------
 
-    /**
-     * @param  DataLoader<string, mixed>  $obj
-     * @param  list<mixed>  $args
-     */
     protected function callProtectedMethod(DataLoader $obj, string $method, array $args = []): mixed
     {
         $reflectedMethod = new ReflectionMethod(DataLoader::class, $method);

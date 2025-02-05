@@ -12,13 +12,10 @@ use PHPUnit\Framework\TestCase;
 
 class TitleFakerTest extends TestCase
 {
-    /** @var DataLoaderInterface<string, list<string>> */
     protected DataLoaderInterface $loader;
 
-    /** @var list<string> */
     protected array $maleTitles;
 
-    /** @var list<string> */
     protected array $femaleTitles;
 
     protected function setUp(): void

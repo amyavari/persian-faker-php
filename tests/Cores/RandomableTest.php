@@ -9,7 +9,6 @@ use PHPUnit\Framework\TestCase;
 
 class RandomableTest extends TestCase
 {
-    /** @use Randomable<int, string> */
     use Randomable;
 
     public function test_it_returns_one_random_item(): void

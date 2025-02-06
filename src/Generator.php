@@ -7,7 +7,7 @@ namespace AliYavari\PersianFaker;
 use AliYavari\PersianFaker\Contracts\DataLoaderInterface;
 use AliYavari\PersianFaker\Contracts\FakerInterface;
 use AliYavari\PersianFaker\Contracts\GeneratorInterface;
-use AliYavari\PersianFaker\Fakers\TitleFaker;
+use AliYavari\PersianFaker\Fakers\Person\TitleFaker;
 use AliYavari\PersianFaker\Loaders\DataLoaderFactory;
 
 class Generator implements GeneratorInterface

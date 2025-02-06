@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Tests\Fakers;
+namespace Tests\Fakers\Person;
 
 use AliYavari\PersianFaker\Contracts\DataLoaderInterface;
 use AliYavari\PersianFaker\Exceptions\InvalidGenderException;
-use AliYavari\PersianFaker\Fakers\TitleFaker;
+use AliYavari\PersianFaker\Fakers\Person\TitleFaker;
 use AliYavari\PersianFaker\Loaders\DataLoader;
 use PHPUnit\Framework\TestCase;
 

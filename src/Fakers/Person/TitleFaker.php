@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace AliYavari\PersianFaker\Fakers;
+namespace AliYavari\PersianFaker\Fakers\Person;
 
 use AliYavari\PersianFaker\Contracts\DataLoaderInterface;
 use AliYavari\PersianFaker\Contracts\FakerInterface;

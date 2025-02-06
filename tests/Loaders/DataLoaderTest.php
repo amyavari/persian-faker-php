@@ -88,9 +88,10 @@ class DataLoaderTest extends TestCase
     public function test_it_throws_an_exception_with_invalid_file_name(): void
     {
         $fileName = 'wrongFile';
+        $expectedFilePath = dirname(__DIR__, 2).DIRECTORY_SEPARATOR.'src'.DIRECTORY_SEPARATOR.'Data'.DIRECTORY_SEPARATOR.'wrongFile.php';
 
         $this->expectException(FileNotFoundException::class);
-        $this->expectExceptionMessage(sprintf('The file %s is not found.', dirname(__DIR__, 2).'/src/Data/wrongFile.php'));
+        $this->expectExceptionMessage(sprintf('The file %s is not found.', $expectedFilePath));
 
         $loader = new DataLoader('');
         $this->callProtectedMethod($loader, 'loadFile', [$fileName]);

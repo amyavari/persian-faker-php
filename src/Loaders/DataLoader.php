@@ -66,7 +66,7 @@ class DataLoader implements DataLoaderInterface
      */
     protected function loadFile(string $fileName)
     {
-        $filePath = dirname(__DIR__)."/Data/$fileName.php";
+        $filePath = dirname(__DIR__).DIRECTORY_SEPARATOR.'Data'.DIRECTORY_SEPARATOR.$fileName.'.php';
 
         if (! file_exists($filePath)) {
             throw new FileNotFoundException(sprintf('The file %s is not found.', $filePath));

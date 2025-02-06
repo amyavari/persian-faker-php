@@ -55,7 +55,9 @@ class FirstNameFaker implements FakerInterface
 
     protected function getRandomName(): string
     {
-        return $this->getOneRandomElement(array_merge($this->names['male'], $this->names['female']));
+        $allNames = array_merge($this->names['male'], $this->names['female']);
+
+        return $this->getOneRandomElement($allNames);
     }
 
     protected function getRandomMaleName(): string

@@ -43,11 +43,11 @@ class TitleFaker implements FakerInterface
         }
 
         if ($this->gender === 'male') {
-            return $this->getMaleTitle();
+            return $this->getRandomMaleTitle();
         }
 
         if ($this->gender === 'female') {
-            return $this->getFemaleTitle();
+            return $this->getRandomFemaleTitle();
         }
 
         throw new InvalidGenderException(sprintf('The gender %s is not valid.', $this->gender));
@@ -60,12 +60,12 @@ class TitleFaker implements FakerInterface
         return $this->getOneRandomElement($allTitles);
     }
 
-    protected function getMaleTitle(): string
+    protected function getRandomMaleTitle(): string
     {
         return $this->getOneRandomElement($this->titles['male']);
     }
 
-    protected function getFemaleTitle(): string
+    protected function getRandomFemaleTitle(): string
     {
         return $this->getOneRandomElement($this->titles['female']);
     }

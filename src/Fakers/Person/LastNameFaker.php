@@ -19,14 +19,14 @@ class LastNameFaker implements FakerInterface
     /**
      * @var list<string>
      */
-    protected array $lastNames;
+    protected array $names;
 
     /**
      * @param  \AliYavari\PersianFaker\Contracts\DataLoaderInterface<int, string>  $loader
      */
     public function __construct(DataLoaderInterface $loader)
     {
-        $this->lastNames = $loader->get();
+        $this->names = $loader->get();
     }
 
     /**
@@ -39,6 +39,6 @@ class LastNameFaker implements FakerInterface
 
     protected function getRandomLastName(): string
     {
-        return $this->getOneRandomElement($this->lastNames);
+        return $this->getOneRandomElement($this->names);
     }
 }

@@ -9,24 +9,29 @@ use AliYavari\PersianFaker\Contracts\FakerInterface;
 use AliYavari\PersianFaker\Cores\Randomable;
 
 /**
- * @implements FakerInterface<string>
+ * @implements \AliYavari\PersianFaker\Contracts\FakerInterface<string>
  */
 class LastNameFaker implements FakerInterface
 {
-    /** @use Randomable<int, string> */
+    /** @use \AliYavari\PersianFaker\Cores\Randomable<int, string> */
     use Randomable;
 
-    /** @var list<string> */
+    /**
+     * @var list<string>
+     */
     protected array $lastNames;
 
     /**
-     * @param  DataLoaderInterface<int, string>  $loader
+     * @param  \AliYavari\PersianFaker\Contracts\DataLoaderInterface<int, string>  $loader
      */
     public function __construct(DataLoaderInterface $loader)
     {
         $this->lastNames = $loader->get();
     }
 
+    /**
+     * This returns a fake last name
+     */
     public function generate(): string
     {
         return $this->getRandomLastName();

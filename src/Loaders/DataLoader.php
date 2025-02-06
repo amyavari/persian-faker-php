@@ -10,16 +10,14 @@ use AliYavari\PersianFaker\Exceptions\InvalidDataKeyException;
 use AliYavari\PersianFaker\Exceptions\InvalidDataPathException;
 
 /**
- * Loads data from a file and retrieves values based on a dot-separated key path.
- *
  * @property string $path Follows the format: "filename.key_one.key_two.key_three...",
  *                        where "filename" refers to the data file, and the subsequent keys
- *                        specify the nested values to retrieve.
+ *                        specify the nested values to retrieve separated by dot(.).
  *
  * @template TKey of array-key
  * @template TData
  *
- * @implements DataLoaderInterface<TKey, TData>
+ * @implements \AliYavari\PersianFaker\Contracts\DataLoaderInterface<TKey, TData>
  */
 class DataLoader implements DataLoaderInterface
 {
@@ -28,8 +26,6 @@ class DataLoader implements DataLoaderInterface
     ) {}
 
     /**
-     * Retrieves the data associated with the specified path.
-     *
      * @return array<TKey, TData>
      */
     public function get()
@@ -44,6 +40,8 @@ class DataLoader implements DataLoaderInterface
 
     /**
      * @return array{file_name: string, keys: list<string>}
+     *
+     * @throws \AliYavari\PersianFaker\Exceptions\InvalidDataPathException
      */
     protected function getFileNameAndKeys(): array
     {
@@ -63,6 +61,8 @@ class DataLoader implements DataLoaderInterface
 
     /**
      * @return array<string, mixed>
+     *
+     * @throws \AliYavari\PersianFaker\Exceptions\FileNotFoundException
      */
     protected function loadFile(string $fileName)
     {
@@ -77,6 +77,8 @@ class DataLoader implements DataLoaderInterface
 
     /**
      * TODO fix generic types for this method.
+     *
+     * @throws \AliYavari\PersianFaker\Exceptions\FileNotFoundException
      *
      * @phpstan-ignore-next-line
      */

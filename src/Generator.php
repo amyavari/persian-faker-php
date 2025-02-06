@@ -16,7 +16,7 @@ class Generator implements GeneratorInterface
 {
     public function title(?string $gender = null): string
     {
-        /** @var DataLoaderInterface<string, list<string>> */
+        /** @var \AliYavari\PersianFaker\Contracts\DataLoaderInterface<string, list<string>> */
         $dataLoader = $this->getDataLoaderInstance('person.titles');
 
         return $this->exec(new TitleFaker($dataLoader, $gender));
@@ -24,7 +24,7 @@ class Generator implements GeneratorInterface
 
     public function titleMale(): string
     {
-        /** @var DataLoaderInterface<string, list<string>> */
+        /** @var \AliYavari\PersianFaker\Contracts\DataLoaderInterface<string, list<string>> */
         $dataLoader = $this->getDataLoaderInstance('person.titles');
 
         return $this->exec(new TitleFaker($dataLoader, 'male'));
@@ -32,7 +32,7 @@ class Generator implements GeneratorInterface
 
     public function titleFemale(): string
     {
-        /** @var DataLoaderInterface<string, list<string>> */
+        /** @var \AliYavari\PersianFaker\Contracts\DataLoaderInterface<string, list<string>> */
         $dataLoader = $this->getDataLoaderInstance('person.titles');
 
         return $this->exec(new TitleFaker($dataLoader, 'female'));
@@ -40,7 +40,7 @@ class Generator implements GeneratorInterface
 
     public function firstName(?string $gender = null): string
     {
-        /** @var DataLoaderInterface<string, list<string>> */
+        /** @var \AliYavari\PersianFaker\Contracts\DataLoaderInterface<string, list<string>> */
         $dataLoader = $this->getDataLoaderInstance('person.first_names');
 
         return $this->exec(new FirstNameFaker($dataLoader, $gender));
@@ -48,7 +48,7 @@ class Generator implements GeneratorInterface
 
     public function firstNameMale(): string
     {
-        /** @var DataLoaderInterface<string, list<string>> */
+        /** @var \AliYavari\PersianFaker\Contracts\DataLoaderInterface<string, list<string>> */
         $dataLoader = $this->getDataLoaderInstance('person.first_names');
 
         return $this->exec(new FirstNameFaker($dataLoader, 'male'));
@@ -56,7 +56,7 @@ class Generator implements GeneratorInterface
 
     public function firstNameFemale(): string
     {
-        /** @var DataLoaderInterface<string, list<string>> */
+        /** @var \AliYavari\PersianFaker\Contracts\DataLoaderInterface<string, list<string>> */
         $dataLoader = $this->getDataLoaderInstance('person.first_names');
 
         return $this->exec(new FirstNameFaker($dataLoader, 'female'));
@@ -64,7 +64,7 @@ class Generator implements GeneratorInterface
 
     public function lastName(): string
     {
-        /** @var DataLoaderInterface<int, string> */
+        /** @var \AliYavari\PersianFaker\Contracts\DataLoaderInterface<int, string> */
         $dataLoader = $this->getDataLoaderInstance('person.last_names');
 
         return $this->exec(new LastNameFaker($dataLoader));
@@ -82,20 +82,20 @@ class Generator implements GeneratorInterface
     /**
      * @template TValue
      *
-     * @return DataLoaderInterface<string, list<TValue>>
+     * @return \AliYavari\PersianFaker\Contracts\DataLoaderInterface<string, list<TValue>>
      *
      * @phpstan-ignore-next-line
      */
     protected function getDataLoaderInstance(string $dataPath): DataLoaderInterface
     {
-        /** @var DataLoaderInterface<string, list<TValue>> */
+        /** @var \AliYavari\PersianFaker\Contracts\DataLoaderInterface<string, list<TValue>> */
         return DataLoaderFactory::getInstance($dataPath);
     }
 
     /**
      * @template TValue
      *
-     * @param  FakerInterface<TValue>  $faker
+     * @param  \AliYavari\PersianFaker\Contracts\FakerInterface<TValue>  $faker
      * @return TValue
      */
     protected function exec(FakerInterface $faker)

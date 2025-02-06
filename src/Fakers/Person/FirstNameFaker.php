@@ -10,24 +10,32 @@ use AliYavari\PersianFaker\Cores\Randomable;
 use AliYavari\PersianFaker\Exceptions\InvalidGenderException;
 
 /**
- * @implements FakerInterface<string>
+ * @implements \AliYavari\PersianFaker\Contracts\FakerInterface<string>
  */
 class FirstNameFaker implements FakerInterface
 {
-    /** @use Randomable<int, string> */
+    /** @use \AliYavari\PersianFaker\Cores\Randomable<int, string> */
     use Randomable;
 
-    /** @var array<string, list<string>> */
+    /**
+     * @var array<string, list<string>>
+     */
     protected array $names;
 
     /**
-     * @param  DataLoaderInterface<string, list<string>>  $loader
+     * @param  \AliYavari\PersianFaker\Contracts\DataLoaderInterface<string, list<string>>  $loader
+     * @param  string|null  $gender  The gender can be either 'male' or 'female'.
      */
     public function __construct(DataLoaderInterface $loader, protected ?string $gender = null)
     {
         $this->names = $loader->get();
     }
 
+    /**
+     * This returns a fake first name
+     *
+     * @throws \AliYavari\PersianFaker\Exceptions\InvalidGenderException
+     */
     public function generate(): string
     {
         if (is_null($this->gender)) {

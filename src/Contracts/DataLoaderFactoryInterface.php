@@ -14,7 +14,7 @@ interface DataLoaderFactoryInterface
      * Get DataLoader instance
      *
      * @param  mixed  ...$args  Necessary arguments for DataLoader constructor
-     * @return DataLoaderInterface<TKey, TData>
+     * @return \AliYavari\PersianFaker\Contracts\DataLoaderInterface<TKey, TData>
      */
     public static function getInstance(mixed ...$args): DataLoaderInterface;
 }

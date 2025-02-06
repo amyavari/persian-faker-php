@@ -7,6 +7,8 @@ namespace AliYavari\PersianFaker;
 use AliYavari\PersianFaker\Contracts\DataLoaderInterface;
 use AliYavari\PersianFaker\Contracts\FakerInterface;
 use AliYavari\PersianFaker\Contracts\GeneratorInterface;
+use AliYavari\PersianFaker\Fakers\Person\FirstNameFaker;
+use AliYavari\PersianFaker\Fakers\Person\LastNameFaker;
 use AliYavari\PersianFaker\Fakers\Person\TitleFaker;
 use AliYavari\PersianFaker\Loaders\DataLoaderFactory;
 
@@ -35,6 +37,47 @@ class Generator implements GeneratorInterface
 
         return $this->exec(new TitleFaker($dataLoader, 'female'));
     }
+
+    public function firstName(?string $gender = null): string
+    {
+        /** @var DataLoaderInterface<string, list<string>> */
+        $dataLoader = $this->getDataLoaderInstance('person.first_names');
+
+        return $this->exec(new FirstNameFaker($dataLoader, $gender));
+    }
+
+    public function firstNameMale(): string
+    {
+        /** @var DataLoaderInterface<string, list<string>> */
+        $dataLoader = $this->getDataLoaderInstance('person.first_names');
+
+        return $this->exec(new FirstNameFaker($dataLoader, 'male'));
+    }
+
+    public function firstNameFemale(): string
+    {
+        /** @var DataLoaderInterface<string, list<string>> */
+        $dataLoader = $this->getDataLoaderInstance('person.first_names');
+
+        return $this->exec(new FirstNameFaker($dataLoader, 'female'));
+    }
+
+    public function lastName(): string
+    {
+        /** @var DataLoaderInterface<int, string> */
+        $dataLoader = $this->getDataLoaderInstance('person.last_names');
+
+        return $this->exec(new LastNameFaker($dataLoader));
+    }
+
+    public function name(?string $gender = null): string
+    {
+        return sprintf('%s %s', $this->firstName($gender), $this->lastName());
+    }
+
+    // *******************************
+    // END OF PUBLIC INTERFACE METHODS
+    // *******************************
 
     /**
      * @template TValue

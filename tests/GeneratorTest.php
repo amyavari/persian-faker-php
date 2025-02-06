@@ -60,4 +60,60 @@ class GeneratorTest extends TestCase
         $this->assertIsString($title);
         $this->assertContains($title, $femaleTitles);
     }
+
+    public function test_it_returns_first_name(): void
+    {
+        $loader = new DataLoader('person.first_names');
+        ['male' => $maleNames, 'female' => $femaleNames] = $loader->get();
+
+        $gender = $this->getOneRandomElement([null, 'male', 'female']);
+
+        $firstName = $this->generator->firstName($gender);
+
+        $this->assertIsString($firstName);
+        $this->assertContains($firstName, array_merge($maleNames, $femaleNames));
+    }
+
+    public function test_it_returns_male_first_name(): void
+    {
+        $loader = new DataLoader('person.first_names');
+        ['male' => $maleNames, 'female' => $femaleNames] = $loader->get();
+
+        $firstName = $this->generator->firstNameMale();
+
+        $this->assertIsString($firstName);
+        $this->assertContains($firstName, $maleNames);
+    }
+
+    public function test_it_returns_female_first_name(): void
+    {
+        $loader = new DataLoader('person.first_names');
+        ['male' => $maleNames, 'female' => $femaleNames] = $loader->get();
+
+        $firstName = $this->generator->firstNameFemale();
+
+        $this->assertIsString($firstName);
+        $this->assertContains($firstName, $femaleNames);
+    }
+
+    public function test_it_returns_last_name(): void
+    {
+        $loader = new DataLoader('person.last_names');
+        $lastNames = $loader->get();
+
+        $lastName = $this->generator->lastName();
+
+        $this->assertIsString($lastName);
+        $this->assertContains($lastName, $lastNames);
+    }
+
+    public function test_it_returns_full_name(): void
+    {
+        $gender = $this->getOneRandomElement([null, 'male', 'female']);
+
+        $name = $this->generator->name($gender);
+
+        $this->assertIsString($name);
+        $this->assertIsArray(explode(' ', $name));
+    }
 }

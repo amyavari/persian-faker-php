@@ -2,10 +2,12 @@
     "name": "amyavari/persian-faker-php",
     "description": "This is an extension for fakerphp/faker to support Persian language",
     "keywords": [
+        "dev",
         "php",
         "faker",
         "persian"
     ],
+    "type": "library",
     "license": "MIT",
     "authors": [
         {

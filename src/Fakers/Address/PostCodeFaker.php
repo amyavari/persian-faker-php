@@ -5,12 +5,16 @@ declare(strict_types=1);
 namespace AliYavari\PersianFaker\Fakers\Address;
 
 use AliYavari\PersianFaker\Contracts\FakerInterface;
+use AliYavari\PersianFaker\Cores\Randomable;
 
 /**
  * @implements \AliYavari\PersianFaker\Contracts\FakerInterface<string>
  */
 class PostCodeFaker implements FakerInterface
 {
+    /** @use \AliYavari\PersianFaker\Cores\Randomable<int, int> */
+    use Randomable;
+
     public function __construct(protected bool $withSeparator = false) {}
 
     public function generate(): string
@@ -25,13 +29,11 @@ class PostCodeFaker implements FakerInterface
      */
     protected function generateRandomPostCode(): string
     {
-        $postCode = '';
+        $validDigits = range(1, 9);
 
-        for ($i = 1; $i <= 10; $i++) {
-            $postCode .= random_int(1, 9);
-        }
+        $digits = $this->getMultipleRandomElements($validDigits, 10);
 
-        return $postCode;
+        return implode('', $digits);
     }
 
     protected function addSeparator(string $postCode): string

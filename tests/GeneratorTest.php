@@ -116,4 +116,78 @@ class GeneratorTest extends TestCase
         $this->assertIsString($name);
         $this->assertIsArray(explode(' ', $name));
     }
+
+    public function test_it_returns_secondary_address(): void
+    {
+        $loader = new DataLoader('address.secondary_address_prefixes');
+        $secondaryAddressPrefixes = $loader->get();
+
+        $secondaryAddress = $this->generator->secondaryAddress();
+
+        [$prefix,$number] = explode(' ', $secondaryAddress);
+
+        $this->assertIsString($secondaryAddress);
+        $this->assertContains($prefix, $secondaryAddressPrefixes);
+        $this->assertIsNumeric($number);
+    }
+
+    public function test_it_returns_state(): void
+    {
+        $loader = new DataLoader('address.states');
+        $states = $loader->get();
+
+        $state = $this->generator->state();
+
+        $this->assertIsString($state);
+        $this->assertContains($state, $states);
+    }
+
+    public function test_it_returns_city(): void
+    {
+        $loader = new DataLoader('address.cities');
+        $cities = $loader->get();
+
+        $city = $this->generator->city();
+
+        $this->assertIsString($city);
+        $this->assertContains($city, $cities);
+    }
+
+    public function test_it_returns_street_name(): void
+    {
+        $loader = new DataLoader('address.street_names');
+        $streetNames = $loader->get();
+
+        $streetName = $this->generator->streetName();
+
+        $this->assertIsString($streetName);
+        $this->assertContains($streetName, $streetNames);
+    }
+
+    public function test_it_returns_address(): void
+    {
+        $loader = new DataLoader('address.addresses');
+        $addresses = $loader->get();
+
+        $address = $this->generator->address();
+
+        $this->assertIsString($address);
+        $this->assertContains($address, $addresses);
+    }
+
+    public function test_it_returns_post_code(): void
+    {
+        $withSeparator = $this->getOneRandomElement([true, false]);
+
+        $postCode = $this->generator->postCode($withSeparator);
+
+        $this->assertIsString($postCode);
+
+        if ($withSeparator) {
+            $this->assertEquals(11, strlen($postCode));
+        } else {
+            $this->assertEquals(10, strlen($postCode));
+
+        }
+    }
 }

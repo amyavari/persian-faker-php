@@ -7,12 +7,14 @@
 ![Packagist Downloads](https://img.shields.io/packagist/dt/amyavari/persian-faker-php)
 ![Packagist License](https://img.shields.io/packagist/l/amyavari/persian-faker-php)
 ![Tests](https://img.shields.io/github/actions/workflow/status/amyavari/persian-faker-php/tests.yml?label=tests)
+
 ---
 
-`persian-faker-php` is an extension for [fakerphp/faker](https://fakerphp.org/) that generates Persian-language and Iran-specific data, such as Persian text, addresses, personal details, and more.
-To view the Persian documentation, please refer to [README_FA.md](/docs/README_FA.md).
+`persian-faker-php` is an extension for [fakerphp/faker](https://fakerphp.org/) that generates Persian-language and Iran-specific data, such as Persian text, addresses, personal details, and more.  
+To view the Persian documentation, please refer to [docs/fa/01_getting_started.md](/docs/fa/01_getting_started.md).
 
-این کتابخانه بر پایه [fakerphp/faker](https://fakerphp.org/) نوشته شده است و هدف آن پشتیبانی از متن و مشخصات فارسی و بهینه‌شده برای اطلاعات کشور ایران می‌باشد. <br> برای مشاهده راهنمای فارسی لطفاً فایل [README_FA.md](/docs/README_FA.md) را مشاهده کنید. 
+این کتابخانه بر پایه کتابخانه [fakerphp/faker](https://fakerphp.org/) ساخته شده و هدف آن پشتیبانی از متن و مشخصات فارسی به‌طور خاص برای اطلاعات کشور ایران است.  
+برای مشاهده راهنمای فارسی، لطفاً به فایل [docs/fa/01_getting_started.md](/docs/fa/01_getting_started.md) مراجعه کنید.
 
 ## Requirements
 
@@ -33,7 +35,7 @@ composer require --dev amyavari/persian-faker-php
 You can easily create an instance of Faker in your PHP projects by calling the `create()` method from the `Factory` class
 
 ```php
-    $persianFaker = \AliYavari\PersianFaker\Factory::create();
+$persianFaker = \AliYavari\PersianFaker\Factory::create();
 ```
 
 ## Available Methods
@@ -42,15 +44,38 @@ Most methods in `persian-faker-php` are extensions of the [fakerphp/faker](https
 
 ### Person Details
 
+To view the complete documentation for the person methods, please refer to [docs/en/02-person.md](./docs/en/02-person.md)
+
 ```php
-    title($gender = null|'male'|'female')     // 'آقای'
-    titleMale()                               // 'آقای'
-    titleFemale()                             // 'خانم'
-    name($gender = null|'male'|'female')      // 'علی محمد یاوری'
-    firstName($gender = null|'male'|'female') // 'علی محمد'
-    firstNameMale()                           // 'علی محمد'
-    firstNameFemale()                         // 'نیوشا'
-    lastName()                                // 'یاوری'
+title($gender = null|'male'|'female')     // 'آقای'
+titleMale()                               // 'آقای'
+titleFemale()                             // 'خانم'
+name($gender = null|'male'|'female')      // 'علی محمد یاوری'
+firstName($gender = null|'male'|'female') // 'علی محمد'
+firstNameMale()                           // 'علی محمد'
+firstNameFemale()                         // 'نیوشا'
+lastName()                                // 'یاوری'
 ```
 
 ### Address
+
+To view the complete documentation for the address methods, please refer to [docs/en/03-address.md](./docs/en/03-address.md)
+
+```php
+secondaryAddress()                      // 'طبقه 2'
+state()                                 // 'یزد'
+city()                                  // 'یزد'
+streetName()                            // 'پاسداران شمالی'
+address()                               // 'خیابان کارگر، کوچه گلستان، پلاک 35
+
+// Modified: accept optional argument
+postcode($withSeparator = false|true)   // '1234567890' , '12345-67890'
+```
+
+---
+
+This package utilizes the [nunomaduro/skeleton-php](https://github.com/nunomaduro/skeleton-php) repository as a starting point and for configuration settings.
+
+---
+
+**Persian Faker PHP** was created by **[Ali Mohammad Yavari](https://www.linkedin.com/in/ali-m-yavari/)** under the **[MIT license](https://opensource.org/licenses/MIT)**.

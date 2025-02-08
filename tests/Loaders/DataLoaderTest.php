@@ -8,8 +8,7 @@ use AliYavari\PersianFaker\Exceptions\FileNotFoundException;
 use AliYavari\PersianFaker\Exceptions\InvalidDataKeyException;
 use AliYavari\PersianFaker\Exceptions\InvalidDataPathException;
 use AliYavari\PersianFaker\Loaders\DataLoader;
-use PHPUnit\Framework\TestCase;
-use ReflectionMethod;
+use Tests\TestCase;
 use TypeError;
 
 class DataLoaderTest extends TestCase
@@ -132,16 +131,5 @@ class DataLoaderTest extends TestCase
         $this->assertEquals([
             'key' => 'value',
         ], $content);
-    }
-
-    // ---------------
-    // Helper methods
-    // ---------------
-
-    protected function callProtectedMethod(DataLoader $obj, string $method, array $args = []): mixed
-    {
-        $reflectedMethod = new ReflectionMethod(DataLoader::class, $method);
-
-        return $reflectedMethod->invoke($obj, ...$args);
     }
 }

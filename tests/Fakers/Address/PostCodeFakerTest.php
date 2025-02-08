@@ -12,7 +12,7 @@ class PostCodeFakerTest extends TestCase
     public function test_it_returns_post_code_without_separator(): void
     {
         $faker = new PostCodeFaker;
-        $postCode = $faker->generate();
+        $postCode = $faker->generate(); // Expected format: ##########
 
         $this->assertIsString($postCode);
         $this->assertEquals(10, strlen($postCode));
@@ -22,11 +22,11 @@ class PostCodeFakerTest extends TestCase
     public function test_it_returns_post_code_with_separator(): void
     {
         $faker = new PostCodeFaker(withSeparator: true);
-        $postCode = $faker->generate();
+        $postCode = $faker->generate(); // Expected format: #####-#####
 
         $this->assertIsString($postCode);
         $this->assertEquals(11, strlen($postCode));
-        $this->assertEquals(5, strpos($postCode, '-')); // Valid format: #####-#####
+        $this->assertEquals(5, strpos($postCode, '-'));
         $this->assertTrue($this->areDigitsNumeric($postCode));
     }
 

@@ -21,7 +21,7 @@ echo $persianFaker->statePhonePrefix();
 echo $persianFaker->phoneNumber();
 // '03512345678', '02112345678'
 
-echo $persianFaker->phoneNumber($state: 'Yazd');
+echo $persianFaker->phoneNumber($state: 'yazd');
 // '03512345678', '03587654321'
 
 echo $persianFaker->phoneNumber($separator: '-');

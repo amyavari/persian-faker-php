@@ -57,3 +57,16 @@ address()                               // 'خیابان کارگر، کوچه �
 // Modified: accept optional argument
 postcode($withSeparator = false|true)   // '1234567890' , '12345-67890'
 ```
+
+### Phone
+
+To view the complete documentation for the phone methods, please refer to [04-phone.md](04-phone.md)
+
+```php
+// Modified: accept optional arguments
+phoneNumber($separator = '', $state = null)     // '03512345678'
+
+// New methods
+statePhonePrefix()                              // '035'
+cellPhone($separator = '', $provider = null)    // '09121234567'
+```

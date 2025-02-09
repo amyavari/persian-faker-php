@@ -190,4 +190,45 @@ class GeneratorTest extends TestCase
 
         }
     }
+
+    public function test_it_returns_state_phone_prefix(): void
+    {
+        $loader = new DataLoader('phone.state_prefixes');
+        $statePrefixes = $loader->get();
+
+        $statePrefix = $this->generator->statePhonePrefix();
+
+        $this->assertIsString($statePrefix);
+        $this->assertContains($statePrefix, $statePrefixes);
+    }
+
+    public function test_it_returns_phone_number(): void
+    {
+        $loader = new DataLoader('phone.state_prefixes');
+        $statePrefixes = $loader->get();
+
+        $separator = $this->getOneRandomElement([' ', '-']);
+        $state = array_rand($statePrefixes);
+
+        $phoneNumber = $this->generator->phoneNumber($separator, $state);
+
+        $this->assertIsString($phoneNumber);
+        $this->assertEquals(substr($phoneNumber, 0, 3), $statePrefixes[$state]);
+        $this->assertEquals(3, strpos($phoneNumber, (string) $separator));
+    }
+
+    public function test_it_returns_cell_phone_number(): void
+    {
+        $loader = new DataLoader('phone.mobile_prefixes');
+        $mobilePrefixes = $loader->get();
+
+        $separator = $this->getOneRandomElement([' ', '-']);
+        $mobileProvider = array_rand($mobilePrefixes);
+
+        $cellPhoneNumber = $this->generator->cellPhone($separator, $mobileProvider);
+
+        $this->assertIsString($cellPhoneNumber);
+        $this->assertContains(substr($cellPhoneNumber, 0, 4), $mobilePrefixes[$mobileProvider]);
+        $this->assertEquals(4, strpos($cellPhoneNumber, (string) $separator));
+    }
 }

@@ -16,6 +16,9 @@ use AliYavari\PersianFaker\Fakers\Address\StreetNameFaker;
 use AliYavari\PersianFaker\Fakers\Person\FirstNameFaker;
 use AliYavari\PersianFaker\Fakers\Person\LastNameFaker;
 use AliYavari\PersianFaker\Fakers\Person\TitleFaker;
+use AliYavari\PersianFaker\Fakers\Phone\CellPhoneFaker;
+use AliYavari\PersianFaker\Fakers\Phone\PhoneNumberFaker;
+use AliYavari\PersianFaker\Fakers\Phone\StatePhonePrefixFaker;
 use AliYavari\PersianFaker\Loaders\DataLoaderFactory;
 
 class Generator implements GeneratorInterface
@@ -124,6 +127,30 @@ class Generator implements GeneratorInterface
     public function postCode(bool $withSeparator = false): string
     {
         return $this->exec(new PostCodeFaker($withSeparator));
+    }
+
+    public function statePhonePrefix(): string
+    {
+        /** @var \AliYavari\PersianFaker\Contracts\DataLoaderInterface<string, string> */
+        $dataLoader = $this->getDataLoaderInstance('phone.state_prefixes');
+
+        return $this->exec(new StatePhonePrefixFaker($dataLoader));
+    }
+
+    public function phoneNumber(string $separator = '', ?string $state = null): string
+    {
+        /** @var \AliYavari\PersianFaker\Contracts\DataLoaderInterface<string, string> */
+        $dataLoader = $this->getDataLoaderInstance('phone.state_prefixes');
+
+        return $this->exec(new PhoneNumberFaker($dataLoader, $separator, $state));
+    }
+
+    public function cellPhone(string $separator = '', ?string $provider = null): string
+    {
+        /** @var \AliYavari\PersianFaker\Contracts\DataLoaderInterface<string, list<string>> */
+        $dataLoader = $this->getDataLoaderInstance('phone.mobile_prefixes');
+
+        return $this->exec(new CellPhoneFaker($dataLoader, $separator, $provider));
     }
 
     // *******************************

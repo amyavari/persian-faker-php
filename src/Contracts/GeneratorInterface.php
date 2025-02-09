@@ -81,4 +81,25 @@ interface GeneratorInterface
      * Get a random postal code in Iran
      */
     public function postCode(bool $withSeparator = false): string;
+
+    /**
+     * Get a random state phone prefix in Iran
+     */
+    public function statePhonePrefix(): string;
+
+    /**
+     * Get a random phone number in Iran
+     *
+     * @param  string  $separator  The separator between the state prefix and the phone number
+     * @param  string|null  $state  The name of state in Iran, see https://github.com/amyavari/persian-faker-php?tab=readme-ov-file#phone
+     */
+    public function phoneNumber(string $separator = '', ?string $state = null): string;
+
+    /**
+     * Get a random cell phone number in Iran
+     *
+     * @param  string  $separator  The separator between the mobile provider prefix and the first three digits and the last four digits
+     * @param  string|null  $provider  The name of mobile provider in Iran, see https://github.com/amyavari/persian-faker-php?tab=readme-ov-file#phone
+     */
+    public function cellPhone(string $separator = '', ?string $provider = null): string;
 }

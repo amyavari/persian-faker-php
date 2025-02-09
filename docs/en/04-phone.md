@@ -21,7 +21,7 @@ Generates a random phone number in Iran.
 echo $persianFaker->phoneNumber();
 // '03512345678', '02112345678'
 
-echo $persianFaker->phoneNumber($state: 'Yazd');
+echo $persianFaker->phoneNumber($state: 'yazd');
 // '03512345678', '03587654321'
 
 echo $persianFaker->phoneNumber($separator: '-');
@@ -69,7 +69,7 @@ echo $persianFaker->phoneNumber($separator = ' ', $state: 'gilan');
 Generates a random cell phone number in Iran.
 
 **Note:** This is a new method that does not exist in the original [fakerphp/faker](https://fakerphp.org/)  
-It accepts `$separator`, which defines the separator between the mobile provider prefix, the first three digits, and the last four digits of the phone number (default:`''`), which allows generating phone numbers with a specific provider prefix (default:`null`).
+It accepts `$separator`, which defines the separator between the mobile provider prefix, the first three digits, and the last four digits of the phone number (default:`''`), and `$provider`, which allows generating phone numbers with a specific provider prefix (default:`null`).
 
 ```php
 echo $persianFaker->cellPhone();

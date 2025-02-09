@@ -90,16 +90,16 @@ interface GeneratorInterface
     /**
      * Get a random phone number in Iran
      *
-     * @param  string  $separator  The separator between the state prefix and the phone number
-     * @param  string|null  $state  The name of state in Iran, see https://github.com/amyavari/persian-faker-php?tab=readme-ov-file#phone
+     * @param  string  $separator  The separator between the state prefix and the phone number.
+     * @param  string|null  $state  The name of the state in Iran. See https://github.com/amyavari/persian-faker-php?tab=readme-ov-file#phone
      */
     public function phoneNumber(string $separator = '', ?string $state = null): string;
 
     /**
      * Get a random cell phone number in Iran
      *
-     * @param  string  $separator  The separator between the mobile provider prefix and the first three digits and the last four digits
-     * @param  string|null  $provider  The name of mobile provider in Iran, see https://github.com/amyavari/persian-faker-php?tab=readme-ov-file#phone
+     * @param  string  $separator  The separator between the mobile provider prefix, the first three digits, and the last four digits.
+     * @param  string|null  $provider  The name of the mobile provider in Iran. See https://github.com/amyavari/persian-faker-php?tab=readme-ov-file#phone
      */
     public function cellPhone(string $separator = '', ?string $provider = null): string;
 }

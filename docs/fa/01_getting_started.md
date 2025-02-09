@@ -63,10 +63,9 @@ postcode($withSeparator = false|true)   // '1234567890' , '12345-67890'
 برای مشاهده داکیومنت کامل توابع برای شماره تلفن لطفاً فایل [04-phone.md](04-phone.md) را ملاحظه نمائید.
 
 ```php
-// ویرایش شده: آرگومان های اختیاری دریافت می کند
-phoneNumber($separator = '', $state = null)     // '03512345678'
-
-// توابع جدید
 statePhonePrefix()                              // '035'
 cellPhone($separator = '', $provider = null)    // '09121234567'
+
+// ویرایش شده: آرگومان های اختیاری دریافت می کند
+phoneNumber($separator = '', $state = null)     // '03512345678'
 ```

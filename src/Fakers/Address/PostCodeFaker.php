@@ -8,6 +8,8 @@ use AliYavari\PersianFaker\Contracts\FakerInterface;
 use AliYavari\PersianFaker\Cores\Randomable;
 
 /**
+ * Generates a fake postal code for Iran
+ *
  * @implements \AliYavari\PersianFaker\Contracts\FakerInterface<string>
  */
 class PostCodeFaker implements FakerInterface
@@ -17,6 +19,9 @@ class PostCodeFaker implements FakerInterface
 
     public function __construct(protected bool $withSeparator = false) {}
 
+    /**
+     * This returns a fake postal code
+     */
     public function generate(): string
     {
         $postCode = $this->generateRandomPostCode();

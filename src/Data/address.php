@@ -2,6 +2,10 @@
 
 declare(strict_types=1);
 
+/**
+ * Data for fake address data like: secondary address, state, city, street name, full address
+ */
+
 return [
     'secondary_address_prefixes' => ['طبقه', 'واحد', 'سوئیت'],
     'states' => [

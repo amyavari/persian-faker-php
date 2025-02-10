@@ -9,6 +9,8 @@ use AliYavari\PersianFaker\Contracts\FakerInterface;
 use AliYavari\PersianFaker\Cores\Randomable;
 
 /**
+ * Generates a fake secondary address
+ *
  * @implements \AliYavari\PersianFaker\Contracts\FakerInterface<string>
  */
 class SecondaryAddressFaker implements FakerInterface
@@ -29,6 +31,9 @@ class SecondaryAddressFaker implements FakerInterface
         $this->prefixes = $loader->get();
     }
 
+    /**
+     * This returns a fake secondary address
+     */
     public function generate(): string
     {
         $randomNumber = random_int(1, 50);

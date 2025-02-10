@@ -10,6 +10,8 @@ use AliYavari\PersianFaker\Cores\Randomable;
 use AliYavari\PersianFaker\Exceptions\InvalidMobileProviderException;
 
 /**
+ * Generates a random cell phone (mobile) number in Iran.
+ *
  * @implements \AliYavari\PersianFaker\Contracts\FakerInterface<string>
  */
 class CellPhoneFaker implements FakerInterface
@@ -24,12 +26,19 @@ class CellPhoneFaker implements FakerInterface
 
     /**
      * @param  \AliYavari\PersianFaker\Contracts\DataLoaderInterface<string, list<string>>  $loader
+     * @param  string  $separator  The separator between the state prefix and the phone number.
+     * @param  string|null  $provider  The name of the mobile provider in Iran. See ./src/Data/phone.php
      */
     public function __construct(DataLoaderInterface $loader, protected string $separator = '', protected ?string $provider = null)
     {
         $this->phonePrefixes = $loader->get();
     }
 
+    /**
+     * This returns a fake cell phone number
+     *
+     * @throws \AliYavari\PersianFaker\Exceptions\InvalidMobileProviderException
+     */
     public function generate(): string
     {
         if (! $this->isProviderValid()) {

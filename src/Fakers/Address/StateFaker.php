@@ -9,6 +9,8 @@ use AliYavari\PersianFaker\Contracts\FakerInterface;
 use AliYavari\PersianFaker\Cores\Randomable;
 
 /**
+ * Generates a random state name in Iran
+ *
  * @implements \AliYavari\PersianFaker\Contracts\FakerInterface<string>
  */
 class StateFaker implements FakerInterface
@@ -29,6 +31,9 @@ class StateFaker implements FakerInterface
         $this->states = $loader->get();
     }
 
+    /**
+     * This returns a fake state name
+     */
     public function generate(): string
     {
         return $this->getRandomState();

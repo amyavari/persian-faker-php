@@ -9,6 +9,8 @@ use AliYavari\PersianFaker\Contracts\FakerInterface;
 use AliYavari\PersianFaker\Cores\Randomable;
 
 /**
+ * Generates a random city name in Iran
+ *
  * @implements \AliYavari\PersianFaker\Contracts\FakerInterface<string>
  */
 class CityFaker implements FakerInterface
@@ -29,6 +31,9 @@ class CityFaker implements FakerInterface
         $this->cities = $loader->get();
     }
 
+    /**
+     * This returns a fake city name
+     */
     public function generate(): string
     {
         return $this->getRandomCity();

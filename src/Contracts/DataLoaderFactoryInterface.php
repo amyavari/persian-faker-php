@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace AliYavari\PersianFaker\Contracts;
 
 /**
+ * Interface for Data Loader Factories for initializing instances of data loaders.
+ *
  * @template TKey as array-key
  * @template TData
  */

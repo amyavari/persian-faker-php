@@ -9,6 +9,8 @@ use AliYavari\PersianFaker\Contracts\FakerInterface;
 use AliYavari\PersianFaker\Cores\Randomable;
 
 /**
+ * Generates a random street name in Iran
+ *
  * @implements \AliYavari\PersianFaker\Contracts\FakerInterface<string>
  */
 class StreetNameFaker implements FakerInterface
@@ -29,6 +31,9 @@ class StreetNameFaker implements FakerInterface
         $this->streetNames = $loader->get();
     }
 
+    /**
+     * The returns a fake
+     */
     public function generate(): string
     {
         return $this->getRandomState();

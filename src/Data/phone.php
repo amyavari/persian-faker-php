@@ -2,6 +2,10 @@
 
 declare(strict_types=1);
 
+/**
+ * Data for fake phone number like: phone number, state phone prefix and cell phone (mobile) number
+ */
+
 return [
     'state_prefixes' => [
         'azar_sharghi' => '041',

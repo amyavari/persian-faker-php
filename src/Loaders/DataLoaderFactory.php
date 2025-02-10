@@ -8,6 +8,8 @@ use AliYavari\PersianFaker\Contracts\DataLoaderFactoryInterface;
 use AliYavari\PersianFaker\Contracts\DataLoaderInterface;
 
 /**
+ * This class initiates an instance of Data Loader
+ *
  * @template TKey of array-key
  * @template TValue
  *
@@ -16,6 +18,8 @@ use AliYavari\PersianFaker\Contracts\DataLoaderInterface;
 class DataLoaderFactory implements DataLoaderFactoryInterface
 {
     /**
+     * Get Data Loader instance
+     *
      * @param  string  ...$args  Necessary arguments for DataLoader constructor
      * @return \AliYavari\PersianFaker\Contracts\DataLoaderInterface<TKey, list<TValue>>
      */

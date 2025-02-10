@@ -9,6 +9,8 @@ use AliYavari\PersianFaker\Contracts\FakerInterface;
 use AliYavari\PersianFaker\Cores\Randomable;
 
 /**
+ * Generates a random last name in Persian for Iranian individuals.
+ *
  * @implements \AliYavari\PersianFaker\Contracts\FakerInterface<string>
  */
 class LastNameFaker implements FakerInterface

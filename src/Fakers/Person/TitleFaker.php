@@ -10,6 +10,8 @@ use AliYavari\PersianFaker\Cores\Randomable;
 use AliYavari\PersianFaker\Exceptions\InvalidGenderException;
 
 /**
+ * Generates a random title in Persian language.
+ *
  * @implements \AliYavari\PersianFaker\Contracts\FakerInterface<string>
  */
 class TitleFaker implements FakerInterface

@@ -21,6 +21,13 @@ use AliYavari\PersianFaker\Fakers\Phone\PhoneNumberFaker;
 use AliYavari\PersianFaker\Fakers\Phone\StatePhonePrefixFaker;
 use AliYavari\PersianFaker\Loaders\DataLoaderFactory;
 
+/**
+ * This class includes all final faker methods of this package.
+ *
+ * These methods are designed to generate fake data for various purposes,
+ * such as testing and development. Each method is responsible for producing
+ * a specific type of fake data.
+ */
 class Generator implements GeneratorInterface
 {
     public function title(?string $gender = null): string

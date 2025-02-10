@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace AliYavari\PersianFaker\Contracts;
 
 /**
+ * Interface for all Data loaders to retrieve data.
+ *
  * @template TKey as array-key
  * @template TData The expected return type of the loaded data.
  */

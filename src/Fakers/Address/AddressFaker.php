@@ -9,6 +9,8 @@ use AliYavari\PersianFaker\Contracts\FakerInterface;
 use AliYavari\PersianFaker\Cores\Randomable;
 
 /**
+ * Generates a random full address in Iran
+ *
  * @implements \AliYavari\PersianFaker\Contracts\FakerInterface<string>
  */
 class AddressFaker implements FakerInterface
@@ -29,6 +31,9 @@ class AddressFaker implements FakerInterface
         $this->addresses = $loader->get();
     }
 
+    /**
+     * This returns a fake full address
+     */
     public function generate(): string
     {
         return $this->getRandomAddress();

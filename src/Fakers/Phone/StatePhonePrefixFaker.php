@@ -9,6 +9,8 @@ use AliYavari\PersianFaker\Contracts\FakerInterface;
 use AliYavari\PersianFaker\Cores\Randomable;
 
 /**
+ * Generates a random state phone prefix in Iran.
+ *
  * @implements \AliYavari\PersianFaker\Contracts\FakerInterface<string>
  */
 class StatePhonePrefixFaker implements FakerInterface
@@ -29,6 +31,9 @@ class StatePhonePrefixFaker implements FakerInterface
         $this->phonePrefixes = $loader->get();
     }
 
+    /**
+     * This returns a fake state phone prefix
+     */
     public function generate(): string
     {
         return $this->getRandomPrefix();

@@ -10,6 +10,8 @@ use AliYavari\PersianFaker\Exceptions\InvalidDataKeyException;
 use AliYavari\PersianFaker\Exceptions\InvalidDataPathException;
 
 /**
+ * This class loads data from a path and retrieves it
+ *
  * @property string $path Follows the format: "filename.key_one.key_two.key_three...",
  *                        where "filename" refers to the data file, and the subsequent keys
  *                        specify the nested values to retrieve separated by dot(.).
@@ -26,6 +28,8 @@ class DataLoader implements DataLoaderInterface
     ) {}
 
     /**
+     * This loads data from the path and retrieves it
+     *
      * @return array<TKey, TData>
      */
     public function get()

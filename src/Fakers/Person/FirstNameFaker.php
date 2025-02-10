@@ -10,6 +10,8 @@ use AliYavari\PersianFaker\Cores\Randomable;
 use AliYavari\PersianFaker\Exceptions\InvalidGenderException;
 
 /**
+ * Generates a random first name in Persian for Iranian individuals.
+ *
  * @implements \AliYavari\PersianFaker\Contracts\FakerInterface<string>
  */
 class FirstNameFaker implements FakerInterface

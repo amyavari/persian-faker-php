@@ -36,11 +36,6 @@ class LastNameFaker implements FakerInterface
      */
     public function generate(): string
     {
-        return $this->getRandomLastName();
-    }
-
-    protected function getRandomLastName(): string
-    {
         return $this->getOneRandomElement($this->names);
     }
 }

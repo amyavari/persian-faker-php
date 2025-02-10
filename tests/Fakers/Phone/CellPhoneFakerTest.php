@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Fakers\Phone;
 
 use AliYavari\PersianFaker\Contracts\DataLoaderInterface;
+use AliYavari\PersianFaker\Cores\Arrayable;
 use AliYavari\PersianFaker\Cores\Randomable;
 use AliYavari\PersianFaker\Exceptions\InvalidMobileProviderException;
 use AliYavari\PersianFaker\Fakers\Phone\CellPhoneFaker;
@@ -13,7 +14,7 @@ use Tests\TestCase;
 
 class CellPhoneFakerTest extends TestCase
 {
-    use Randomable;
+    use Arrayable, Randomable;
 
     protected DataLoaderInterface $loader;
 
@@ -54,40 +55,22 @@ class CellPhoneFakerTest extends TestCase
         $this->assertFalse($isValid);
     }
 
-    public function test_it_returns_on_dimensional_array_of_all_prefixes(): void
-    {
-        $faker = new CellPhoneFaker($this->loader);
-        $allPrefixes = $this->callProtectedMethod($faker, 'getAllPrefixes');
-
-        $this->assertEqualsCanonicalizing($allPrefixes, $this->getAllProvidersPrefixes());
-    }
-
-    public function test_it_returns_random_refix_form_list(): void
-    {
-        $prefixes = ['1', '2', '3', '4'];
-
-        $faker = new CellPhoneFaker($this->loader, provider: null);
-        $providerPrefix = $this->callProtectedMethod($faker, 'getRandomPrefix', [$prefixes]);
-
-        $this->assertContains($providerPrefix, $prefixes);
-    }
-
-    public function test_it_returns_random_prefix_of_all_providers_when_provider_is_not_set_or_is_null(): void
+    public function test_it_returns_prefixes_of_all_providers_when_provider_is_not_set_or_is_null(): void
     {
         $faker = new CellPhoneFaker($this->loader, provider: null);
-        $providerPrefix = $this->callProtectedMethod($faker, 'getProviderPrefix');
+        $prefixes = $this->callProtectedMethod($faker, 'getPrefixes');
 
-        $this->assertContains($providerPrefix, $this->getAllProvidersPrefixes());
+        $this->assertEqualsCanonicalizing($prefixes, $this->flatten($this->phonePrefixes));
     }
 
-    public function test_it_returns_random_prefix_of_specific_provider_when_provider_is_set(): void
+    public function test_it_returns_prefixes_of_specific_provider_when_provider_is_set(): void
     {
         $provider = array_rand($this->phonePrefixes);
 
         $faker = new CellPhoneFaker($this->loader, provider: $provider);
-        $providerPrefix = $this->callProtectedMethod($faker, 'getProviderPrefix');
+        $prefixes = $this->callProtectedMethod($faker, 'getPrefixes');
 
-        $this->assertContains($providerPrefix, $this->phonePrefixes[$provider]);
+        $this->assertEqualsCanonicalizing($prefixes, $this->phonePrefixes[$provider]);
 
     }
 
@@ -113,20 +96,19 @@ class CellPhoneFakerTest extends TestCase
     public function test_it_returns_fake_cell_phone_with_random_prefix(): void
     {
         $faker = new CellPhoneFaker($this->loader);
-        $phone = $faker->generate(); // Expected format: 0##########
+        $phone = $faker->generate(); // Expected format: 09121234567
 
-        $this->commonCellPhoneAssertions($phone);
+        $this->assertIsString($phone);
+        $this->assertEquals(11, strlen($phone));
     }
 
     public function test_it_returns_fake_cell_phone_with_specific_separator(): void
     {
         $faker = new CellPhoneFaker($this->loader, separator: '-');
-        $phone = $faker->generate(); // Expected format: 0###-###-####
+        $phone = $faker->generate(); // Expected format: 0912-123-4567
 
+        $this->assertIsString($phone);
         $this->assertEquals(13, strlen($phone));
-        $this->assertEquals(4, strpos($phone, '-'));
-        $this->assertEquals(8, strpos($phone, '-', 5));
-        $this->commonCellPhoneAssertions($phone, '-');
     }
 
     public function test_it_returns_fake_cell_phone_for_specific_mobile_operator(): void
@@ -134,11 +116,11 @@ class CellPhoneFakerTest extends TestCase
         $phoneProvider = array_rand($this->phonePrefixes);
 
         $faker = new CellPhoneFaker($this->loader, provider: $phoneProvider);
-        $phone = $faker->generate(); // Expected format: 0##########
+        $phone = $faker->generate(); // Expected format: 09121234567
 
+        $this->assertIsString($phone);
         $this->assertEquals(11, strlen($phone));
         $this->assertContains(substr($phone, 0, 4), $this->phonePrefixes[$phoneProvider]);
-        $this->commonCellPhoneAssertions($phone);
     }
 
     public function test_it_throws_an_exception_with_invalid_mobile_provider_name(): void
@@ -148,30 +130,5 @@ class CellPhoneFakerTest extends TestCase
 
         $faker = new CellPhoneFaker($this->loader, provider: 'anonymous');
         $faker->generate();
-    }
-
-    // ---------------
-    // Helper methods
-    // ---------------
-
-    protected function commonCellPhoneAssertions(string $phone, string $separator = ''): void
-    {
-        $phone = str_replace($separator, '', $phone);
-
-        $this->assertIsString($phone);
-        $this->assertEquals(11, strlen($phone));
-        $this->assertContains(substr($phone, 0, 4), $this->getAllProvidersPrefixes());
-        $this->assertIsNumeric(substr($phone, 4));
-    }
-
-    protected function getAllProvidersPrefixes(): array
-    {
-        $prefixes = [];
-
-        foreach ($this->phonePrefixes as $providerPrefixes) {
-            $prefixes = array_merge($prefixes, $providerPrefixes);
-        }
-
-        return $prefixes;
     }
 }

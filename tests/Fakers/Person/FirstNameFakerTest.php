@@ -5,18 +5,19 @@ declare(strict_types=1);
 namespace Tests\Fakers\Person;
 
 use AliYavari\PersianFaker\Contracts\DataLoaderInterface;
+use AliYavari\PersianFaker\Cores\Arrayable;
 use AliYavari\PersianFaker\Exceptions\InvalidGenderException;
 use AliYavari\PersianFaker\Fakers\Person\FirstNameFaker;
 use AliYavari\PersianFaker\Loaders\DataLoader;
-use PHPUnit\Framework\TestCase;
+use Tests\TestCase;
 
 class FirstNameFakerTest extends TestCase
 {
+    use Arrayable;
+
     protected DataLoaderInterface $loader;
 
-    protected array $maleNames;
-
-    protected array $femaleNames;
+    protected array $names;
 
     protected function setUp(): void
     {
@@ -24,10 +25,51 @@ class FirstNameFakerTest extends TestCase
 
         $this->loader = new DataLoader('person.first_names');
 
-        [
-            'male' => $this->maleNames,
-            'female' => $this->femaleNames,
-        ] = $this->loader->get();
+        $this->names = $this->loader->get();
+    }
+
+    public function test_gender_validation_passes_with_null_gender(): void
+    {
+        $faker = new FirstNameFaker($this->loader, gender: null);
+        $isValid = $this->callProtectedMethod($faker, 'isGenderValid');
+
+        $this->assertTrue($isValid);
+    }
+
+    public function test_gender_validation_passes_with_existed_gender(): void
+    {
+        $gender = array_rand($this->names);
+
+        $faker = new FirstNameFaker($this->loader, gender: $gender);
+        $isValid = $this->callProtectedMethod($faker, 'isGenderValid');
+
+        $this->assertTrue($isValid);
+    }
+
+    public function test_gender_validation_fails_with_not_existed_gender(): void
+    {
+        $faker = new FirstNameFaker($this->loader, gender: 'newGender');
+        $isValid = $this->callProtectedMethod($faker, 'isGenderValid');
+
+        $this->assertFalse($isValid);
+    }
+
+    public function test_it_returns_all_names_when_gender_is_not_set_or_is_null(): void
+    {
+        $faker = new FirstNameFaker($this->loader, gender: null);
+        $names = $this->callProtectedMethod($faker, 'getNames');
+
+        $this->assertEqualsCanonicalizing($names, $this->flatten($this->names));
+    }
+
+    public function test_it_returns_names_of_specific_gender_when_gender_is_set(): void
+    {
+        $gender = array_rand($this->names);
+
+        $faker = new FirstNameFaker($this->loader, gender: $gender);
+        $names = $this->callProtectedMethod($faker, 'getNames');
+
+        $this->assertEqualsCanonicalizing($names, $this->names[$gender]);
     }
 
     public function test_it_returns_fake_first_name(): void
@@ -36,7 +78,7 @@ class FirstNameFakerTest extends TestCase
         $name = $faker->generate();
 
         $this->assertIsString($name);
-        $this->assertContains($name, array_merge($this->maleNames, $this->femaleNames));
+        $this->assertContains($name, $this->flatten($this->names));
     }
 
     public function test_it_returns_fake_male_first_name(): void
@@ -46,7 +88,7 @@ class FirstNameFakerTest extends TestCase
         $name = $faker->generate();
 
         $this->assertIsString($name);
-        $this->assertContains($name, $this->maleNames);
+        $this->assertContains($name, $this->names['male']);
 
     }
 
@@ -57,7 +99,7 @@ class FirstNameFakerTest extends TestCase
         $name = $faker->generate();
 
         $this->assertIsString($name);
-        $this->assertContains($name, $this->femaleNames);
+        $this->assertContains($name, $this->names['female']);
     }
 
     public function test_it_throws_an_exception_with_invalid_gender(): void

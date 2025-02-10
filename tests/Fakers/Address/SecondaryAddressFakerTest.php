@@ -22,7 +22,6 @@ class SecondaryAddressFakerTest extends TestCase
         $this->loader = new DataLoader('address.secondary_address_prefixes');
 
         $this->secondaryAddPrefixes = $this->loader->get();
-
     }
 
     public function test_it_returns_random_secondary_address_prefix(): void
@@ -37,7 +36,7 @@ class SecondaryAddressFakerTest extends TestCase
     public function test_it_returns_fake_secondary_address(): void
     {
         $faker = new SecondaryAddressFaker($this->loader);
-        $secondaryAddress = $faker->generate();
+        $secondaryAddress = $faker->generate(); // Expected format: طبقه 12
 
         [$prefix,$number] = explode(' ', $secondaryAddress);
 

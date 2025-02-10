@@ -36,11 +36,6 @@ class StreetNameFaker implements FakerInterface
      */
     public function generate(): string
     {
-        return $this->getRandomState();
-    }
-
-    protected function getRandomState(): string
-    {
         return $this->getOneRandomElement($this->streetNames);
     }
 }

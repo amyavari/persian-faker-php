@@ -36,11 +36,6 @@ class AddressFaker implements FakerInterface
      */
     public function generate(): string
     {
-        return $this->getRandomAddress();
-    }
-
-    protected function getRandomAddress(): string
-    {
         return $this->getOneRandomElement($this->addresses);
     }
 }

@@ -36,11 +36,6 @@ class CityFaker implements FakerInterface
      */
     public function generate(): string
     {
-        return $this->getRandomCity();
-    }
-
-    protected function getRandomCity(): string
-    {
         return $this->getOneRandomElement($this->cities);
     }
 }

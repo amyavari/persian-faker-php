@@ -59,12 +59,7 @@ class PhoneNumberFaker implements FakerInterface
 
     protected function getStatePrefix(): string
     {
-        return is_null($this->state) ? $this->getRandomPrefix() : $this->statePrefixes[$this->state];
-    }
-
-    protected function getRandomPrefix(): string
-    {
-        return $this->getOneRandomElement($this->statePrefixes);
+        return is_null($this->state) ? $this->getOneRandomElement($this->statePrefixes) : $this->statePrefixes[$this->state];
     }
 
     protected function generateRandomPhoneNumber(): string

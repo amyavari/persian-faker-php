@@ -36,11 +36,6 @@ class StatePhonePrefixFaker implements FakerInterface
      */
     public function generate(): string
     {
-        return $this->getRandomPrefix();
-    }
-
-    protected function getRandomPrefix(): string
-    {
         return $this->getOneRandomElement($this->phonePrefixes);
     }
 }

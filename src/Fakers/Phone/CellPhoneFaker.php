@@ -6,6 +6,7 @@ namespace AliYavari\PersianFaker\Fakers\Phone;
 
 use AliYavari\PersianFaker\Contracts\DataLoaderInterface;
 use AliYavari\PersianFaker\Contracts\FakerInterface;
+use AliYavari\PersianFaker\Cores\Arrayable;
 use AliYavari\PersianFaker\Cores\Randomable;
 use AliYavari\PersianFaker\Exceptions\InvalidMobileProviderException;
 
@@ -16,8 +17,11 @@ use AliYavari\PersianFaker\Exceptions\InvalidMobileProviderException;
  */
 class CellPhoneFaker implements FakerInterface
 {
-    /** @use \AliYavari\PersianFaker\Cores\Randomable<int, string> */
-    use Randomable;
+    /**
+     * @use \AliYavari\PersianFaker\Cores\Randomable<int, string>
+     * @use \AliYavari\PersianFaker\Cores\Arrayable<string, int, string>
+     */
+    use Arrayable, Randomable;
 
     /**
      * @var array<string, list<string>>
@@ -45,7 +49,9 @@ class CellPhoneFaker implements FakerInterface
             throw new InvalidMobileProviderException(sprintf('The mobile provider with name %s is not valid.', $this->provider));
         }
 
-        return $this->formatPhone($this->getProviderPrefix(), $this->generateRandomCellPhone());
+        $randomPrefix = $this->getOneRandomElement($this->getPrefixes());
+
+        return $this->formatPhone($randomPrefix, $this->generateRandomCellPhone());
     }
 
     protected function isProviderValid(): bool
@@ -57,33 +63,12 @@ class CellPhoneFaker implements FakerInterface
         return array_key_exists($this->provider, $this->phonePrefixes);
     }
 
-    protected function getProviderPrefix(): string
-    {
-        $prefixes = is_null($this->provider) ? $this->getAllPrefixes() : $this->phonePrefixes[$this->provider];
-
-        return $this->getRandomPrefix($prefixes);
-    }
-
     /**
      * @return list<string>
      */
-    protected function getAllPrefixes(): array
+    protected function getPrefixes(): array
     {
-        $prefixes = [];
-
-        foreach ($this->phonePrefixes as $providerPrefixes) {
-            $prefixes = array_merge($prefixes, $providerPrefixes);
-        }
-
-        return $prefixes;
-    }
-
-    /**
-     * @param  list<string>  $prefixes
-     */
-    protected function getRandomPrefix(array $prefixes): string
-    {
-        return $this->getOneRandomElement($prefixes);
+        return is_null($this->provider) ? $this->flatten($this->phonePrefixes) : $this->phonePrefixes[$this->provider];
     }
 
     protected function generateRandomCellPhone(): string

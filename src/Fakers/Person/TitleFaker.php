@@ -6,6 +6,7 @@ namespace AliYavari\PersianFaker\Fakers\Person;
 
 use AliYavari\PersianFaker\Contracts\DataLoaderInterface;
 use AliYavari\PersianFaker\Contracts\FakerInterface;
+use AliYavari\PersianFaker\Cores\Arrayable;
 use AliYavari\PersianFaker\Cores\Randomable;
 use AliYavari\PersianFaker\Exceptions\InvalidGenderException;
 
@@ -16,8 +17,11 @@ use AliYavari\PersianFaker\Exceptions\InvalidGenderException;
  */
 class TitleFaker implements FakerInterface
 {
-    /** @use \AliYavari\PersianFaker\Cores\Randomable<int, string> */
-    use Randomable;
+    /**
+     * @use \AliYavari\PersianFaker\Cores\Randomable<int, string>
+     * @use \AliYavari\PersianFaker\Cores\Arrayable<string, int, string>
+     */
+    use Arrayable, Randomable;
 
     /**
      * @var array<string, list<string>>
@@ -40,35 +44,27 @@ class TitleFaker implements FakerInterface
      */
     public function generate(): string
     {
+        if (! $this->isGenderValid()) {
+            throw new InvalidGenderException(sprintf('The gender %s is not valid.', $this->gender));
+        }
+
+        return $this->getOneRandomElement($this->getTitles());
+    }
+
+    protected function isGenderValid(): bool
+    {
         if (is_null($this->gender)) {
-            return $this->getRandomTitle();
+            return true;
         }
 
-        if ($this->gender === 'male') {
-            return $this->getRandomMaleTitle();
-        }
-
-        if ($this->gender === 'female') {
-            return $this->getRandomFemaleTitle();
-        }
-
-        throw new InvalidGenderException(sprintf('The gender %s is not valid.', $this->gender));
+        return array_key_exists($this->gender, $this->titles);
     }
 
-    protected function getRandomTitle(): string
+    /**
+     * @return list<string>
+     */
+    protected function getTitles(): array
     {
-        $allTitles = array_merge($this->titles['male'], $this->titles['female']);
-
-        return $this->getOneRandomElement($allTitles);
-    }
-
-    protected function getRandomMaleTitle(): string
-    {
-        return $this->getOneRandomElement($this->titles['male']);
-    }
-
-    protected function getRandomFemaleTitle(): string
-    {
-        return $this->getOneRandomElement($this->titles['female']);
+        return is_null($this->gender) ? $this->flatten($this->titles) : $this->titles[$this->gender];
     }
 }

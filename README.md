@@ -72,32 +72,17 @@ address()                               // 'خیابان کارگر، کوچه �
 postcode($withSeparator = false|true)   // '1234567890' , '12345-67890'
 ```
 
-### Address
-
-To view the complete documentation for the address methods, please refer to [docs/en/03-address.md](./docs/en/03-address.md)
-
-```php
-secondaryAddress()                      // 'طبقه 2'
-state()                                 // 'یزد'
-city()                                  // 'یزد'
-streetName()                            // 'پاسداران شمالی'
-address()                               // 'خیابان کارگر، کوچه گلستان، پلاک 35
-
-// Modified: accept optional argument
-postcode($withSeparator = false|true)   // '1234567890' , '12345-67890'
-```
-
 ### Phone
 
 To view the complete documentation for the phone methods, please refer to [docs/en/04-phone.md](./docs/en/04-phone.md)
 
 ```php
 // Modified: accept optional arguments
-phoneNumber($separator = '', $state = null)     // '03512345678'
+phoneNumber($separator = '', $state = null)     // '03512345678', '035-12345678'
 
 // New methods
 statePhonePrefix()                              // '035'
-cellPhone($separator = '', $provider = null)    // '09121234567'
+cellPhone($separator = '', $provider = null)    // '09121234567', '0912-123-4567'
 ```
 
 ---

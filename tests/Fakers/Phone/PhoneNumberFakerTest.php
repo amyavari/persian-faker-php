@@ -4,28 +4,27 @@ declare(strict_types=1);
 
 namespace Tests\Fakers\Phone;
 
-use AliYavari\PersianFaker\Contracts\DataLoaderInterface;
 use AliYavari\PersianFaker\Cores\Randomable;
 use AliYavari\PersianFaker\Exceptions\InvalidStateNameException;
 use AliYavari\PersianFaker\Fakers\Phone\PhoneNumberFaker;
 use AliYavari\PersianFaker\Loaders\DataLoader;
+use Mockery;
 use Tests\TestCase;
 
 class PhoneNumberFakerTest extends TestCase
 {
     use Randomable;
 
-    protected DataLoaderInterface $loader;
+    protected $loader;
 
-    protected array $statePrefixes;
+    protected array $statePrefixes = ['yazd' => '035', 'teh' => '021', 'esf' => '031', 'gil' => '013'];
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->loader = new DataLoader('phone.state_prefixes');
-
-        $this->statePrefixes = $this->loader->get();
+        $this->loader = Mockery::mock(DataLoader::class);
+        $this->loader->shouldReceive('get')->once()->andReturn($this->statePrefixes);
     }
 
     public function test_state_validation_passes_with_null_state(): void

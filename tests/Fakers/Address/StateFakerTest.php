@@ -4,24 +4,23 @@ declare(strict_types=1);
 
 namespace Tests\Fakers\Address;
 
-use AliYavari\PersianFaker\Contracts\DataLoaderInterface;
 use AliYavari\PersianFaker\Fakers\Address\StateFaker;
 use AliYavari\PersianFaker\Loaders\DataLoader;
+use Mockery;
 use Tests\TestCase;
 
 class StateFakerTest extends TestCase
 {
-    protected DataLoaderInterface $loader;
+    protected $loader;
 
-    protected array $states;
+    protected array $states = ['Yazd', 'Tehran', 'Qom', 'Shiraz'];
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->loader = new DataLoader('address.states');
-
-        $this->states = $this->loader->get();
+        $this->loader = Mockery::mock(DataLoader::class);
+        $this->loader->shouldReceive('get')->once()->andReturn($this->states);
     }
 
     public function test_it_returns_fake_state(): void

@@ -4,24 +4,23 @@ declare(strict_types=1);
 
 namespace Tests\Fakers\Address;
 
-use AliYavari\PersianFaker\Contracts\DataLoaderInterface;
 use AliYavari\PersianFaker\Fakers\Address\SecondaryAddressFaker;
 use AliYavari\PersianFaker\Loaders\DataLoader;
+use Mockery;
 use Tests\TestCase;
 
 class SecondaryAddressFakerTest extends TestCase
 {
-    protected DataLoaderInterface $loader;
+    protected $loader;
 
-    protected array $secondaryAddPrefixes;
+    protected array $secondaryAddPrefixes = ['floor', 'unit', 'building'];
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->loader = new DataLoader('address.secondary_address_prefixes');
-
-        $this->secondaryAddPrefixes = $this->loader->get();
+        $this->loader = Mockery::mock(DataLoader::class);
+        $this->loader->shouldReceive('get')->once()->andReturn($this->secondaryAddPrefixes);
     }
 
     public function test_it_returns_random_secondary_address_prefix(): void
@@ -36,7 +35,7 @@ class SecondaryAddressFakerTest extends TestCase
     public function test_it_returns_fake_secondary_address(): void
     {
         $faker = new SecondaryAddressFaker($this->loader);
-        $secondaryAddress = $faker->generate(); // Expected format: طبقه 12
+        $secondaryAddress = $faker->generate(); // Expected format: floor 12
 
         [$prefix,$number] = explode(' ', $secondaryAddress);
 

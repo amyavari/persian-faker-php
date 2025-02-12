@@ -4,28 +4,30 @@ declare(strict_types=1);
 
 namespace Tests\Fakers\Person;
 
-use AliYavari\PersianFaker\Contracts\DataLoaderInterface;
 use AliYavari\PersianFaker\Cores\Arrayable;
 use AliYavari\PersianFaker\Exceptions\InvalidGenderException;
 use AliYavari\PersianFaker\Fakers\Person\TitleFaker;
 use AliYavari\PersianFaker\Loaders\DataLoader;
+use Mockery;
 use Tests\TestCase;
 
 class TitleFakerTest extends TestCase
 {
     use Arrayable;
 
-    protected DataLoaderInterface $loader;
+    protected $loader;
 
-    protected array $titles;
+    protected array $titles = [
+        'male' => ['Mr.', 'Sr.'],
+        'female' => ['Ms.', 'Mrs.', 'Miss.'],
+    ];
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->loader = new DataLoader('person.titles');
-
-        $this->titles = $this->loader->get();
+        $this->loader = Mockery::mock(DataLoader::class);
+        $this->loader->shouldReceive('get')->once()->andReturn($this->titles);
     }
 
     public function test_gender_validation_passes_with_null_gender(): void

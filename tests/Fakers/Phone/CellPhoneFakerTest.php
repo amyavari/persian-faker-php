@@ -4,29 +4,32 @@ declare(strict_types=1);
 
 namespace Tests\Fakers\Phone;
 
-use AliYavari\PersianFaker\Contracts\DataLoaderInterface;
 use AliYavari\PersianFaker\Cores\Arrayable;
 use AliYavari\PersianFaker\Cores\Randomable;
 use AliYavari\PersianFaker\Exceptions\InvalidMobileProviderException;
 use AliYavari\PersianFaker\Fakers\Phone\CellPhoneFaker;
 use AliYavari\PersianFaker\Loaders\DataLoader;
+use Mockery;
 use Tests\TestCase;
 
 class CellPhoneFakerTest extends TestCase
 {
     use Arrayable, Randomable;
 
-    protected DataLoaderInterface $loader;
+    protected $loader;
 
-    protected array $phonePrefixes;
+    protected array $phonePrefixes = [
+        'provider_one' => ['0911', '0912', '0913'],
+        'provider_two' => ['0921', '0922', '0933'],
+        'provider three' => ['0941', '0942', '0943'],
+    ];
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->loader = new DataLoader('phone.mobile_prefixes');
-
-        $this->phonePrefixes = $this->loader->get();
+        $this->loader = Mockery::mock(DataLoader::class);
+        $this->loader->shouldReceive('get')->once()->andReturn($this->phonePrefixes);
     }
 
     public function test_provider_validation_passes_with_null_provider(): void

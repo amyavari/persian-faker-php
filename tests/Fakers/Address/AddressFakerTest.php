@@ -4,24 +4,23 @@ declare(strict_types=1);
 
 namespace Tests\Fakers\Address;
 
-use AliYavari\PersianFaker\Contracts\DataLoaderInterface;
 use AliYavari\PersianFaker\Fakers\Address\AddressFaker;
 use AliYavari\PersianFaker\Loaders\DataLoader;
+use Mockery;
 use Tests\TestCase;
 
 class AddressFakerTest extends TestCase
 {
-    protected DataLoaderInterface $loader;
+    protected $loader;
 
-    protected array $addresses;
+    protected array $addresses = ['address 1', 'address 4', 'address 3', 'address 2'];
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->loader = new DataLoader('address.addresses');
-
-        $this->addresses = $this->loader->get();
+        $this->loader = Mockery::mock(DataLoader::class);
+        $this->loader->shouldReceive('get')->once()->andReturn($this->addresses);
     }
 
     public function test_it_returns_fake_address(): void

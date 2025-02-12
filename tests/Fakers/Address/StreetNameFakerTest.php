@@ -4,24 +4,23 @@ declare(strict_types=1);
 
 namespace Tests\Fakers\Address;
 
-use AliYavari\PersianFaker\Contracts\DataLoaderInterface;
 use AliYavari\PersianFaker\Fakers\Address\StreetNameFaker;
 use AliYavari\PersianFaker\Loaders\DataLoader;
+use Mockery;
 use Tests\TestCase;
 
 class StreetNameFakerTest extends TestCase
 {
-    protected DataLoaderInterface $loader;
+    protected $loader;
 
-    protected array $streetNames;
+    protected array $streetNames = ['name one', 'name two', 'name three', 'name 4'];
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->loader = new DataLoader('address.street_names');
-
-        $this->streetNames = $this->loader->get();
+        $this->loader = Mockery::mock(DataLoader::class);
+        $this->loader->shouldReceive('get')->once()->andReturn($this->streetNames);
     }
 
     public function test_it_returns_fake_street_name(): void

@@ -6,6 +6,7 @@ namespace AliYavari\PersianFaker\Fakers\Text;
 
 use AliYavari\PersianFaker\Contracts\DataLoaderInterface;
 use AliYavari\PersianFaker\Contracts\FakerInterface;
+use AliYavari\PersianFaker\Cores\Arrayable;
 use AliYavari\PersianFaker\Cores\Randomable;
 use AliYavari\PersianFaker\Exceptions\InvalidElementNumberException;
 
@@ -16,8 +17,11 @@ use AliYavari\PersianFaker\Exceptions\InvalidElementNumberException;
  */
 class WordFaker implements FakerInterface
 {
-    /** @use \AliYavari\PersianFaker\Cores\Randomable<int, string>*/
-    use Randomable;
+    /**
+     * @use \AliYavari\PersianFaker\Cores\Arrayable<string>
+     * @use \AliYavari\PersianFaker\Cores\Randomable<int, string>
+     */
+    use Arrayable, Randomable;
 
     /**
      * @var list<string>
@@ -60,7 +64,7 @@ class WordFaker implements FakerInterface
 
         $words = $this->getWords();
 
-        return $this->shouldBeText() ? $this->convertToText($words) : $words;
+        return $this->shouldBeText() ? $this->convertToString($words, $this->separator) : $words;
     }
 
     protected function isNumberValid(): bool
@@ -79,13 +83,5 @@ class WordFaker implements FakerInterface
     protected function shouldBeText(): bool
     {
         return $this->nbWords === 1 || $this->asText;
-    }
-
-    /**
-     * @param  list<string>  $arr
-     */
-    protected function convertToText(array $arr): string
-    {
-        return implode($this->separator, $arr);
     }
 }

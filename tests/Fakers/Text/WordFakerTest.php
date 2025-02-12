@@ -62,15 +62,6 @@ class WordFakerTest extends TestCase
         $this->assertFalse($shouldBeText);
     }
 
-    public function test_it_makes_array_as_string_separated_by_space(): void
-    {
-        $faker = new WordFaker($this->loader);
-        $text = $this->callProtectedMethod($faker, 'convertToText', [['one', 'two', 'a']]);
-
-        $this->assertIsString($text);
-        $this->assertEquals('one two a', $text);
-    }
-
     public function test_number_validation_passes_when_number_is_in_valid_range(): void
     {
         $number = random_int(1, 100);

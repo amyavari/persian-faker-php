@@ -13,6 +13,9 @@ use AliYavari\PersianFaker\Fakers\Address\PostCodeFaker;
 use AliYavari\PersianFaker\Fakers\Address\SecondaryAddressFaker;
 use AliYavari\PersianFaker\Fakers\Address\StateFaker;
 use AliYavari\PersianFaker\Fakers\Address\StreetNameFaker;
+use AliYavari\PersianFaker\Fakers\Company\CatchphraseFaker;
+use AliYavari\PersianFaker\Fakers\Company\CompanyNameFaker;
+use AliYavari\PersianFaker\Fakers\Company\JobTitleFaker;
 use AliYavari\PersianFaker\Fakers\Person\FirstNameFaker;
 use AliYavari\PersianFaker\Fakers\Person\LastNameFaker;
 use AliYavari\PersianFaker\Fakers\Person\TitleFaker;
@@ -158,6 +161,30 @@ class Generator implements GeneratorInterface
         $dataLoader = $this->getDataLoaderInstance('phone.mobile_prefixes');
 
         return $this->exec(new CellPhoneFaker($dataLoader, $separator, $provider));
+    }
+
+    public function company(): string
+    {
+        /** @var \AliYavari\PersianFaker\Contracts\DataLoaderInterface<int, string> */
+        $dataLoader = $this->getDataLoaderInstance('company.companies');
+
+        return $this->exec(new CompanyNameFaker($dataLoader));
+    }
+
+    public function catchphrase(): string
+    {
+        /** @var \AliYavari\PersianFaker\Contracts\DataLoaderInterface<int, string> */
+        $dataLoader = $this->getDataLoaderInstance('company.catchphrases');
+
+        return $this->exec(new CatchphraseFaker($dataLoader));
+    }
+
+    public function jobTitle(): string
+    {
+        /** @var \AliYavari\PersianFaker\Contracts\DataLoaderInterface<int, string> */
+        $dataLoader = $this->getDataLoaderInstance('company.job_titles');
+
+        return $this->exec(new JobTitleFaker($dataLoader));
     }
 
     // *******************************

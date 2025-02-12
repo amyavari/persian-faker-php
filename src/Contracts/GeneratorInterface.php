@@ -141,4 +141,25 @@ interface GeneratorInterface
      * @example '09121234567', '09301234567', '0912-123-4567', '0912 123 4567'
      */
     public function cellPhone(string $separator = '', ?string $provider = null): string;
+
+    /**
+     * Get a random company name in Iran
+     *
+     * @example 'گروه نگاه', 'آینده سازان راه امید'
+     */
+    public function company(): string;
+
+    /**
+     * Get a random company catchphrase
+     *
+     * @example 'پیشرو در خدمات طراحی وب', 'یک قدم تا دنیای دیجیتال'
+     */
+    public function catchphrase(): string;
+
+    /**
+     * Get a random job title
+     *
+     * @example 'برنامه نویس PHP', 'مدیر محصول'
+     */
+    public function jobTitle(): string;
 }

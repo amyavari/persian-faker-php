@@ -85,6 +85,16 @@ statePhonePrefix()                              // '035'
 cellPhone($separator = '', $provider = null)    // '09121234567', '0912-123-4567'
 ```
 
+### Company
+
+To view the complete documentation for the company methods, please refer to [docs/en/05-company.md](./docs/en/05-company.md)
+
+```php
+company()       // 'گروه نگاه'
+catchphrase()   // 'یک قدم تا دنیای دیجیتال'
+jobTitle()      // 'برنامه نویس PHP', 'مدیر محصول'
+```
+
 ---
 
 This package utilizes the [nunomaduro/skeleton-php](https://github.com/nunomaduro/skeleton-php) repository as a starting point and for configuration settings.

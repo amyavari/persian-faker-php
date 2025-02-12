@@ -231,4 +231,37 @@ class GeneratorTest extends TestCase
         $this->assertContains(substr($cellPhoneNumber, 0, 4), $mobilePrefixes[$mobileProvider]);
         $this->assertEquals(4, strpos($cellPhoneNumber, (string) $separator));
     }
+
+    public function test_it_returns_company_name(): void
+    {
+        $loader = new DataLoader('company.companies');
+        $companies = $loader->get();
+
+        $company = $this->generator->company();
+
+        $this->assertIsString($company);
+        $this->assertContains($company, $companies);
+    }
+
+    public function test_it_returns_company_catchphrase(): void
+    {
+        $loader = new DataLoader('company.catchphrases');
+        $catchphrases = $loader->get();
+
+        $catchphrase = $this->generator->catchphrase();
+
+        $this->assertIsString($catchphrase);
+        $this->assertContains($catchphrase, $catchphrases);
+    }
+
+    public function test_it_returns_job_title(): void
+    {
+        $loader = new DataLoader('company.job_titles');
+        $jobTitles = $loader->get();
+
+        $jobTitle = $this->generator->jobTitle();
+
+        $this->assertIsString($jobTitle);
+        $this->assertContains($jobTitle, $jobTitles);
+    }
 }

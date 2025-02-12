@@ -70,3 +70,13 @@ phoneNumber($separator = '', $state = null)     // '03512345678'
 statePhonePrefix()                              // '035'
 cellPhone($separator = '', $provider = null)    // '09121234567'
 ```
+
+### Company
+
+To view the complete documentation for the company methods, please refer to [05-company.md](05-company.md)
+
+```php
+company()       // 'گروه نگاه'
+catchphrase()   // 'یک قدم تا دنیای دیجیتال'
+jobTitle()      // 'برنامه نویس PHP', 'مدیر محصول'
+```

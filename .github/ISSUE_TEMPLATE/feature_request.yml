@@ -1,18 +1,10 @@
-name: "✨ Feature Request"
+name: "Feature Request"
 description: "Suggest a new feature or improvement."
 labels: ["enhancement"]
 body:
   - type: markdown
     attributes:
-      value: "## 🌟 Feature Request\nDescribe your suggestion."
-
-  - type: input
-    id: title
-    attributes:
-      label: "Feature Title"
-      placeholder: "A short and clear name for the feature."
-    validations:
-      required: true
+      value: "## Feature Request\nDescribe your suggestion."
 
   - type: textarea
     id: description

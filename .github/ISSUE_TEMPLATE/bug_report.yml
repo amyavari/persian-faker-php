@@ -1,18 +1,10 @@
-name: "🐛 Bug Report"
+name: "Bug Report"
 description: "Report something that's broken."
 labels: ["bug"]
 body:
   - type: markdown
     attributes:
-      value: "## 🐞 Bug Report\nPlease provide the details below to help us quickly identify and resolve the issue."
-
-  - type: input
-    id: title
-    attributes:
-      label: "Bug Title"
-      placeholder: "A short and clear description of the issue."
-    validations:
-      required: true
+      value: "## Bug Report\nPlease provide the details below to help us quickly identify and resolve the issue."
 
   - type: input
     id: package-version
@@ -48,7 +40,7 @@ body:
       description: "What should have happened?"
       placeholder: "I expected the app to..."
     validations:
-      required: true
+      required: false
 
   - type: textarea
     id: actual
@@ -57,7 +49,7 @@ body:
       description: "What actually happened?"
       placeholder: "Instead, this happened..."
     validations:
-      required: true
+      required: false
 
   - type: textarea
     id: steps

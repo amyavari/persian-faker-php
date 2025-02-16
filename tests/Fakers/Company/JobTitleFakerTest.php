@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Tests\Fakers\Company;
 
+use AliYavari\PersianFaker\Contracts\DataLoaderInterface;
 use AliYavari\PersianFaker\Fakers\Company\JobTitleFaker;
-use AliYavari\PersianFaker\Loaders\DataLoader;
 use Mockery;
 use Tests\TestCase;
 
@@ -19,7 +19,7 @@ class JobTitleFakerTest extends TestCase
     {
         parent::setUp();
 
-        $this->loader = Mockery::mock(DataLoader::class);
+        $this->loader = Mockery::mock(DataLoaderInterface::class);
         $this->loader->shouldReceive('get')->once()->andReturn($this->jobTitles);
     }
 

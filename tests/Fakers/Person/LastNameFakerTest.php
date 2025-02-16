@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace AliYavari\PersianFaker\Fakers\Person;
 
-use AliYavari\PersianFaker\Loaders\DataLoader;
+use AliYavari\PersianFaker\Contracts\DataLoaderInterface;
 use Mockery;
 use PHPUnit\Framework\TestCase;
 
@@ -18,7 +18,7 @@ class LastNameFakerTest extends TestCase
     {
         parent::setUp();
 
-        $this->loader = Mockery::mock(DataLoader::class);
+        $this->loader = Mockery::mock(DataLoaderInterface::class);
         $this->loader->shouldReceive('get')->once()->andReturn($this->lastNames);
     }
 

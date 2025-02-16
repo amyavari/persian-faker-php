@@ -2,13 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Tests\Loaders;
+namespace Tests;
 
+use AliYavari\PersianFaker\DataLoader;
 use AliYavari\PersianFaker\Exceptions\FileNotFoundException;
 use AliYavari\PersianFaker\Exceptions\InvalidDataKeyException;
 use AliYavari\PersianFaker\Exceptions\InvalidDataPathException;
-use AliYavari\PersianFaker\Loaders\DataLoader;
-use Tests\TestCase;
 use TypeError;
 
 class DataLoaderTest extends TestCase
@@ -87,7 +86,7 @@ class DataLoaderTest extends TestCase
     public function test_it_throws_an_exception_with_invalid_file_name(): void
     {
         $fileName = 'wrongFile';
-        $expectedFilePath = dirname(__DIR__, 2).DIRECTORY_SEPARATOR.'src'.DIRECTORY_SEPARATOR.'Data'.DIRECTORY_SEPARATOR.'wrongFile.php';
+        $expectedFilePath = dirname(__DIR__, 1).DIRECTORY_SEPARATOR.'src'.DIRECTORY_SEPARATOR.'Data'.DIRECTORY_SEPARATOR.'wrongFile.php';
 
         $this->expectException(FileNotFoundException::class);
         $this->expectExceptionMessage(sprintf('The file %s is not found.', $expectedFilePath));

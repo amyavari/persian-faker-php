@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Tests\Fakers\Person;
 
+use AliYavari\PersianFaker\Contracts\DataLoaderInterface;
 use AliYavari\PersianFaker\Cores\Arrayable;
 use AliYavari\PersianFaker\Exceptions\InvalidGenderException;
 use AliYavari\PersianFaker\Fakers\Person\FirstNameFaker;
-use AliYavari\PersianFaker\Loaders\DataLoader;
 use Mockery;
 use Tests\TestCase;
 
@@ -26,7 +26,7 @@ class FirstNameFakerTest extends TestCase
     {
         parent::setUp();
 
-        $this->loader = Mockery::mock(DataLoader::class);
+        $this->loader = Mockery::mock(DataLoaderInterface::class);
         $this->loader->shouldReceive('get')->once()->andReturn($this->names);
     }
 

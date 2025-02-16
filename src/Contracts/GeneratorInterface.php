@@ -162,4 +162,70 @@ interface GeneratorInterface
      * @example 'برنامه نویس PHP', 'مدیر محصول'
      */
     public function jobTitle(): string;
+
+    /**
+     * Get a random word
+     *
+     * @example 'آتش', 'خاکستری'
+     */
+    public function word(): string;
+
+    /**
+     * Get random word(s)
+     *
+     * @param  int  $nb  The number of words to be returned.
+     * @param  bool  $asText  Whether the words should be returned as a string (true) or as an array (false).
+     * @return string|array<string> If $nb is equal to 1, or $asText is true, the word(s) are returned as a string.
+     *                              If $nb is greater than 1, and $asText is false, an array of words is returned.
+     *
+     * @example ['خاکستری', 'سریع' , 'دارچین'], 'خاکستری سریع دارچین'
+     */
+    public function words(int $nb = 3, bool $asText = false): string|array;
+
+    /**
+     * Get a random sentence
+     *
+     * @param  int  $nbWords  The number of words to include in the sentence.
+     * @param  bool  $variableNbWords  Whether to allow variability in the number of words per sentence (true) or use a fixed count (false).
+     *
+     * @example 'خاکستری سریع دارچین.'
+     */
+    public function sentence(int $nbWords = 6, bool $variableNbWords = true): string;
+
+    /**
+     * Get random sentence(s)
+     *
+     * @param  int  $nb  The number of sentences to be returned.
+     * @param  bool  $asText  Whether the sentences should be returned as a string (true) or as an array (false).
+     * @return string|array<string> If $nb is equal to 1, or $asText is true, the sentence(s) are returned as a string.
+     *                              If $nb is greater than 1, and $asText is false, an array of sentences is returned.
+     *
+     * @example ['خاکستری سریع دارچین','.یخ در بهشت.'], 'خاکستری سریع دارچین. یخ در بهشت.'
+     */
+    public function sentences(int $nb = 3, bool $asText = false): string|array;
+
+    /**
+     * Get a random paragraph
+     *
+     * @param  int  $nbSentences  The number of sentences to include in the paragraph.
+     * @param  bool  $variableNbSentences  Whether to allow variability in the number of sentences per paragraph (true) or use a fixed count (false).
+     */
+    public function paragraph(int $nbSentences = 3, bool $variableNbSentences = true): string;
+
+    /**
+     * Get random sentence(s)
+     *
+     * @param  int  $nb  The number of paragraphs to be returned.
+     * @param  bool  $asText  Whether the paragraphs should be returned as a string (true) or as an array (false).
+     * @return string|array<string> If $nb is equal to 1, or $asText is true, the paragraph(s) are returned as a string.
+     *                              If $nb is greater than 1, and $asText is false, an array of paragraphs is returned.
+     */
+    public function paragraphs(int $nb = 3, bool $asText = false): string|array;
+
+    /**
+     * Get a random text
+     *
+     * @param  int  $maxNbChars  The maximum number of characters to which the returned text should be limited.
+     */
+    public function text(int $maxNbChars = 200): string;
 }

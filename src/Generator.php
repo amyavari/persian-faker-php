@@ -22,6 +22,10 @@ use AliYavari\PersianFaker\Fakers\Person\TitleFaker;
 use AliYavari\PersianFaker\Fakers\Phone\CellPhoneFaker;
 use AliYavari\PersianFaker\Fakers\Phone\PhoneNumberFaker;
 use AliYavari\PersianFaker\Fakers\Phone\StatePhonePrefixFaker;
+use AliYavari\PersianFaker\Fakers\Text\ParagraphFaker;
+use AliYavari\PersianFaker\Fakers\Text\SentenceFaker;
+use AliYavari\PersianFaker\Fakers\Text\TextFaker;
+use AliYavari\PersianFaker\Fakers\Text\WordFaker;
 
 /**
  * This class includes all final faker methods of this package.
@@ -184,6 +188,73 @@ class Generator implements GeneratorInterface
         $dataLoader = $this->getDataLoaderInstance('company.job_titles');
 
         return $this->exec(new JobTitleFaker($dataLoader));
+    }
+
+    public function word(): string
+    {
+        /** @var \AliYavari\PersianFaker\Contracts\DataLoaderInterface<int, string> */
+        $dataLoader = $this->getDataLoaderInstance('text.words');
+
+        /** @var string */
+        return $this->exec(new WordFaker($dataLoader, nbWords: 1, asText: true));
+    }
+
+    public function words(int $nb = 3, bool $asText = false): string|array
+    {
+        /** @var \AliYavari\PersianFaker\Contracts\DataLoaderInterface<int, string> */
+        $dataLoader = $this->getDataLoaderInstance('text.words');
+
+        return $this->exec(new WordFaker($dataLoader, $nb, $asText));
+    }
+
+    public function sentence(int $nbWords = 6, bool $variableNbWords = true): string
+    {
+        /** @var \AliYavari\PersianFaker\Contracts\DataLoaderInterface<int, string> */
+        $dataLoader = $this->getDataLoaderInstance('text.words');
+
+        $wordFaker = new WordFaker($dataLoader);
+
+        /** @var string */
+        return $this->exec(new SentenceFaker($wordFaker, nbWords: $nbWords, nbSentences: 1, asText: true, variableNbWords: $variableNbWords));
+    }
+
+    public function sentences(int $nb = 3, bool $asText = false): string|array
+    {
+        /** @var \AliYavari\PersianFaker\Contracts\DataLoaderInterface<int, string> */
+        $dataLoader = $this->getDataLoaderInstance('text.words');
+
+        $wordFaker = new WordFaker($dataLoader);
+
+        return $this->exec(new SentenceFaker($wordFaker, nbWords: 6, nbSentences: $nb, asText: $asText, variableNbWords: true));
+    }
+
+    public function paragraph(int $nbSentences = 3, bool $variableNbSentences = true): string
+    {
+        /** @var \AliYavari\PersianFaker\Contracts\DataLoaderInterface<int, string> */
+        $dataLoader = $this->getDataLoaderInstance('text.words');
+
+        $sentenceFaker = new SentenceFaker(new WordFaker($dataLoader));
+
+        /** @var string */
+        return $this->exec(new ParagraphFaker($sentenceFaker, nbSentences: $nbSentences, nbParagraphs: 1, asText: true, variableNbSentences: $variableNbSentences));
+    }
+
+    public function paragraphs(int $nb = 3, bool $asText = false): string|array
+    {
+        /** @var \AliYavari\PersianFaker\Contracts\DataLoaderInterface<int, string> */
+        $dataLoader = $this->getDataLoaderInstance('text.words');
+
+        $sentenceFaker = new SentenceFaker(new WordFaker($dataLoader));
+
+        return $this->exec(new ParagraphFaker($sentenceFaker, nbSentences: 3, nbParagraphs: $nb, asText: $asText, variableNbSentences: true));
+    }
+
+    public function text(int $maxNbChars = 200): string
+    {
+        /** @var \AliYavari\PersianFaker\Contracts\DataLoaderInterface<int, string> */
+        $dataLoader = $this->getDataLoaderInstance('text.words');
+
+        return $this->exec(new TextFaker($dataLoader, $maxNbChars));
     }
 
     // *******************************

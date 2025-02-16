@@ -22,7 +22,6 @@ use AliYavari\PersianFaker\Fakers\Person\TitleFaker;
 use AliYavari\PersianFaker\Fakers\Phone\CellPhoneFaker;
 use AliYavari\PersianFaker\Fakers\Phone\PhoneNumberFaker;
 use AliYavari\PersianFaker\Fakers\Phone\StatePhonePrefixFaker;
-use AliYavari\PersianFaker\Loaders\DataLoaderFactory;
 
 /**
  * This class includes all final faker methods of this package.
@@ -200,8 +199,8 @@ class Generator implements GeneratorInterface
      */
     protected function getDataLoaderInstance(string $dataPath): DataLoaderInterface
     {
-        /** @var \AliYavari\PersianFaker\Contracts\DataLoaderInterface<string, list<TValue>> */
-        return DataLoaderFactory::getInstance($dataPath);
+        /** @var \AliYavari\PersianFaker\DataLoader<string, list<TValue>> */
+        return new DataLoader($dataPath);
     }
 
     /**

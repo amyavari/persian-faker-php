@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace AliYavari\PersianFaker\Loaders;
+namespace AliYavari\PersianFaker;
 
 use AliYavari\PersianFaker\Contracts\DataLoaderInterface;
 use AliYavari\PersianFaker\Exceptions\FileNotFoundException;
@@ -70,7 +70,7 @@ class DataLoader implements DataLoaderInterface
      */
     protected function loadFile(string $fileName)
     {
-        $filePath = dirname(__DIR__).DIRECTORY_SEPARATOR.'Data'.DIRECTORY_SEPARATOR.$fileName.'.php';
+        $filePath = __DIR__.DIRECTORY_SEPARATOR.'Data'.DIRECTORY_SEPARATOR.$fileName.'.php';
 
         if (! file_exists($filePath)) {
             throw new FileNotFoundException(sprintf('The file %s is not found.', $filePath));

@@ -6,8 +6,8 @@ namespace Tests;
 
 use AliYavari\PersianFaker\Contracts\GeneratorInterface;
 use AliYavari\PersianFaker\Cores\Randomable;
+use AliYavari\PersianFaker\DataLoader;
 use AliYavari\PersianFaker\Generator;
-use AliYavari\PersianFaker\Loaders\DataLoader;
 use PHPUnit\Framework\TestCase;
 
 /**

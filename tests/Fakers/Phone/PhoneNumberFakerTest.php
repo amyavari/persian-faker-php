@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Tests\Fakers\Phone;
 
+use AliYavari\PersianFaker\Contracts\DataLoaderInterface;
 use AliYavari\PersianFaker\Cores\Randomable;
 use AliYavari\PersianFaker\Exceptions\InvalidStateNameException;
 use AliYavari\PersianFaker\Fakers\Phone\PhoneNumberFaker;
-use AliYavari\PersianFaker\Loaders\DataLoader;
 use Mockery;
 use Tests\TestCase;
 
@@ -23,7 +23,7 @@ class PhoneNumberFakerTest extends TestCase
     {
         parent::setUp();
 
-        $this->loader = Mockery::mock(DataLoader::class);
+        $this->loader = Mockery::mock(DataLoaderInterface::class);
         $this->loader->shouldReceive('get')->once()->andReturn($this->statePrefixes);
     }
 

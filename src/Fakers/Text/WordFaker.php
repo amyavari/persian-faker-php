@@ -50,7 +50,7 @@ class WordFaker implements FakerInterface
     /**
      * This returns random word(s).
      *
-     * If $nbWords is equal to 1, or $asText is true, a single word is returned as a string.
+     * If $nbWords is equal to 1, or $asText is true, the word(s) are returned as a string.
      * If $nbWords is greater than 1, and $asText is false, an array of words is returned.
      *
      * @return string|list<string>

@@ -43,8 +43,8 @@ class SentenceFaker implements FakerInterface
     /**
      * This returns random sentence(s).
      *
-     * If $nbSentences is equal to 1, or $asText is true, a single word is returned as a string.
-     * If $nbSentences is greater than 1, and $asText is false, an array of words is returned.
+     * If $nbSentences is equal to 1, or $asText is true, the sentence(s) are returned as a string.
+     * If $nbSentences is greater than 1, and $asText is false, an array of sentences is returned.
      *
      * @return string|list<string>
      *
@@ -70,13 +70,13 @@ class SentenceFaker implements FakerInterface
     }
 
     /**
-     * Returns a new instance of this class, configured to return a string
-     * containing $nbSentences sentences, where each sentence contains
-     * a variable number of words specified by $nbWords.
+     * Returns a new instance of this class which is configured
+     * to return a string containing $nbSentences,
+     * where each sentence contains $nbWords, which is allowed to vary.
      */
     public function shouldReturnString(int $nbWords, int $nbSentences): self
     {
-        return new self($this->wordFaker, nbWords: $nbWords, nbSentences: $nbSentences, asText: true);
+        return new self($this->wordFaker, nbWords: $nbWords, nbSentences: $nbSentences, variableNbWords: true, asText: true);
     }
 
     protected function isWordsNumberValid(): bool

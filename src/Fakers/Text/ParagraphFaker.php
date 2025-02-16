@@ -9,7 +9,7 @@ use AliYavari\PersianFaker\Cores\Arrayable;
 use AliYavari\PersianFaker\Exceptions\InvalidElementNumberException;
 
 /**
- * Generates fake sentence(s)
+ * Generates fake paragraphs(s)
  *
  * @implements \AliYavari\PersianFaker\Contracts\FakerInterface<string|list<string>>
  */
@@ -45,7 +45,7 @@ class ParagraphFaker implements FakerInterface
     /**
      * This returns random paragraph(s).
      *
-     * If $nbParagraphs is equal to 1, or $asText is true, paragraph(s) is returned as a string.
+     * If $nbParagraphs is equal to 1, or $asText is true, the paragraph(s) are returned as a string.
      * If $nbParagraphs is greater than 1, and $asText is false, an array of paragraphs is returned.
      *
      * @return string|list<string>

@@ -7,7 +7,7 @@ namespace Tests\Fakers\Text;
 use AliYavari\PersianFaker\Cores\Randomable;
 use AliYavari\PersianFaker\Exceptions\InvalidElementNumberException;
 use AliYavari\PersianFaker\Fakers\Text\SentenceFaker;
-use AliYavari\PersianFaker\Loaders\DataLoader;
+use AliYavari\PersianFaker\Fakers\Text\WordFaker;
 use Mockery;
 use Tests\TestCase;
 
@@ -15,22 +15,20 @@ class SentenceFakerTest extends TestCase
 {
     use Randomable;
 
-    protected $loader;
-
-    protected array $words = ['text', 'a', 'by', 'tree', 'did', 'polish', 'PHP', 'application', 'an'];
+    protected $wordFaker;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->loader = Mockery::mock(DataLoader::class);
+        $this->wordFaker = Mockery::mock(WordFaker::class);
     }
 
     public function test_word_number_validation_passes_when_number_is_in_valid_range(): void
     {
         $number = random_int(1, 100);
 
-        $faker = new SentenceFaker($this->loader, nbWords: $number);
+        $faker = new SentenceFaker($this->wordFaker, nbWords: $number);
         $isValid = $this->callProtectedMethod($faker, 'isWordsNumberValid');
 
         $this->assertTrue($isValid);
@@ -40,7 +38,7 @@ class SentenceFakerTest extends TestCase
     {
         $number = $this->getOneRandomElement([-1, 0, 101]);
 
-        $faker = new SentenceFaker($this->loader, nbWords: $number);
+        $faker = new SentenceFaker($this->wordFaker, nbWords: $number);
         $isValid = $this->callProtectedMethod($faker, 'isWordsNumberValid');
 
         $this->assertFalse($isValid);
@@ -50,7 +48,7 @@ class SentenceFakerTest extends TestCase
     {
         $number = random_int(1, 100);
 
-        $faker = new SentenceFaker($this->loader, nbSentences: $number);
+        $faker = new SentenceFaker($this->wordFaker, nbSentences: $number);
         $isValid = $this->callProtectedMethod($faker, 'isSentencesNumberValid');
 
         $this->assertTrue($isValid);
@@ -60,7 +58,7 @@ class SentenceFakerTest extends TestCase
     {
         $number = $this->getOneRandomElement([-1, 0, 101]);
 
-        $faker = new SentenceFaker($this->loader, nbSentences: $number);
+        $faker = new SentenceFaker($this->wordFaker, nbSentences: $number);
         $isValid = $this->callProtectedMethod($faker, 'isSentencesNumberValid');
 
         $this->assertFalse($isValid);
@@ -68,30 +66,35 @@ class SentenceFakerTest extends TestCase
 
     public function test_it_returns_number_with_variable(): void
     {
-        $faker = new SentenceFaker($this->loader, nbWords: 1);
-        $number = $this->callProtectedMethod($faker, 'getVariableWordsNumber');
-
-        $this->assertIsInt($number);
-        $this->assertEquals(1, $number); // min is 1
-
-        $faker = new SentenceFaker($this->loader, nbWords: 7);
+        $faker = new SentenceFaker($this->wordFaker, nbWords: 7);
         $number = $this->callProtectedMethod($faker, 'getVariableWordsNumber');
 
         $this->assertIsInt($number);
         $this->assertGreaterThanOrEqual(4, $number); // 7-40%
         $this->assertLessThanOrEqual(10, $number); // 7+40%
+    }
 
-        $faker = new SentenceFaker($this->loader, nbWords: 100);
+    public function test_it_returns_min_valid_number_as_variable_number_if_calculated_number_is_less_than_it(): void
+    {
+        $faker = new SentenceFaker($this->wordFaker, nbWords: 0);
         $number = $this->callProtectedMethod($faker, 'getVariableWordsNumber');
 
         $this->assertIsInt($number);
-        $this->assertGreaterThanOrEqual(60, $number); // 100-40%
-        $this->assertLessThanOrEqual(100, $number); // 100+40% and max is 100
+        $this->assertEquals(1, $number); // min is 1
+    }
+
+    public function test_it_returns_max_valid_number_as_variable_number_if_calculated_number_is_greater_than_it(): void
+    {
+        $faker = new SentenceFaker($this->wordFaker, nbWords: 200);
+        $number = $this->callProtectedMethod($faker, 'getVariableWordsNumber');
+
+        $this->assertIsInt($number);
+        $this->assertEquals(100, $number); // max is 100
     }
 
     public function test_it_adds_dot_at_the_end_of_a_sentence(): void
     {
-        $faker = new SentenceFaker($this->loader);
+        $faker = new SentenceFaker($this->wordFaker);
         $sentence = $this->callProtectedMethod($faker, 'addDotAtTheEnd', ['This is a test sentence']);
 
         $this->assertIsString($sentence);
@@ -100,43 +103,57 @@ class SentenceFakerTest extends TestCase
 
     public function test_it_returns_multiple_words_as_sentence(): void
     {
-        $this->loader->shouldReceive('get')->once()->andReturn($this->words);
-
         $number = random_int(1, 9);
 
-        $faker = new SentenceFaker($this->loader);
+        $this->wordFaker->shouldReceive('shouldReturnString')->once()->with($number)->andReturn($this->wordFaker);
+        $this->wordFaker->shouldReceive('generate')->once()->andReturn('This is test sentence');
+
+        $faker = new SentenceFaker($this->wordFaker);
         $sentence = $this->callProtectedMethod($faker, 'getSentence', [$number]);
 
         $this->assertIsString($sentence);
-        $this->assertEquals($number, count(explode(' ', $sentence)));
+        $this->assertEquals('This is test sentence.', $sentence);
         $this->assertEquals('.', substr($sentence, -1));
     }
 
     public function test_it_returns_fake_sentences_with_strict_number_of_words(): void
     {
-        $this->loader->shouldReceive('get')->times(2)->andReturn($this->words);
+        $this->wordFaker->shouldReceive('shouldReturnString')->times(2)->with(50)->andReturn($this->wordFaker);
+        $this->wordFaker->shouldReceive('generate')->times(2)->andReturn('This is test sentence');
 
-        $faker = new SentenceFaker($this->loader, nbWords: 50, nbSentences: 2, variableNbWords: false);
+        $faker = new SentenceFaker($this->wordFaker, nbWords: 50, nbSentences: 2, variableNbWords: false);
         $sentences = $this->callProtectedMethod($faker, 'getRandomSentences');
 
+        $this->assertIsArray($sentences);
         $this->assertEquals(2, count($sentences));
-        $this->assertEquals(50, count(explode(' ', (string) $sentences[0])));
-        $this->assertEquals(50, count(explode(' ', (string) $sentences[1])));
     }
 
     public function test_it_returns_fake_sentence_with_variable_number_of_words(): void
     {
-        $this->loader->shouldReceive('get')->times(2)->andReturn($this->words);
+        /*
+        / Each time shouldReturnString() is called, it should get different number as its argument.
+        */
+        $passedArgs = [];
 
-        $faker = new SentenceFaker($this->loader, nbWords: 50, nbSentences: 2, variableNbWords: true);
+        $this->wordFaker->shouldReceive('shouldReturnString')->times(2)->withArgs(function ($arg) use (&$passedArgs) {
+            $passedArgs[] = $arg;
+
+            return true;
+        })->andReturn($this->wordFaker);
+
+        $this->wordFaker->shouldReceive('generate')->times(2)->andReturn('This is test sentence');
+
+        $faker = new SentenceFaker($this->wordFaker, nbWords: 50, nbSentences: 2, variableNbWords: true);
         $sentences = $this->callProtectedMethod($faker, 'getRandomSentences');
 
-        $this->assertNotEquals(count(explode(' ', (string) $sentences[0])), count(explode(' ', (string) $sentences[1])));
+        $this->assertNotEquals($passedArgs[0], $passedArgs[1]);
+        $this->assertIsArray($sentences);
+        $this->assertEquals(2, count($sentences));
     }
 
     public function test_it_says_output_should_be_text_if_number_equals_to_one(): void
     {
-        $faker = new SentenceFaker($this->loader, nbSentences: 1);
+        $faker = new SentenceFaker($this->wordFaker, nbSentences: 1);
         $shouldBeText = $this->callProtectedMethod($faker, 'shouldBeText');
 
         $this->assertTrue($shouldBeText);
@@ -144,7 +161,7 @@ class SentenceFakerTest extends TestCase
 
     public function test_it_says_output_should_be_text_if_as_text_is_true(): void
     {
-        $faker = new SentenceFaker($this->loader, nbSentences: 3, asText: true);
+        $faker = new SentenceFaker($this->wordFaker, nbSentences: 3, asText: true);
         $shouldBeText = $this->callProtectedMethod($faker, 'shouldBeText');
 
         $this->assertTrue($shouldBeText);
@@ -152,7 +169,7 @@ class SentenceFakerTest extends TestCase
 
     public function test_it_says_output_should_not_be_text_if_as_text_is_false_with_number_greater_than_one(): void
     {
-        $faker = new SentenceFaker($this->loader, nbSentences: 3, asText: false);
+        $faker = new SentenceFaker($this->wordFaker, nbSentences: 3, asText: false);
         $shouldBeText = $this->callProtectedMethod($faker, 'shouldBeText');
 
         $this->assertFalse($shouldBeText);
@@ -160,20 +177,22 @@ class SentenceFakerTest extends TestCase
 
     public function test_it_returns_one_fake_sentence(): void
     {
-        $this->loader->shouldReceive('get')->once()->andReturn($this->words);
+        $this->wordFaker->shouldReceive('shouldReturnString')->once()->andReturn($this->wordFaker);
+        $this->wordFaker->shouldReceive('generate')->once()->andReturn('This is test sentence');
 
-        $faker = new SentenceFaker($this->loader);
+        $faker = new SentenceFaker($this->wordFaker);
         $sentence = $faker->generate();
 
         $this->assertIsString($sentence);
-        $this->assertNotEmpty($sentence);
+        $this->assertEquals('This is test sentence.', $sentence);
     }
 
     public function test_it_returns_fake_sentences_as_an_array(): void
     {
-        $this->loader->shouldReceive('get')->times(4)->andReturn($this->words);
+        $this->wordFaker->shouldReceive('shouldReturnString')->times(4)->andReturn($this->wordFaker);
+        $this->wordFaker->shouldReceive('generate')->times(4)->andReturn('This is test sentence');
 
-        $faker = new SentenceFaker($this->loader, nbSentences: 4);
+        $faker = new SentenceFaker($this->wordFaker, nbSentences: 4);
         $sentences = $faker->generate();
 
         $this->assertIsArray($sentences);
@@ -182,9 +201,10 @@ class SentenceFakerTest extends TestCase
 
     public function test_it_returns_fake_sentences_as_a_string(): void
     {
-        $this->loader->shouldReceive('get')->times(4)->andReturn($this->words);
+        $this->wordFaker->shouldReceive('shouldReturnString')->times(4)->andReturn($this->wordFaker);
+        $this->wordFaker->shouldReceive('generate')->times(4)->andReturn('This is test sentence');
 
-        $faker = new SentenceFaker($this->loader, nbSentences: 4, asText: true);
+        $faker = new SentenceFaker($this->wordFaker, nbSentences: 4, asText: true);
         $sentences = $faker->generate();
 
         $this->assertIsString($sentences);
@@ -196,7 +216,7 @@ class SentenceFakerTest extends TestCase
         $this->expectException(InvalidElementNumberException::class);
         $this->expectExceptionMessage('The number of sentences should be in range 1-100, 0 is given.');
 
-        $faker = new SentenceFaker($this->loader, nbSentences: 0);
+        $faker = new SentenceFaker($this->wordFaker, nbSentences: 0);
         $faker->generate();
     }
 
@@ -205,7 +225,7 @@ class SentenceFakerTest extends TestCase
         $this->expectException(InvalidElementNumberException::class);
         $this->expectExceptionMessage('The number of words should be in range 1-100, 0 is given.');
 
-        $faker = new SentenceFaker($this->loader, nbWords: 0);
+        $faker = new SentenceFaker($this->wordFaker, nbWords: 0);
         $faker->generate();
     }
 }

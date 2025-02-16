@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Tests\Fakers\Text;
 
+use AliYavari\PersianFaker\Contracts\DataLoaderInterface;
 use AliYavari\PersianFaker\Cores\Randomable;
 use AliYavari\PersianFaker\Exceptions\InvalidElementNumberException;
 use AliYavari\PersianFaker\Fakers\Text\WordFaker;
-use AliYavari\PersianFaker\Loaders\DataLoader;
 use Mockery;
 use Tests\TestCase;
 
@@ -23,7 +23,7 @@ class WordFakerTest extends TestCase
     {
         parent::setUp();
 
-        $this->loader = Mockery::mock(DataLoader::class);
+        $this->loader = Mockery::mock(DataLoaderInterface::class);
         $this->loader->shouldReceive('get')->once()->andReturn($this->words);
     }
 
@@ -116,5 +116,18 @@ class WordFakerTest extends TestCase
 
         $faker = new WordFaker($this->loader, nbWords: 0);
         $faker->generate();
+    }
+
+    public function test_it_returns_new_instance_with_configs_to_return_as_string_with_custom_words_number(): void
+    {
+        $faker = new WordFaker($this->loader, nbWords: 2, asText: false);
+        $newFaker = $faker->shouldReturnString(5);
+
+        $this->assertInstanceOf(WordFaker::class, $newFaker);
+
+        $sentence = $newFaker->generate();
+
+        $this->assertIsString($sentence);
+        $this->assertEquals(5, count(explode(' ', $sentence)));
     }
 }

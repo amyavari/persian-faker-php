@@ -13,7 +13,7 @@ use AliYavari\PersianFaker\Exceptions\InvalidElementNumberException;
 /**
  * Generates fake word(s)
  *
- * @implements \AliYavari\PersianFaker\Contracts\FakerInterface<string>
+ * @implements \AliYavari\PersianFaker\Contracts\FakerInterface<string|list<string>>
  */
 class WordFaker implements FakerInterface
 {
@@ -39,8 +39,11 @@ class WordFaker implements FakerInterface
      * @param  int  $nbWords  The number of words to be returned.
      * @param  bool  $asText  Whether the words should be returned as a string (true) or as an array (false).
      */
-    public function __construct(DataLoaderInterface $loader, protected int $nbWords = 1, protected bool $asText = false)
-    {
+    public function __construct(
+        protected DataLoaderInterface $loader,
+        protected int $nbWords = 1,
+        protected bool $asText = false,
+    ) {
         $this->words = $loader->get();
     }
 
@@ -65,6 +68,15 @@ class WordFaker implements FakerInterface
         $words = $this->getWords();
 
         return $this->shouldBeText() ? $this->convertToString($words, $this->separator) : $words;
+    }
+
+    /**
+     * Returns a new instance of this class which is configured
+     * to return a string containing $nbWords.
+     */
+    public function shouldReturnString(int $nbWords): self
+    {
+        return new self($this->loader, nbWords: $nbWords, asText: true);
     }
 
     protected function isNumberValid(): bool

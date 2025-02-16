@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace AliYavari\PersianFaker\Fakers\Text;
 
-use AliYavari\PersianFaker\Contracts\DataLoaderInterface;
 use AliYavari\PersianFaker\Contracts\FakerInterface;
 use AliYavari\PersianFaker\Cores\Arrayable;
 use AliYavari\PersianFaker\Exceptions\InvalidElementNumberException;
@@ -12,9 +11,7 @@ use AliYavari\PersianFaker\Exceptions\InvalidElementNumberException;
 /**
  * Generates fake sentence(s)
  *
- * Note: This faker uses \AliYavari\PersianFaker\Fakers\Text\WordFaker to make sentence.
- *
- * @implements \AliYavari\PersianFaker\Contracts\FakerInterface<string>
+ * @implements \AliYavari\PersianFaker\Contracts\FakerInterface<string|list<string>>
  */
 class SentenceFaker implements FakerInterface
 {
@@ -30,14 +27,13 @@ class SentenceFaker implements FakerInterface
     protected string $separator = ' ';
 
     /**
-     * @param  \AliYavari\PersianFaker\Contracts\DataLoaderInterface<int, string>  $loader
      * @param  int  $nbWords  The number of words to include in each sentence.
      * @param  int  $nbSentences  The number of sentences to be returned.
      * @param  bool  $asText  Whether to return the sentences as a single string (true) or as an array of strings (false).
      * @param  bool  $variableNbWords  Whether to allow variability in the number of words per sentence (true) or use a fixed count (false).
      */
     public function __construct(
-        protected DataLoaderInterface $loader,
+        protected WordFaker $wordFaker,
         protected int $nbWords = 6,
         protected int $nbSentences = 1,
         protected bool $asText = false,
@@ -88,17 +84,17 @@ class SentenceFaker implements FakerInterface
         $min = (int) ($this->nbWords * (1 - $this->variablePercentage));
         $max = (int) ($this->nbWords * (1 + $this->variablePercentage));
 
-        $randomNumber = random_int($min, $max);
+        $wordsNumber = random_int($min, $max);
 
-        if ($randomNumber < $this->minNumber) {
+        if ($wordsNumber < $this->minNumber) {
             return $this->minNumber;
         }
 
-        if ($randomNumber > $this->maxNumber) {
+        if ($wordsNumber > $this->maxNumber) {
             return $this->maxNumber;
         }
 
-        return $randomNumber;
+        return $wordsNumber;
     }
 
     protected function shouldBeText(): bool
@@ -124,10 +120,8 @@ class SentenceFaker implements FakerInterface
 
     protected function getSentence(int $wordsNumber): string
     {
-        $wordsFaker = new WordFaker($this->loader, nbWords: $wordsNumber, asText: true);
-
         /** @var string */
-        $sentence = $wordsFaker->generate();
+        $sentence = $this->wordFaker->shouldReturnString($wordsNumber)->generate();
 
         return $this->addDotAtTheEnd($sentence);
     }

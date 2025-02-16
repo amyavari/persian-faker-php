@@ -69,6 +69,16 @@ class SentenceFaker implements FakerInterface
         return $this->shouldBeText() ? $this->convertToString($sentences, $this->separator) : $sentences;
     }
 
+    /**
+     * Returns a new instance of this class, configured to return a string
+     * containing $nbSentences sentences, where each sentence contains
+     * a variable number of words specified by $nbWords.
+     */
+    public function shouldReturnString(int $nbWords, int $nbSentences): self
+    {
+        return new self($this->wordFaker, nbWords: $nbWords, nbSentences: $nbSentences, asText: true);
+    }
+
     protected function isWordsNumberValid(): bool
     {
         return $this->nbWords >= $this->minNumber && $this->nbWords <= $this->maxNumber;

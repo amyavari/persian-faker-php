@@ -228,4 +228,20 @@ class SentenceFakerTest extends TestCase
         $faker = new SentenceFaker($this->wordFaker, nbWords: 0);
         $faker->generate();
     }
+
+    public function test_it_returns_new_instance_with_configs_to_return_as_string_with_custom_sentences_number_and_variable_words_number(): void
+    {
+        $this->wordFaker->shouldReceive('shouldReturnString')->withArgs(fn ($nbWords) => $nbWords !== 50)->andReturn($this->wordFaker);
+        $this->wordFaker->shouldReceive('generate')->andReturn('This is test sentence');
+
+        $faker = new SentenceFaker($this->wordFaker);
+        $newFaker = $faker->shouldReturnString(50, 2);
+
+        $this->assertInstanceOf(SentenceFaker::class, $newFaker);
+
+        $sentences = $newFaker->generate();
+
+        $this->assertIsString($sentences);
+        $this->assertEquals(2, count(explode('. ', $sentences)));
+    }
 }

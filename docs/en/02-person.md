@@ -8,10 +8,10 @@ Generates a random title. Optionally it's possible to specify the `$gender` para
 echo $persianFaker->title();
 // 'آقای' , 'خانم'
 
-echo $persianFaker->title('male');
+echo $persianFaker->title(gender: 'male');
 // 'آقای'
 
-echo $persianFaker->title('female');
+echo $persianFaker->title(gender: 'female');
 // 'خانم'
 ```
 
@@ -41,10 +41,10 @@ Generates a random full name (first name and last name). Optionally it's possibl
 echo $persianFaker->name();
 // 'علی محمد یاوری', 'عاطفه ایزدی'
 
-echo $persianFaker->name('male');
+echo $persianFaker->name(gender: 'male');
 // 'علی محمد یاوری'
 
-echo $persianFaker->name('female');
+echo $persianFaker->name(gender: 'female');
 // 'عاطفه ایزدی'
 ```
 
@@ -56,10 +56,10 @@ Generates a random first name. Optionally it's possible to specify the `$gender`
 echo $persianFaker->firstName();
 // 'علی محمد', 'عاطفه'
 
-echo $persianFaker->firstName('male');
+echo $persianFaker->firstName(gender: 'male');
 // 'علی محمد'
 
-echo $persianFaker->firstName('female');
+echo $persianFaker->firstName(gender: 'female');
 // 'عاطفه'
 ```
 

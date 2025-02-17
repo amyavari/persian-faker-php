@@ -16,7 +16,7 @@ use AliYavari\PersianFaker\Exceptions\InvalidStateNameException;
  */
 class PhoneNumberFaker implements FakerInterface
 {
-    /** @use \AliYavari\PersianFaker\Cores\Randomable<string, string> */
+    /** @use \AliYavari\PersianFaker\Cores\Randomable<string> */
     use Randomable;
 
     /**

@@ -22,7 +22,7 @@ use AliYavari\PersianFaker\Cores\Randomable;
  */
 abstract class SimplePicker implements FakerInterface
 {
-    /** @use \AliYavari\PersianFaker\Cores\Randomable<TKey, TValue> */
+    /** @use \AliYavari\PersianFaker\Cores\Randomable<TValue> */
     use Randomable;
 
     /**

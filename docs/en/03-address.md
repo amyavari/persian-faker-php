@@ -55,6 +55,6 @@ Generates a random valid postal code in Iran.
 echo $persianFaker->postcode();
 //  '1234567890'
 
-echo $persianFaker->postcode(true);
+echo $persianFaker->postcode(withSeparator: true);
 //  '12345-67890'
 ```

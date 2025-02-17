@@ -8,10 +8,10 @@
 echo $persianFaker->title();
 // 'آقای' , 'خانم'
 
-echo $persianFaker->title('male');
+echo $persianFaker->title(gender: 'male');
 // 'آقای'
 
-echo $persianFaker->title('female');
+echo $persianFaker->title(gender: 'female');
 // 'خانم'
 ```
 
@@ -41,10 +41,10 @@ echo $persianFaker->titleFemale();
 echo $persianFaker->name();
 // 'علی محمد یاوری', 'عاطفه ایزدی'
 
-echo $persianFaker->name('male');
+echo $persianFaker->name(gender: 'male');
 // 'علی محمد یاوری'
 
-echo $persianFaker->name('female');
+echo $persianFaker->name(gender: 'female');
 // 'عاطفه ایزدی'
 ```
 
@@ -56,10 +56,10 @@ echo $persianFaker->name('female');
 echo $persianFaker->firstName();
 // 'علی محمد', 'عاطفه'
 
-echo $persianFaker->firstName('male');
+echo $persianFaker->firstName(gender: 'male');
 // 'علی محمد'
 
-echo $persianFaker->firstName('female');
+echo $persianFaker->firstName(gender: 'female');
 // 'عاطفه'
 ```
 

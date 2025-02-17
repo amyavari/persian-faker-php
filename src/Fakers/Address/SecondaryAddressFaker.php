@@ -15,7 +15,7 @@ use AliYavari\PersianFaker\Cores\Randomable;
  */
 class SecondaryAddressFaker implements FakerInterface
 {
-    /** @use \AliYavari\PersianFaker\Cores\Randomable<int, string>*/
+    /** @use \AliYavari\PersianFaker\Cores\Randomable<string>*/
     use Randomable;
 
     /**

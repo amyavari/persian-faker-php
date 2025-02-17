@@ -11,7 +11,7 @@ echo $persianFaker->word();
 
 ## words
 
-Generates a random array of words. The number of words returned can be specified using the `$nb` parameter (default is 3). Optionally, if `$asText` is set to `true`, a string of words will be returned instead.
+Generates a random array of words. The number of words returned can be specified using the `$nb` parameter (default:`3`). Optionally, if `$asText` is set to `true`, a string of words will be returned instead.
 
 ```php
 echo $persianFaker->words();
@@ -26,7 +26,7 @@ echo $persianFaker->words(nb: 4, asText: true);
 
 ## sentence
 
-Generates a random sentence. The number of words in the sentence can be specified using the `$nbWords` parameter (default is 6). The length of the sentence can either be fixed or allowed to vary slightly (default). To enforce a strict word count, set the `$variableNbWords` parameter to `false`.
+Generates a random sentence. The number of words in the sentence can be specified using the `$nbWords` parameter (default:`6`). The length of the sentence can either be fixed or allowed to vary slightly (default). To enforce a strict word count, set the `$variableNbWords` parameter to `false`.
 
 ```php
 echo $persianFaker->sentence();
@@ -41,7 +41,7 @@ echo $persianFaker->sentence(nbWords: 4, variableNbWords: false);
 
 ## sentences
 
-Generates a random array of sentences. The number of sentences returned can be specified using the `$nb` parameter (default is 3). Optionally, if `$asText` is set to `true`, a string of sentences will be returned instead.
+Generates a random array of sentences. The number of sentences returned can be specified using the `$nb` parameter (default:`3`). Optionally, if `$asText` is set to `true`, a string of sentences will be returned instead.
 
 ```php
 echo $persianFaker->sentences();
@@ -56,7 +56,7 @@ echo $persianFaker->sentences(nb: 2, asText: true);
 
 ## paragraph
 
-Generates a random paragraph. The number of sentences in the paragraph can be specified using the `$nbSentences` parameter (default is 3). The length of the paragraph can either be fixed or allowed to vary slightly (default). To enforce a strict sentence count, set the `$variableNbSentences` parameter to `false`.
+Generates a random paragraph. The number of sentences in the paragraph can be specified using the `$nbSentences` parameter (default:`3`). The length of the paragraph can either be fixed or allowed to vary slightly (default). To enforce a strict sentence count, set the `$variableNbSentences` parameter to `false`.
 
 ```php
 echo $persianFaker->paragraph();
@@ -71,7 +71,7 @@ echo $persianFaker->paragraph(nbSentences: 4, variableNbSentences: false);
 
 ## paragraphs
 
-Generates a random array of paragraphs. The number of paragraphs returned can be specified using the `$nb` parameter (default is 3). Optionally, if `$asText` is set to `true`, a string of paragraphs will be returned instead.
+Generates a random array of paragraphs. The number of paragraphs returned can be specified using the `$nb` parameter (default:`3`). Optionally, if `$asText` is set to `true`, a string of paragraphs will be returned instead.
 
 ```php
 echo $persianFaker->paragraphs();
@@ -98,7 +98,7 @@ echo $persianFaker->paragraphs(nb: 4, asText: true);
 
 ## text
 
-Generates a random text. The maximum number of characters for the returned text can be specified using the `$maxNbChars` parameter (default is 200).
+Generates a random text. The maximum number of characters for the returned text can be specified using the `$maxNbChars` parameter (default:`200`).
 
 ```php
 echo $persianFaker->text();

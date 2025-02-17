@@ -21,13 +21,13 @@ Generates a random phone number in Iran.
 echo $persianFaker->phoneNumber();
 // '03512345678', '02112345678'
 
-echo $persianFaker->phoneNumber($state: 'yazd');
+echo $persianFaker->phoneNumber(state: 'yazd');
 // '03512345678', '03587654321'
 
-echo $persianFaker->phoneNumber($separator: '-');
+echo $persianFaker->phoneNumber(separator: '-');
 // '035-12345678', '021-12345678'
 
-echo $persianFaker->phoneNumber($separator = ' ', $state: 'gilan');
+echo $persianFaker->phoneNumber(separator: ' ', state: 'gilan');
 // '013 12345678', '013 87654321'
 
 
@@ -75,13 +75,13 @@ It accepts `$separator`, which defines the separator between the mobile provider
 echo $persianFaker->cellPhone();
 // '09121234567', '09301234567'
 
-echo $persianFaker->cellPhone($provider: 'mtn');
+echo $persianFaker->cellPhone(provider: 'mtn');
 // '09301234567', '09391234567'
 
-echo $persianFaker->cellPhone($separator: '-');
+echo $persianFaker->cellPhone(separator: '-');
 // '0912-123-4567', '0930-123-4567'
 
-echo $persianFaker->cellPhone($separator = ' ', $provider: 'mci');
+echo $persianFaker->cellPhone(separator: ' ', provider: 'mci');
 // '0912 123 4567', '0990 123 4567'
 
 

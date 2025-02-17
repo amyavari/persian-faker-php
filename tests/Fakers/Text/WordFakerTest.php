@@ -9,6 +9,7 @@ use AliYavari\PersianFaker\Cores\Randomable;
 use AliYavari\PersianFaker\Exceptions\InvalidElementNumberException;
 use AliYavari\PersianFaker\Fakers\Text\WordFaker;
 use Mockery;
+use ReflectionClass;
 use Tests\TestCase;
 
 class WordFakerTest extends TestCase
@@ -125,9 +126,8 @@ class WordFakerTest extends TestCase
 
         $this->assertInstanceOf(WordFaker::class, $newFaker);
 
-        $sentence = $newFaker->generate();
-
-        $this->assertIsString($sentence);
-        $this->assertEquals(5, count(explode(' ', $sentence)));
+        $reflectedWordFaker = new ReflectionClass(WordFaker::class);
+        $this->assertTrue($reflectedWordFaker->getProperty('asText')->getValue($newFaker));
+        $this->assertEquals(5, $reflectedWordFaker->getProperty('nbWords')->getValue($newFaker));
     }
 }

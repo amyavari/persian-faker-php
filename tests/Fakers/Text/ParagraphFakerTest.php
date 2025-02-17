@@ -64,7 +64,7 @@ class ParagraphFakerTest extends TestCase
         $this->assertFalse($isValid);
     }
 
-    public function test_it_returns_number_with_variable(): void
+    public function test_it_returns_number_with_variable_in_correct_range(): void
     {
         $faker = new ParagraphFaker($this->sentenceFaker, nbSentences: 7);
         $number = $this->callProtectedMethod($faker, 'getVariableSentencesNumber');
@@ -72,6 +72,20 @@ class ParagraphFakerTest extends TestCase
         $this->assertIsInt($number);
         $this->assertGreaterThanOrEqual(4, $number); // 7-40%
         $this->assertLessThanOrEqual(10, $number); // 7+40%
+    }
+
+    public function test_it_returns_number_with_variable(): void
+    {
+        $runs = 10;
+        $results = [];
+
+        $faker = new ParagraphFaker($this->sentenceFaker, nbSentences: 50);
+
+        for ($i = 1; $i <= $runs; $i++) {
+            $results[] = $this->callProtectedMethod($faker, 'getVariableSentencesNumber');
+        }
+
+        $this->assertGreaterThan(1, count(array_unique($results)));
     }
 
     public function test_it_returns_min_valid_number_as_variable_number_if_calculated_number_is_less_than_it(): void
@@ -124,22 +138,22 @@ class ParagraphFakerTest extends TestCase
     public function test_it_returns_fake_paragraphs_with_variable_number_of_sentences(): void
     {
         /*
-        / Each time shouldReturnString() is called, it should get different number as its argument.
+        / Each time shouldReturnString() is called, it gets different number as its argument.
         */
         $passedArgs = [];
 
-        $this->sentenceFaker->shouldReceive('shouldReturnString')->times(2)->withArgs(function ($nbWords, $nbSentences) use (&$passedArgs) {
+        $this->sentenceFaker->shouldReceive('shouldReturnString')->times(10)->withArgs(function ($nbWords, $nbSentences) use (&$passedArgs) {
             $passedArgs[] = $nbSentences;
 
             return true;
         })->andReturn($this->sentenceFaker);
 
-        $this->sentenceFaker->shouldReceive('generate')->times(2)->andReturn('This is test sentence');
+        $this->sentenceFaker->shouldReceive('generate')->times(10)->andReturn('This is test sentence');
 
         $faker = new ParagraphFaker($this->sentenceFaker, nbSentences: 50, nbParagraphs: 2, variableNbSentences: true);
         $paragraphs = $this->callProtectedMethod($faker, 'getRandomParagraphs');
 
-        $this->assertNotEquals($passedArgs[0], $passedArgs[1]);
+        $this->assertGreaterThan(1, count(array_unique($passedArgs)));
         $this->assertIsArray($paragraphs);
         $this->assertEquals(2, count($paragraphs));
     }

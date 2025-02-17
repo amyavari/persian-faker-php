@@ -188,7 +188,7 @@ interface GeneratorInterface
      * @param  int  $nbWords  The number of words to include in the sentence.
      * @param  bool  $variableNbWords  Whether to allow variability in the number of words per sentence (true) or use a fixed count (false).
      *
-     * @example 'خاکستری سریع دارچین.'
+     * @example 'نویس اتوبوس برنامه دار.'
      */
     public function sentence(int $nbWords = 6, bool $variableNbWords = true): string;
 

@@ -264,4 +264,121 @@ class GeneratorTest extends TestCase
         $this->assertIsString($jobTitle);
         $this->assertContains($jobTitle, $jobTitles);
     }
+
+    public function test_it_returns_word(): void
+    {
+        $loader = new DataLoader('text.words');
+        $words = $loader->get();
+
+        $word = $this->generator->word();
+
+        $this->assertIsString($word);
+        $this->assertContains($word, $words);
+    }
+
+    public function test_it_returns_words_as_array(): void
+    {
+
+        $words = $this->generator->words(4, false);
+
+        $this->assertIsArray($words);
+        $this->assertEquals(4, count($words));
+    }
+
+    public function test_it_returns_words_as_string(): void
+    {
+        $words = $this->generator->words(4, true);
+
+        $this->assertIsString($words);
+        $this->assertEquals(4, count(explode(' ', $words)));
+    }
+
+    public function test_it_returns_sentence_with_strict_number_of_words(): void
+    {
+
+        $sentence = $this->generator->sentence(50, false);
+
+        $this->assertIsString($sentence);
+        $this->assertEquals(50, count(explode(' ', $sentence)));
+    }
+
+    public function test_it_returns_sentence_with_variable_number_of_words(): void
+    {
+        $runs = 10;
+        $wordNumbers = [];
+
+        for ($i = 1; $i <= $runs; $i++) {
+            $sentence = $this->generator->sentence(50, true);
+
+            $this->assertIsString($sentence);
+
+            $wordNumbers[] = count(explode(' ', $sentence));
+        }
+
+        $this->assertGreaterThan(1, count(array_unique($wordNumbers)));
+    }
+
+    public function test_it_returns_sentences_as_array(): void
+    {
+        $sentences = $this->generator->sentences(4, false);
+
+        $this->assertIsArray($sentences);
+        $this->assertEquals(4, count($sentences));
+    }
+
+    public function test_it_returns_sentences_as_string(): void
+    {
+        $sentences = $this->generator->sentences(4, true);
+
+        $this->assertIsString($sentences);
+        $this->assertEquals(4, count(explode('. ', $sentences)));
+    }
+
+    public function test_it_returns_paragraph_with_strict_number_of_sentences(): void
+    {
+        $paragraph = $this->generator->paragraph(50, false);
+
+        $this->assertIsString($paragraph);
+        $this->assertEquals(50, count(explode('. ', $paragraph)));
+    }
+
+    public function test_it_returns_paragraph_with_variable_number_of_sentences(): void
+    {
+        $runs = 10;
+        $sentenceNumbers = [];
+
+        for ($i = 1; $i <= $runs; $i++) {
+            $paragraph = $this->generator->paragraph(50, true);
+
+            $this->assertIsString($paragraph);
+
+            $sentenceNumbers[] = count(explode('. ', $paragraph));
+        }
+
+        $this->assertGreaterThan(1, count(array_unique($sentenceNumbers)));
+    }
+
+    public function test_it_returns_paragraphs_as_array(): void
+    {
+        $paragraphs = $this->generator->paragraphs(4, false);
+
+        $this->assertIsArray($paragraphs);
+        $this->assertEquals(4, count($paragraphs));
+    }
+
+    public function test_it_returns_paragraphs_as_string(): void
+    {
+        $paragraphs = $this->generator->paragraphs(4, true);
+
+        $this->assertIsString($paragraphs);
+        $this->assertEquals(4, count(explode("\n", $paragraphs)));
+    }
+
+    public function test_it_returns_text(): void
+    {
+        $text = $this->generator->text(300);
+
+        $this->assertIsString($text);
+        $this->assertLessThanOrEqual(300, strlen($text));
+    }
 }

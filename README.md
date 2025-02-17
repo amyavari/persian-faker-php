@@ -97,6 +97,26 @@ jobTitle()      // 'برنامه نویس PHP', 'مدیر محصول'
 
 ---
 
+### Text
+
+To view the complete documentation for the text methods, please refer to [docs/en/06-text.md](./docs/en/06-text.md)
+
+```php
+word()                                                          // 'آتش', 'خاکستری'
+words($nb = 3, $asText = false|true)                            // ['خاکستری', 'سریع' , 'دارچین'], 'خاکستری سریع دارچین'
+
+sentence($nbWords = 6, $variableNbWords = true|false)           // '.نویس اتوبوس برنامه دار.', 'دیجیتال دنیا و بی یخ'
+sentences($nb = 3, $asText = false|true)                        // ['خاکستری سریع دارچین','.یخ در بهشت.'], 'خاکستری سریع دارچین. یخ در بهشت.'
+
+paragraph($nbSentences = 3, $variableNbSentences = true|false)  // 'خاکستری سریع دارچین اما اینجا. یخ در بهشت بها. دیجیتال دنیا و بی یخ..'
+paragraphs($nb = 3, $asText = false|true)
+
+text($maxNbChars = 200)
+// 'ثانیه رنگ هفته ماه ملی پاییز انسان تنظیم تخم‌مرغ بخار نهاد صعود بیعت تند تفکر توانا پناهگاه برنامه سکه برگ'
+```
+
+---
+
 This package utilizes the [nunomaduro/skeleton-php](https://github.com/nunomaduro/skeleton-php) repository as a starting point and for configuration settings.
 
 ---

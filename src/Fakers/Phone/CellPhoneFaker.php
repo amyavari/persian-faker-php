@@ -18,7 +18,7 @@ use AliYavari\PersianFaker\Exceptions\InvalidMobileProviderException;
 class CellPhoneFaker implements FakerInterface
 {
     /**
-     * @use \AliYavari\PersianFaker\Cores\Randomable<int, string>
+     * @use \AliYavari\PersianFaker\Cores\Randomable<string>
      * @use \AliYavari\PersianFaker\Cores\Arrayable<string>
      */
     use Arrayable, Randomable;

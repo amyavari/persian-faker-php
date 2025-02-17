@@ -7,7 +7,6 @@ namespace AliYavari\PersianFaker\Cores;
 /**
  * Trait for retrieving random element(s) from an array.
  *
- * @template TKey of array-key
  * @template TValue
  */
 trait Randomable
@@ -15,7 +14,7 @@ trait Randomable
     /**
      * Retrieves one random element from the provided array.
      *
-     * @param  array<TKey, TValue>  $data
+     * @param  array<TValue>  $data
      * @return TValue
      */
     protected function getOneRandomElement(array $data)
@@ -26,7 +25,7 @@ trait Randomable
     /**
      * Retrieves random elements from the provided array.
      *
-     * @param  array<TKey, TValue>  $data
+     * @param  array<TValue>  $data
      * @param  int  $number  The number of elements to return
      * @return list<TValue>
      */

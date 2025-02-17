@@ -19,7 +19,7 @@ class WordFaker implements FakerInterface
 {
     /**
      * @use \AliYavari\PersianFaker\Cores\Arrayable<string>
-     * @use \AliYavari\PersianFaker\Cores\Randomable<int, string>
+     * @use \AliYavari\PersianFaker\Cores\Randomable<string>
      */
     use Arrayable, Randomable;
 

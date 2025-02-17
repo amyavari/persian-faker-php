@@ -14,7 +14,7 @@ use AliYavari\PersianFaker\Cores\Randomable;
  */
 class PostCodeFaker implements FakerInterface
 {
-    /** @use \AliYavari\PersianFaker\Cores\Randomable<int, int> */
+    /** @use \AliYavari\PersianFaker\Cores\Randomable<int> */
     use Randomable;
 
     public function __construct(protected bool $withSeparator = false) {}

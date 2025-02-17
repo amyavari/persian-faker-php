@@ -74,12 +74,12 @@ class TextFakerTest extends TestCase
         $this->assertFalse($isWithin);
     }
 
-    public function test_it_removes_last_word_in_array(): void
+    public function test_it_removes_extra_words_in_array(): void
     {
-        $words = ['one', 'two', 'three'];
+        $words = ['one', 'two', 'three', 'four', 'five'];
 
-        $faker = new TextFaker($this->loader, maxNbChars: 6); // With space between words
-        $newWords = $this->callProtectedMethod($faker, 'removeExtraWord', [$words]);
+        $faker = new TextFaker($this->loader, maxNbChars: 7); // With space between words
+        $newWords = $this->callProtectedMethod($faker, 'removeExtraWords', [$words]);
 
         $this->assertIsArray($newWords);
         $this->assertEquals(['one', 'two'], $newWords);

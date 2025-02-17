@@ -61,9 +61,8 @@ class TextFaker implements FakerInterface
         $words = $this->getMultipleRandomElements($this->words, $this->getMinNumberOfWords());
 
         while (true) {
-
             if (! $this->isWithinCharLimit($words)) {
-                $words = $this->removeExtraWord($words);
+                $words = $this->removeExtraWords($words);
 
                 break;
             }
@@ -96,10 +95,16 @@ class TextFaker implements FakerInterface
      * @param  list<string>  $words
      * @return list<string>
      */
-    protected function removeExtraWord(array $words): array
+    protected function removeExtraWords(array $words): array
     {
-        array_pop($words);
+        while (true) {
+            if (! $this->isWithinCharLimit($words)) {
+                array_pop($words);
 
-        return $words;
+                continue;
+            }
+
+            return $words;
+        }
     }
 }

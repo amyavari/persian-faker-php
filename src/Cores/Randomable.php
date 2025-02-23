@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace AliYavari\PersianFaker\Cores;
 
+use AliYavari\PersianFaker\Exceptions\InvalidElementNumberException;
+
 /**
- * Trait for retrieving random element(s) from an array.
+ * This trait has methods for retrieving random element(s) from an array.
  *
  * @template TValue
  */
@@ -31,12 +33,17 @@ trait Randomable
      */
     protected function getMultipleRandomElements(array $data, int $number): array
     {
-        $Elements = [];
+        if ($number <= 0) {
+            throw new InvalidElementNumberException(
+                sprintf('The number of returned elements must be 1 or more, %s is given.', $number)
+            );
+        }
+        $elements = [];
 
         for ($i = 1; $i <= $number; $i++) {
-            $Elements[] = $data[array_rand($data)];
+            $elements[] = $data[array_rand($data)];
         }
 
-        return $Elements;
+        return $elements;
     }
 }

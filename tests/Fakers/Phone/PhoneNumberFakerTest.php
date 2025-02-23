@@ -68,7 +68,7 @@ class PhoneNumberFakerTest extends TestCase
         $faker = new PhoneNumberFaker($this->loader, state: $state);
         $statePrefix = $this->callProtectedMethod($faker, 'getStatePrefix');
 
-        $this->assertEquals($statePrefix, $this->statePrefixes[$state]);
+        $this->assertSame($statePrefix, $this->statePrefixes[$state]);
     }
 
     public function test_it_generates_random_eight_digit_number(): void
@@ -76,7 +76,7 @@ class PhoneNumberFakerTest extends TestCase
         $faker = new PhoneNumberFaker($this->loader);
         $number = $this->callProtectedMethod($faker, 'generateRandomPhoneNumber');
 
-        $this->assertEquals(8, strlen((string) $number));
+        $this->assertSame(8, strlen((string) $number));
         $this->assertIsNumeric($number);
     }
 
@@ -87,7 +87,7 @@ class PhoneNumberFakerTest extends TestCase
         $faker = new PhoneNumberFaker($this->loader, separator: $separator);
         $formattedPhone = $this->callProtectedMethod($faker, 'formatPhone', ['021', '12345678']);
 
-        $this->assertEquals('021'.$separator.'12345678', $formattedPhone);
+        $this->assertSame("021{$separator}12345678", $formattedPhone);
     }
 
     public function test_it_returns_fake_phone_number_with_random_prefix(): void
@@ -96,7 +96,8 @@ class PhoneNumberFakerTest extends TestCase
         $phoneNumber = $faker->generate(); // Expected format: 02112345678
 
         $this->assertIsString($phoneNumber);
-        $this->assertEquals(11, strlen($phoneNumber));
+        $this->assertSame(11, strlen($phoneNumber));
+        $this->assertMatchesRegularExpression('/^0\d{10}$/', $phoneNumber);
     }
 
     public function test_it_returns_fake_phone_number_with_specific_separator(): void
@@ -105,7 +106,8 @@ class PhoneNumberFakerTest extends TestCase
         $phoneNumber = $faker->generate(); // Expected format: 021-12345678
 
         $this->assertIsString($phoneNumber);
-        $this->assertEquals(12, strlen($phoneNumber));
+        $this->assertSame(12, strlen($phoneNumber));
+        $this->assertMatchesRegularExpression('/^0\d{2}\-\d{8}$/', $phoneNumber);
     }
 
     public function test_it_returns_fake_phone_number_for_specific_state(): void
@@ -116,8 +118,8 @@ class PhoneNumberFakerTest extends TestCase
         $phoneNumber = $faker->generate(); // Expected format: 02112345678
 
         $this->assertIsString($phoneNumber);
-        $this->assertEquals(11, strlen($phoneNumber));
-        $this->assertEquals(substr($phoneNumber, 0, 3), $this->statePrefixes[$state]);
+        $this->assertSame(11, strlen($phoneNumber));
+        $this->assertSame(substr($phoneNumber, 0, 3), $this->statePrefixes[$state]);
     }
 
     public function test_it_throws_an_exception_with_invalid_state_name(): void

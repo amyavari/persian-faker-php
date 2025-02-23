@@ -94,7 +94,7 @@ class ParagraphFakerTest extends TestCase
         $number = $this->callProtectedMethod($faker, 'getVariableSentencesNumber');
 
         $this->assertIsInt($number);
-        $this->assertEquals(1, $number); // min is 1
+        $this->assertSame(1, $number); // min is 1
     }
 
     public function test_it_returns_max_valid_number_as_variable_number_if_calculated_number_is_greater_than_it(): void
@@ -103,7 +103,7 @@ class ParagraphFakerTest extends TestCase
         $number = $this->callProtectedMethod($faker, 'getVariableSentencesNumber');
 
         $this->assertIsInt($number);
-        $this->assertEquals(100, $number); // max is 100
+        $this->assertSame(100, $number); // max is 100
     }
 
     public function test_it_returns_multiple_sentences_as_paragraph(): void
@@ -118,7 +118,7 @@ class ParagraphFakerTest extends TestCase
         $paragraph = $this->callProtectedMethod($faker, 'getParagraph', [$nbSentences]);
 
         $this->assertIsString($paragraph);
-        $this->assertEquals('This is test sentence. Second sentence.', $paragraph);
+        $this->assertSame('This is test sentence. Second sentence.', $paragraph);
     }
 
     public function test_it_returns_fake_paragraphs_with_strict_number_of_sentences(): void
@@ -132,7 +132,7 @@ class ParagraphFakerTest extends TestCase
         $paragraphs = $this->callProtectedMethod($faker, 'getRandomParagraphs');
 
         $this->assertIsArray($paragraphs);
-        $this->assertEquals(2, count($paragraphs));
+        $this->assertCount(2, $paragraphs);
     }
 
     public function test_it_returns_fake_paragraphs_with_variable_number_of_sentences(): void
@@ -150,12 +150,12 @@ class ParagraphFakerTest extends TestCase
 
         $this->sentenceFaker->shouldReceive('generate')->times(10)->andReturn('This is test sentence');
 
-        $faker = new ParagraphFaker($this->sentenceFaker, nbSentences: 50, nbParagraphs: 2, variableNbSentences: true);
+        $faker = new ParagraphFaker($this->sentenceFaker, nbSentences: 50, nbParagraphs: 10, variableNbSentences: true);
         $paragraphs = $this->callProtectedMethod($faker, 'getRandomParagraphs');
 
         $this->assertGreaterThan(1, count(array_unique($passedArgs)));
         $this->assertIsArray($paragraphs);
-        $this->assertEquals(2, count($paragraphs));
+        $this->assertCount(10, $paragraphs);
     }
 
     public function test_it_says_output_should_be_text_if_number_equals_to_one(): void
@@ -191,7 +191,7 @@ class ParagraphFakerTest extends TestCase
         $paragraph = $faker->generate();
 
         $this->assertIsString($paragraph);
-        $this->assertEquals('This is test sentence. Second sentence.', $paragraph);
+        $this->assertSame('This is test sentence. Second sentence.', $paragraph);
     }
 
     public function test_it_returns_fake_paragraphs_as_an_array(): void
@@ -203,7 +203,7 @@ class ParagraphFakerTest extends TestCase
         $paragraphs = $faker->generate();
 
         $this->assertIsArray($paragraphs);
-        $this->assertEquals(4, count($paragraphs));
+        $this->assertCount(4, $paragraphs);
     }
 
     public function test_it_returns_fake_paragraphs_as_a_string(): void
@@ -215,7 +215,7 @@ class ParagraphFakerTest extends TestCase
         $paragraphs = $faker->generate();
 
         $this->assertIsString($paragraphs);
-        $this->assertEquals(4, count(explode("\n", $paragraphs)));
+        $this->assertCount(4, explode("\n", $paragraphs));
     }
 
     public function test_it_throws_an_exception_if_sentences_number_is_not_between_one_and_100(): void

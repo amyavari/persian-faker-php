@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Cores;
 
 use AliYavari\PersianFaker\Cores\Randomable;
+use AliYavari\PersianFaker\Exceptions\InvalidElementNumberException;
 use PHPUnit\Framework\TestCase;
 
 class RandomableTest extends TestCase
@@ -28,6 +29,21 @@ class RandomableTest extends TestCase
         $randomItems = $this->getMultipleRandomElements($data, 3);
 
         $this->assertIsArray($randomItems);
-        $this->assertEquals(3, count($randomItems));
+        $this->assertCount(3, $randomItems);
+    }
+
+    public function test_it_throws_an_exception_if_number_of_returned_elements_is_less_that_1(): void
+    {
+        $data = ['item_one', 'item_two', 'item_three', 'item_four', 'item_five'];
+
+        $this->expectException(InvalidElementNumberException::class);
+        $this->expectExceptionMessage('The number of returned elements must be 1 or more, 0 is given.');
+
+        $this->getMultipleRandomElements($data, 0);
+
+        $this->expectException(InvalidElementNumberException::class);
+        $this->expectExceptionMessage('The number of returned elements must be 1 or more, -1 is given.');
+
+        $this->getMultipleRandomElements($data, -1);
     }
 }

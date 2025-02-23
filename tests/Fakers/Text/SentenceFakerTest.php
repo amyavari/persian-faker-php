@@ -95,7 +95,7 @@ class SentenceFakerTest extends TestCase
         $number = $this->callProtectedMethod($faker, 'getVariableWordsNumber');
 
         $this->assertIsInt($number);
-        $this->assertEquals(1, $number); // min is 1
+        $this->assertSame(1, $number); // min is 1
     }
 
     public function test_it_returns_max_valid_number_as_variable_number_if_calculated_number_is_greater_than_it(): void
@@ -104,7 +104,7 @@ class SentenceFakerTest extends TestCase
         $number = $this->callProtectedMethod($faker, 'getVariableWordsNumber');
 
         $this->assertIsInt($number);
-        $this->assertEquals(100, $number); // max is 100
+        $this->assertSame(100, $number); // max is 100
     }
 
     public function test_it_adds_dot_at_the_end_of_a_sentence(): void
@@ -113,7 +113,7 @@ class SentenceFakerTest extends TestCase
         $sentence = $this->callProtectedMethod($faker, 'addDotAtTheEnd', ['This is a test sentence']);
 
         $this->assertIsString($sentence);
-        $this->assertEquals('This is a test sentence.', $sentence);
+        $this->assertSame('This is a test sentence.', $sentence);
     }
 
     public function test_it_returns_multiple_words_as_sentence(): void
@@ -127,8 +127,8 @@ class SentenceFakerTest extends TestCase
         $sentence = $this->callProtectedMethod($faker, 'getSentence', [$number]);
 
         $this->assertIsString($sentence);
-        $this->assertEquals('This is test sentence.', $sentence);
-        $this->assertEquals('.', substr($sentence, -1));
+        $this->assertSame('This is test sentence.', $sentence);
+        $this->assertSame('.', substr($sentence, -1));
     }
 
     public function test_it_returns_fake_sentences_with_strict_number_of_words(): void
@@ -140,7 +140,7 @@ class SentenceFakerTest extends TestCase
         $sentences = $this->callProtectedMethod($faker, 'getRandomSentences');
 
         $this->assertIsArray($sentences);
-        $this->assertEquals(2, count($sentences));
+        $this->assertCount(2, $sentences);
     }
 
     public function test_it_returns_fake_sentence_with_variable_number_of_words(): void
@@ -158,12 +158,12 @@ class SentenceFakerTest extends TestCase
 
         $this->wordFaker->shouldReceive('generate')->times(10)->andReturn('This is test sentence');
 
-        $faker = new SentenceFaker($this->wordFaker, nbWords: 50, nbSentences: 2, variableNbWords: true);
+        $faker = new SentenceFaker($this->wordFaker, nbWords: 50, nbSentences: 10, variableNbWords: true);
         $sentences = $this->callProtectedMethod($faker, 'getRandomSentences');
 
         $this->assertGreaterThan(1, count(array_unique($passedArgs)));
         $this->assertIsArray($sentences);
-        $this->assertEquals(2, count($sentences));
+        $this->assertCount(10, $sentences);
     }
 
     public function test_it_says_output_should_be_text_if_number_equals_to_one(): void
@@ -199,7 +199,7 @@ class SentenceFakerTest extends TestCase
         $sentence = $faker->generate();
 
         $this->assertIsString($sentence);
-        $this->assertEquals('This is test sentence.', $sentence);
+        $this->assertSame('This is test sentence.', $sentence);
     }
 
     public function test_it_returns_fake_sentences_as_an_array(): void
@@ -211,7 +211,7 @@ class SentenceFakerTest extends TestCase
         $sentences = $faker->generate();
 
         $this->assertIsArray($sentences);
-        $this->assertEquals(4, count($sentences));
+        $this->assertCount(4, $sentences);
     }
 
     public function test_it_returns_fake_sentences_as_a_string(): void
@@ -223,7 +223,7 @@ class SentenceFakerTest extends TestCase
         $sentences = $faker->generate();
 
         $this->assertIsString($sentences);
-        $this->assertEquals(4, count(explode('. ', $sentences)));
+        $this->assertCount(4, explode('. ', $sentences));
     }
 
     public function test_it_throws_an_exception_if_sentences_number_is_not_between_one_and_100(): void
@@ -257,7 +257,7 @@ class SentenceFakerTest extends TestCase
         $reflectedSentenceFaker = new ReflectionClass(SentenceFaker::class);
         $this->assertTrue($reflectedSentenceFaker->getProperty('variableNbWords')->getValue($newFaker));
         $this->assertTrue($reflectedSentenceFaker->getProperty('asText')->getValue($newFaker));
-        $this->assertEquals(10, $reflectedSentenceFaker->getProperty('nbWords')->getValue($newFaker));
-        $this->assertEquals(2, $reflectedSentenceFaker->getProperty('nbSentences')->getValue($newFaker));
+        $this->assertSame(10, $reflectedSentenceFaker->getProperty('nbWords')->getValue($newFaker));
+        $this->assertSame(2, $reflectedSentenceFaker->getProperty('nbSentences')->getValue($newFaker));
     }
 }

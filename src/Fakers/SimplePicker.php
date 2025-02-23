@@ -10,10 +10,7 @@ use AliYavari\PersianFaker\Cores\Randomable;
 
 /**
  * Returns a randomly selected element from the loaded one-dimensional data array.
- *
- * This method leverages the `Randomable` trait to pick a single random element
- * from the dataset provided by the `DataLoaderInterface`. It ensures consistent
- * and reusable logic for random selection across all child classes.
+ * It ensures consistent and reusable logic for random selection across all child classes.
  *
  * @template TKey of array-key
  * @template TValue

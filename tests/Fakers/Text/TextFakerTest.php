@@ -51,7 +51,7 @@ class TextFakerTest extends TestCase
         $minNumber = $this->callProtectedMethod($faker, 'getMinNumberOfWords');
 
         $this->assertIsInt($minNumber);
-        $this->assertEquals(4, $minNumber); // Considers word and space are 10 chars as max.
+        $this->assertSame(4, $minNumber); // Considers word and space are 10 chars as max.
     }
 
     public function test_it_says_final_text_size_is_within_char_limit_when_total_text_size_of_array_elements_is_less_than_it(): void
@@ -82,7 +82,7 @@ class TextFakerTest extends TestCase
         $newWords = $this->callProtectedMethod($faker, 'removeExtraWords', [$words]);
 
         $this->assertIsArray($newWords);
-        $this->assertEquals(['one', 'two'], $newWords);
+        $this->assertSame(['one', 'two'], $newWords);
     }
 
     public function test_it_returns_fake_text_with_limited_characters(): void

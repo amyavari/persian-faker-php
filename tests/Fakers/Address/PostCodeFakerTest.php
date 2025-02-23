@@ -14,8 +14,9 @@ class PostCodeFakerTest extends TestCase
         $faker = new PostCodeFaker;
         $postCode = $this->callProtectedMethod($faker, 'generateRandomPostCode');
 
-        $this->assertEquals(10, strlen((string) $postCode));
-        $this->assertTrue($this->areDigitsInRange($postCode));
+        $this->assertIsString($postCode);
+        $this->assertSame(10, strlen($postCode));
+        $this->assertMatchesRegularExpression('/^[1-9]{10}$/', $postCode);
     }
 
     public function test_it_adds_separator_to_post_code(): void
@@ -23,7 +24,7 @@ class PostCodeFakerTest extends TestCase
         $faker = new PostCodeFaker;
         $formattedPostCode = $this->callProtectedMethod($faker, 'addSeparator', ['1234567890']);
 
-        $this->assertEquals('12345-67890', $formattedPostCode);
+        $this->assertSame('12345-67890', $formattedPostCode);
     }
 
     public function test_it_returns_post_code_without_separator(): void
@@ -32,7 +33,8 @@ class PostCodeFakerTest extends TestCase
         $postCode = $faker->generate(); // Expected format: 1234567890
 
         $this->assertIsString($postCode);
-        $this->assertEquals(10, strlen($postCode));
+        $this->assertSame(10, strlen($postCode));
+        $this->assertMatchesRegularExpression('/^[1-9]{10}$/', $postCode);
     }
 
     public function test_it_returns_post_code_with_separator(): void
@@ -41,26 +43,7 @@ class PostCodeFakerTest extends TestCase
         $postCode = $faker->generate(); // Expected format: 12345-67890
 
         $this->assertIsString($postCode);
-        $this->assertEquals(11, strlen($postCode));
-    }
-
-    // --------------
-    // Helper methods
-    // --------------
-
-    /**
-     * - Only for safety, valid digits are restricted to the range of 1-9.
-     */
-    protected function areDigitsInRange(string $postCode): bool
-    {
-        $digits = str_split($postCode);
-
-        foreach ($digits as $digit) {
-            if (! in_array((int) $digit, range(1, 9), true)) {
-                return false;
-            }
-        }
-
-        return true;
+        $this->assertSame(11, strlen($postCode));
+        $this->assertMatchesRegularExpression('/^[1-9]{5}\-[1-9]{5}$/', $postCode);
     }
 }

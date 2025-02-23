@@ -3,7 +3,12 @@
 declare(strict_types=1);
 
 /**
- * Data for fake address data like: secondary address, state, city, street name, full address
+ * Provides mock data for address-related fakers, including:
+ * - Secondary address prefixes
+ * - State names
+ * - City names
+ * - Street names
+ * - Full addresses
  */
 
 return [

@@ -37,7 +37,7 @@ class SecondaryAddressFakerTest extends TestCase
         $faker = new SecondaryAddressFaker($this->loader);
         $secondaryAddress = $faker->generate(); // Expected format: floor 12
 
-        [$prefix,$number] = explode(' ', $secondaryAddress);
+        [$prefix, $number] = explode(' ', $secondaryAddress);
 
         $this->assertIsString($secondaryAddress);
         $this->assertContains($prefix, $this->secondaryAddPrefixes);

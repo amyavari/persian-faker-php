@@ -8,14 +8,14 @@ use AliYavari\PersianFaker\Exceptions\InvalidMultiDimensionalArray;
 use AliYavari\PersianFaker\Exceptions\InvalidStringArrayException;
 
 /**
- * Trait with methods for managing and working on arrays
+ * This trait has methods for managing and working on arrays.
  *
  * @template TValue
  */
 trait Arrayable
 {
     /**
-     * This method will flatten one level of a given array
+     * This method will flatten one level of a given array.
      *
      * @param  array<array<TValue>>  $array
      * @return array<TValue>

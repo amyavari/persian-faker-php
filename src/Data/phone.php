@@ -3,7 +3,9 @@
 declare(strict_types=1);
 
 /**
- * Data for fake phone number like: phone number, state phone prefix and cell phone (mobile) number
+ * Provides mock data for phone-related fakers, including:
+ * - State prefixes
+ * - Mobile prefixes
  */
 
 return [

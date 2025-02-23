@@ -115,10 +115,14 @@ text($maxNbChars = 200)
 // 'ثانیه رنگ هفته ماه ملی پاییز انسان تنظیم تخم‌مرغ بخار نهاد صعود بیعت تند تفکر توانا پناهگاه برنامه سکه برگ'
 ```
 
+## Contributing
+
+Thank you for considering contributing to the Persian Faker PHP! The contribution guide can be found in the [CONTRIBUTING.md](CONTRIBUTING.md)
+
+## License
+
+**Persian Faker PHP** was created by **[Ali Mohammad Yavari](https://www.linkedin.com/in/ali-m-yavari/)** under the **[MIT license](https://opensource.org/licenses/MIT)**.
+
 ---
 
 This package utilizes the [nunomaduro/skeleton-php](https://github.com/nunomaduro/skeleton-php) repository as a starting point and for configuration settings.
-
----
-
-**Persian Faker PHP** was created by **[Ali Mohammad Yavari](https://www.linkedin.com/in/ali-m-yavari/)** under the **[MIT license](https://opensource.org/licenses/MIT)**.

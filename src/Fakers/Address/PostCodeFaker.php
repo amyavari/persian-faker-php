@@ -29,11 +29,9 @@ class PostCodeFaker implements FakerInterface
         return $this->withSeparator ? $this->addSeparator($postCode) : $postCode;
     }
 
-    /**
-     * - Only for safety, valid digits are restricted to the range of 1-9.
-     */
     protected function generateRandomPostCode(): string
     {
+        // Only for safety, valid digits are restricted to the range of 1-9.
         $validDigits = range(1, 9);
 
         $digits = $this->getMultipleRandomElements($validDigits, 10);

@@ -3,7 +3,10 @@
 declare(strict_types=1);
 
 /**
- * Data for fake person's title, name, first name, and last name
+ * Provides mock data for person-related fakers, including:
+ * - Person titles
+ * - First names
+ * - Last names
  */
 
 return [

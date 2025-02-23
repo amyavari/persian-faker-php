@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace AliYavari\PersianFaker\Cores;
 
 /**
- * Trait for retrieving random element(s) from an array.
+ * This trait has methods for retrieving random element(s) from an array.
  *
  * @template TValue
  */

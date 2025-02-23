@@ -3,8 +3,10 @@
 declare(strict_types=1);
 
 /**
- * Data to generate random words, sentences and paragraphs
+ * Provides mock data for text and paragraph-related fakers, including:
+ * - Persian words
  */
+
 return [
     'words' => [
         'خانه', 'کتاب', 'درخت', 'خورشید', 'ماه', 'زمین', 'آسمان', 'دریا', 'کوه', 'رودخانه',

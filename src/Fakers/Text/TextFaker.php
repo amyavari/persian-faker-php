@@ -23,13 +23,13 @@ class TextFaker implements FakerInterface
      */
     use Arrayable, Randomable;
 
-    protected int $maxNumber = 1000;
+    protected const MAX_NUMBER = 1000;
 
-    protected int $minNumber = 10;
+    protected const MIN_NUMBER = 10;
 
-    protected string $separator = ' ';
+    protected const SEPARATOR = ' ';
 
-    protected int $wordLenForMinCalc = 10;
+    protected const WORD_LEN_FOR_MIN_CALC = 10;
 
     /**
      * @var list<string>
@@ -54,7 +54,7 @@ class TextFaker implements FakerInterface
     {
         if (! $this->isCharsNumberValid()) {
             throw new InvalidElementNumberException(
-                sprintf('The number of chars should be in range %s-%s, %s is given.', $this->minNumber, $this->maxNumber, $this->maxNbChars)
+                sprintf('The number of chars should be in range %s-%s, %s is given.', self::MIN_NUMBER, self::MAX_NUMBER, $this->maxNbChars)
             );
         }
 
@@ -70,17 +70,17 @@ class TextFaker implements FakerInterface
             $words[] = $this->getOneRandomElement($this->words);
         }
 
-        return $this->convertToString($words, $this->separator);
+        return $this->convertToString($words, self::SEPARATOR);
     }
 
     protected function isCharsNumberValid(): bool
     {
-        return $this->maxNbChars >= $this->minNumber && $this->maxNbChars <= $this->maxNumber;
+        return $this->maxNbChars >= self::MIN_NUMBER && $this->maxNbChars <= self::MAX_NUMBER;
     }
 
     protected function getMinNumberOfWords(): int
     {
-        return (int) ($this->maxNbChars / $this->wordLenForMinCalc);
+        return (int) ($this->maxNbChars / self::WORD_LEN_FOR_MIN_CALC);
     }
 
     /**
@@ -88,7 +88,7 @@ class TextFaker implements FakerInterface
      */
     protected function isWithinCharLimit(array $words): bool
     {
-        return strlen($this->convertToString($words, $this->separator)) <= $this->maxNbChars;
+        return strlen($this->convertToString($words, self::SEPARATOR)) <= $this->maxNbChars;
     }
 
     /**

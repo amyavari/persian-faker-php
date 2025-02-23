@@ -74,7 +74,7 @@ class DataLoaderTest extends TestCase
 
     public function test_it_loads_file_inside_data_directory(): void
     {
-        // This test needs corresponded test.php file in ./src/Data directory
+        // This test needs corresponded test.php file in ./src/data directory
         $fileName = 'test';
 
         $loader = new DataLoader('');
@@ -86,7 +86,7 @@ class DataLoaderTest extends TestCase
     public function test_it_throws_an_exception_with_invalid_file_name(): void
     {
         $fileName = 'wrongFile';
-        $expectedFilePath = dirname(__DIR__, 1).DIRECTORY_SEPARATOR.'src'.DIRECTORY_SEPARATOR.'Data'.DIRECTORY_SEPARATOR.'wrongFile.php';
+        $expectedFilePath = dirname(__DIR__, 1).DIRECTORY_SEPARATOR.'src'.DIRECTORY_SEPARATOR.'data'.DIRECTORY_SEPARATOR.'wrongFile.php';
 
         $this->expectException(FileNotFoundException::class);
         $this->expectExceptionMessage(sprintf('The file %s is not found.', $expectedFilePath));
@@ -121,7 +121,7 @@ class DataLoaderTest extends TestCase
 
     public function test_it_returns_data_from_correct_file_name_and_keys(): void
     {
-        // This test needs corresponded test.php file in ./src/Data directory
+        // This test needs corresponded test.php file in ./src/data directory
         $path = 'test.first_key.second_key';
 
         $loader = new DataLoader($path);

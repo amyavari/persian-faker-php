@@ -18,15 +18,15 @@ class ParagraphFaker implements FakerInterface
     /** @use \AliYavari\PersianFaker\Cores\Arrayable<string> */
     use Arrayable;
 
-    protected float $variablePercentage = 0.4;
+    protected const VARIABLE_PERCENTAGE = 0.4;
 
-    protected int $maxNumber = 100;
+    protected const MAX_NUMBER = 100;
 
-    protected int $minNumber = 1;
+    protected const MIN_NUMBER = 1;
 
-    protected string $separator = "\n";
+    protected const SEPARATOR = "\n";
 
-    protected int $nbWords = 6;
+    protected const NB_WORDS = 6;
 
     /**
      * @param  int  $nbSentences  The number of sentences to include in each paragraph.
@@ -56,44 +56,44 @@ class ParagraphFaker implements FakerInterface
     {
         if (! $this->isSentencesNumberValid()) {
             throw new InvalidElementNumberException(
-                sprintf('The number of sentences should be in range %s-%s, %s is given.', $this->minNumber, $this->maxNumber, $this->nbSentences)
+                sprintf('The number of sentences should be in range %s-%s, %s is given.', self::MIN_NUMBER, self::MAX_NUMBER, $this->nbSentences)
             );
         }
 
         if (! $this->isParagraphsNumberValid()) {
             throw new InvalidElementNumberException(
-                sprintf('The number of paragraphs should be in range %s-%s, %s is given.', $this->minNumber, $this->maxNumber, $this->nbParagraphs)
+                sprintf('The number of paragraphs should be in range %s-%s, %s is given.', self::MIN_NUMBER, self::MAX_NUMBER, $this->nbParagraphs)
             );
         }
 
         $paragraphs = $this->getRandomParagraphs();
 
-        return $this->shouldBeText() ? $this->convertToString($paragraphs, $this->separator) : $paragraphs;
+        return $this->shouldBeText() ? $this->convertToString($paragraphs, self::SEPARATOR) : $paragraphs;
     }
 
     protected function isSentencesNumberValid(): bool
     {
-        return $this->nbSentences >= $this->minNumber && $this->nbSentences <= $this->maxNumber;
+        return $this->nbSentences >= self::MIN_NUMBER && $this->nbSentences <= self::MAX_NUMBER;
     }
 
     protected function isParagraphsNumberValid(): bool
     {
-        return $this->nbParagraphs >= $this->minNumber && $this->nbParagraphs <= $this->maxNumber;
+        return $this->nbParagraphs >= self::MIN_NUMBER && $this->nbParagraphs <= self::MAX_NUMBER;
     }
 
     protected function getVariableSentencesNumber(): int
     {
-        $min = (int) ($this->nbSentences * (1 - $this->variablePercentage));
-        $max = (int) ($this->nbSentences * (1 + $this->variablePercentage));
+        $min = (int) ($this->nbSentences * (1 - self::VARIABLE_PERCENTAGE));
+        $max = (int) ($this->nbSentences * (1 + self::VARIABLE_PERCENTAGE));
 
         $sentencesNumber = random_int($min, $max);
 
-        if ($sentencesNumber < $this->minNumber) {
-            return $this->minNumber;
+        if ($sentencesNumber < self::MIN_NUMBER) {
+            return self::MIN_NUMBER;
         }
 
-        if ($sentencesNumber > $this->maxNumber) {
-            return $this->maxNumber;
+        if ($sentencesNumber > self::MAX_NUMBER) {
+            return self::MAX_NUMBER;
         }
 
         return $sentencesNumber;
@@ -123,6 +123,6 @@ class ParagraphFaker implements FakerInterface
     protected function getParagraph(int $sentencesNumber): string
     {
         /** @var string */
-        return $this->sentenceFaker->shouldReturnString($this->nbWords, $sentencesNumber)->generate();
+        return $this->sentenceFaker->shouldReturnString(self::NB_WORDS, $sentencesNumber)->generate();
     }
 }

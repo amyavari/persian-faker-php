@@ -31,12 +31,12 @@ trait Randomable
      */
     protected function getMultipleRandomElements(array $data, int $number): array
     {
-        $Elements = [];
+        $elements = [];
 
         for ($i = 1; $i <= $number; $i++) {
-            $Elements[] = $data[array_rand($data)];
+            $elements[] = $data[array_rand($data)];
         }
 
-        return $Elements;
+        return $elements;
     }
 }

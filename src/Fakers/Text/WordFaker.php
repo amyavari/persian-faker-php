@@ -28,11 +28,11 @@ class WordFaker implements FakerInterface
      */
     protected array $words;
 
-    protected int $maxNumber = 100;
+    protected const MAX_NUMBER = 100;
 
-    protected int $minNumber = 1;
+    protected const MIN_NUMBER = 1;
 
-    protected string $separator = ' ';
+    protected const SEPARATOR = ' ';
 
     /**
      * @param  \AliYavari\PersianFaker\Contracts\DataLoaderInterface<int, string>  $loader
@@ -61,13 +61,13 @@ class WordFaker implements FakerInterface
     {
         if (! $this->isNumberValid()) {
             throw new InvalidElementNumberException(
-                sprintf('The number should be in range %s-%s, %s is given.', $this->minNumber, $this->maxNumber, $this->nbWords)
+                sprintf('The number should be in range %s-%s, %s is given.', self::MIN_NUMBER, self::MAX_NUMBER, $this->nbWords)
             );
         }
 
         $words = $this->getWords();
 
-        return $this->shouldBeText() ? $this->convertToString($words, $this->separator) : $words;
+        return $this->shouldBeText() ? $this->convertToString($words, self::SEPARATOR) : $words;
     }
 
     /**
@@ -81,7 +81,7 @@ class WordFaker implements FakerInterface
 
     protected function isNumberValid(): bool
     {
-        return $this->nbWords >= $this->minNumber && $this->nbWords <= $this->maxNumber;
+        return $this->nbWords >= self::MIN_NUMBER && $this->nbWords <= self::MAX_NUMBER;
     }
 
     /**

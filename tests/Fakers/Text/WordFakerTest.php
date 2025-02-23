@@ -36,7 +36,7 @@ class WordFakerTest extends TestCase
         $words = $this->callProtectedMethod($faker, 'getWords');
 
         $this->assertIsArray($words);
-        $this->assertEquals($number, count($words));
+        $this->assertCount($number, $words);
     }
 
     public function test_it_says_output_should_be_text_if_number_equals_to_one(): void
@@ -98,7 +98,7 @@ class WordFakerTest extends TestCase
         $words = $faker->generate();
 
         $this->assertIsArray($words);
-        $this->assertEquals(3, count($words));
+        $this->assertCount(3, $words);
     }
 
     public function test_it_returns_fake_words_as_sentence(): void
@@ -107,7 +107,7 @@ class WordFakerTest extends TestCase
         $words = $faker->generate();
 
         $this->assertIsString($words);
-        $this->assertEquals(3, count(explode(' ', $words)));
+        $this->assertCount(3, explode(' ', $words));
     }
 
     public function test_it_throws_an_exception_if_number_is_not_between_one_and_100(): void
@@ -128,6 +128,6 @@ class WordFakerTest extends TestCase
 
         $reflectedWordFaker = new ReflectionClass(WordFaker::class);
         $this->assertTrue($reflectedWordFaker->getProperty('asText')->getValue($newFaker));
-        $this->assertEquals(5, $reflectedWordFaker->getProperty('nbWords')->getValue($newFaker));
+        $this->assertSame(5, $reflectedWordFaker->getProperty('nbWords')->getValue($newFaker));
     }
 }

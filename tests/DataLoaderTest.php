@@ -102,7 +102,7 @@ class DataLoaderTest extends TestCase
         $loader = new DataLoader($path);
         $fileNameAndKeys = $this->callProtectedMethod($loader, 'getFileNameAndKeys');
 
-        $this->assertEquals([
+        $this->assertSame([
             'file_name' => 'fileName',
             'keys' => ['first_key', 'second_key'],
         ], $fileNameAndKeys);
@@ -127,7 +127,7 @@ class DataLoaderTest extends TestCase
         $loader = new DataLoader($path);
         $content = $loader->get();
 
-        $this->assertEquals([
+        $this->assertSame([
             'key' => 'value',
         ], $content);
     }

@@ -82,7 +82,7 @@ class CellPhoneFakerTest extends TestCase
         $faker = new CellPhoneFaker($this->loader);
         $number = $this->callProtectedMethod($faker, 'generateRandomCellPhone');
 
-        $this->assertEquals(7, strlen((string) $number));
+        $this->assertSame(7, strlen((string) $number));
         $this->assertIsNumeric($number);
     }
 
@@ -93,7 +93,7 @@ class CellPhoneFakerTest extends TestCase
         $faker = new CellPhoneFaker($this->loader, separator: $separator);
         $formattedNumber = $this->callProtectedMethod($faker, 'formatPhone', ['0912', '1234567']);
 
-        $this->assertEquals('0912'.$separator.'123'.$separator.'4567', $formattedNumber);
+        $this->assertSame("0912{$separator}123{$separator}4567", $formattedNumber);
     }
 
     public function test_it_returns_fake_cell_phone_with_random_prefix(): void
@@ -102,7 +102,8 @@ class CellPhoneFakerTest extends TestCase
         $phone = $faker->generate(); // Expected format: 09121234567
 
         $this->assertIsString($phone);
-        $this->assertEquals(11, strlen($phone));
+        $this->assertSame(11, strlen($phone));
+        $this->assertMatchesRegularExpression('/^09\d{9}$/', $phone);
     }
 
     public function test_it_returns_fake_cell_phone_with_specific_separator(): void
@@ -111,7 +112,8 @@ class CellPhoneFakerTest extends TestCase
         $phone = $faker->generate(); // Expected format: 0912-123-4567
 
         $this->assertIsString($phone);
-        $this->assertEquals(13, strlen($phone));
+        $this->assertSame(13, strlen($phone));
+        $this->assertMatchesRegularExpression('/^09\d{2}\-\d{3}\-\d{4}$/', $phone);
     }
 
     public function test_it_returns_fake_cell_phone_for_specific_mobile_operator(): void
@@ -122,7 +124,7 @@ class CellPhoneFakerTest extends TestCase
         $phone = $faker->generate(); // Expected format: 09121234567
 
         $this->assertIsString($phone);
-        $this->assertEquals(11, strlen($phone));
+        $this->assertSame(11, strlen($phone));
         $this->assertContains(substr($phone, 0, 4), $this->phonePrefixes[$phoneProvider]);
     }
 

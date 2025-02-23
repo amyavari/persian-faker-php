@@ -28,6 +28,6 @@ class RandomableTest extends TestCase
         $randomItems = $this->getMultipleRandomElements($data, 3);
 
         $this->assertIsArray($randomItems);
-        $this->assertEquals(3, count($randomItems));
+        $this->assertCount(3, $randomItems);
     }
 }

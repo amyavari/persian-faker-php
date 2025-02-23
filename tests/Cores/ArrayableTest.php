@@ -25,7 +25,7 @@ class ArrayableTest extends TestCase
 
         $expected = ['array_one', 'array_two', true, false, 123, 'nested_key' => 'value'];
 
-        $this->assertEquals($expected, $this->flatten($arr));
+        $this->assertSame($expected, $this->flatten($arr));
     }
 
     public function test_flatten_throws_an_exception_if_input_is_not_one_dimensional_array(): void
@@ -53,7 +53,7 @@ class ArrayableTest extends TestCase
         $output = $this->convertToString($arr);
 
         $this->assertIsString($output);
-        $this->assertEquals('first text second With Number 2', $output);
+        $this->assertSame('first text second With Number 2', $output);
     }
 
     public function test_it_turns_an_array_of_string_to_one_string_with_custom_separator(): void
@@ -67,7 +67,7 @@ class ArrayableTest extends TestCase
         $output = $this->convertToString($arr, '-');
 
         $this->assertIsString($output);
-        $this->assertEquals('first text-second-With Number 2', $output);
+        $this->assertSame('first text-second-With Number 2', $output);
     }
 
     public function test_to_string_throws_an_exception_if_elements_of_input_array_are_not_string(): void

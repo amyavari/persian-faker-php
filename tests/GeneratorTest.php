@@ -184,9 +184,9 @@ class GeneratorTest extends TestCase
         $this->assertIsString($postCode);
 
         if ($withSeparator) {
-            $this->assertEquals(11, strlen($postCode));
+            $this->assertSame(11, strlen($postCode));
         } else {
-            $this->assertEquals(10, strlen($postCode));
+            $this->assertSame(10, strlen($postCode));
 
         }
     }
@@ -213,8 +213,8 @@ class GeneratorTest extends TestCase
         $phoneNumber = $this->generator->phoneNumber($separator, $state);
 
         $this->assertIsString($phoneNumber);
-        $this->assertEquals(substr($phoneNumber, 0, 3), $statePrefixes[$state]);
-        $this->assertEquals(3, strpos($phoneNumber, (string) $separator));
+        $this->assertSame(substr($phoneNumber, 0, 3), $statePrefixes[$state]);
+        $this->assertSame(3, strpos($phoneNumber, (string) $separator));
     }
 
     public function test_it_returns_cell_phone_number(): void
@@ -229,7 +229,7 @@ class GeneratorTest extends TestCase
 
         $this->assertIsString($cellPhoneNumber);
         $this->assertContains(substr($cellPhoneNumber, 0, 4), $mobilePrefixes[$mobileProvider]);
-        $this->assertEquals(4, strpos($cellPhoneNumber, (string) $separator));
+        $this->assertSame(4, strpos($cellPhoneNumber, (string) $separator));
     }
 
     public function test_it_returns_company_name(): void
@@ -282,7 +282,7 @@ class GeneratorTest extends TestCase
         $words = $this->generator->words(4, false);
 
         $this->assertIsArray($words);
-        $this->assertEquals(4, count($words));
+        $this->assertCount(4, $words);
     }
 
     public function test_it_returns_words_as_string(): void
@@ -290,7 +290,7 @@ class GeneratorTest extends TestCase
         $words = $this->generator->words(4, true);
 
         $this->assertIsString($words);
-        $this->assertEquals(4, count(explode(' ', $words)));
+        $this->assertCount(4, explode(' ', $words));
     }
 
     public function test_it_returns_sentence_with_strict_number_of_words(): void
@@ -299,7 +299,7 @@ class GeneratorTest extends TestCase
         $sentence = $this->generator->sentence(50, false);
 
         $this->assertIsString($sentence);
-        $this->assertEquals(50, count(explode(' ', $sentence)));
+        $this->assertCount(50, explode(' ', $sentence));
     }
 
     public function test_it_returns_sentence_with_variable_number_of_words(): void
@@ -323,7 +323,7 @@ class GeneratorTest extends TestCase
         $sentences = $this->generator->sentences(4, false);
 
         $this->assertIsArray($sentences);
-        $this->assertEquals(4, count($sentences));
+        $this->assertCount(4, $sentences);
     }
 
     public function test_it_returns_sentences_as_string(): void
@@ -331,7 +331,7 @@ class GeneratorTest extends TestCase
         $sentences = $this->generator->sentences(4, true);
 
         $this->assertIsString($sentences);
-        $this->assertEquals(4, count(explode('. ', $sentences)));
+        $this->assertCount(4, explode('. ', $sentences));
     }
 
     public function test_it_returns_paragraph_with_strict_number_of_sentences(): void
@@ -339,7 +339,7 @@ class GeneratorTest extends TestCase
         $paragraph = $this->generator->paragraph(50, false);
 
         $this->assertIsString($paragraph);
-        $this->assertEquals(50, count(explode('. ', $paragraph)));
+        $this->assertCount(50, explode('. ', $paragraph));
     }
 
     public function test_it_returns_paragraph_with_variable_number_of_sentences(): void
@@ -363,7 +363,7 @@ class GeneratorTest extends TestCase
         $paragraphs = $this->generator->paragraphs(4, false);
 
         $this->assertIsArray($paragraphs);
-        $this->assertEquals(4, count($paragraphs));
+        $this->assertCount(4, $paragraphs);
     }
 
     public function test_it_returns_paragraphs_as_string(): void
@@ -371,7 +371,7 @@ class GeneratorTest extends TestCase
         $paragraphs = $this->generator->paragraphs(4, true);
 
         $this->assertIsString($paragraphs);
-        $this->assertEquals(4, count(explode("\n", $paragraphs)));
+        $this->assertCount(4, explode("\n", $paragraphs));
     }
 
     public function test_it_returns_text(): void

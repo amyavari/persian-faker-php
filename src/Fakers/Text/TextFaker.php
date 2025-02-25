@@ -88,7 +88,7 @@ class TextFaker implements FakerInterface
      */
     protected function isWithinCharLimit(array $words): bool
     {
-        return strlen($this->convertToString($words, self::SEPARATOR)) <= $this->maxNbChars;
+        return mb_strlen($this->convertToString($words, self::SEPARATOR)) <= $this->maxNbChars;
     }
 
     /**

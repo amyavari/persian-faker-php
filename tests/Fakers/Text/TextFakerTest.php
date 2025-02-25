@@ -22,7 +22,7 @@ class TextFakerTest extends TestCase
         parent::setUp();
 
         $this->loader = Mockery::mock(DataLoaderInterface::class);
-        $this->loader->shouldReceive('get')->andReturn(['test', 'test', 'test', 'test']);
+        $this->loader->shouldReceive('get')->andReturn(['تست', 'تست', 'تست', 'تست']);
     }
 
     public function test_chars_number_validation_passes_when_the_number_is_in_valid_range(): void
@@ -56,9 +56,9 @@ class TextFakerTest extends TestCase
 
     public function test_it_says_final_text_size_is_within_char_limit_when_total_text_size_of_array_elements_is_less_than_it(): void
     {
-        $words = ['one', 'two'];
+        $words = ['یک', 'دو'];
 
-        $faker = new TextFaker($this->loader, maxNbChars: 7); // With space between words
+        $faker = new TextFaker($this->loader, maxNbChars: 5); // With space between words
         $isWithin = $this->callProtectedMethod($faker, 'isWithinCharLimit', [$words]);
 
         $this->assertTrue($isWithin);
@@ -66,9 +66,9 @@ class TextFakerTest extends TestCase
 
     public function test_it_says_final_text_size_is_not_within_char_limit_when_total_text_size_of_array_elements_is_greater_than_it(): void
     {
-        $words = ['one', 'two'];
+        $words = ['یک', 'دو'];
 
-        $faker = new TextFaker($this->loader, maxNbChars: 6); // With space between words
+        $faker = new TextFaker($this->loader, maxNbChars: 4); // With space between words
         $isWithin = $this->callProtectedMethod($faker, 'isWithinCharLimit', [$words]);
 
         $this->assertFalse($isWithin);
@@ -76,13 +76,13 @@ class TextFakerTest extends TestCase
 
     public function test_it_removes_extra_words_in_array(): void
     {
-        $words = ['one', 'two', 'three', 'four', 'five'];
+        $words = ['یک', 'دو', 'سه', 'چهار', 'پنج'];
 
-        $faker = new TextFaker($this->loader, maxNbChars: 7); // With space between words
+        $faker = new TextFaker($this->loader, maxNbChars: 5); // With space between words
         $newWords = $this->callProtectedMethod($faker, 'removeExtraWords', [$words]);
 
         $this->assertIsArray($newWords);
-        $this->assertSame(['one', 'two'], $newWords);
+        $this->assertSame(['یک', 'دو'], $newWords);
     }
 
     public function test_it_returns_fake_text_with_limited_characters(): void
@@ -93,8 +93,8 @@ class TextFakerTest extends TestCase
         $text = $faker->generate();
 
         $this->assertIsString($text);
-        $this->assertLessThanOrEqual($number, strlen($text));
-        $this->assertGreaterThan($number - strlen(' test'), strlen($text));
+        $this->assertLessThanOrEqual($number, mb_strlen($text));
+        $this->assertGreaterThan($number - mb_strlen(' تست'), mb_strlen($text));
     }
 
     public function test_it_throws_an_exception_if_char_number_is_not_between_10_and_1000(): void

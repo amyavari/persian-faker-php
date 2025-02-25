@@ -379,6 +379,6 @@ class GeneratorTest extends TestCase
         $text = $this->generator->text(300);
 
         $this->assertIsString($text);
-        $this->assertLessThanOrEqual(300, strlen($text));
+        $this->assertLessThanOrEqual(300, mb_strlen($text));
     }
 }

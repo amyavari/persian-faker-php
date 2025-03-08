@@ -18,6 +18,7 @@ use AliYavari\PersianFaker\Fakers\Company\CompanyNameFaker;
 use AliYavari\PersianFaker\Fakers\Company\JobTitleFaker;
 use AliYavari\PersianFaker\Fakers\Person\FirstNameFaker;
 use AliYavari\PersianFaker\Fakers\Person\LastNameFaker;
+use AliYavari\PersianFaker\Fakers\Person\NationalCodeFaker;
 use AliYavari\PersianFaker\Fakers\Person\TitleFaker;
 use AliYavari\PersianFaker\Fakers\Phone\CellPhoneFaker;
 use AliYavari\PersianFaker\Fakers\Phone\PhoneNumberFaker;
@@ -95,6 +96,14 @@ class Generator implements GeneratorInterface
     public function name(?string $gender = null): string
     {
         return sprintf('%s %s', $this->firstName($gender), $this->lastName());
+    }
+
+    public function nationalCode(?string $state = null): string
+    {
+        /** @var \AliYavari\PersianFaker\Contracts\DataLoaderInterface<string, list<string>> */
+        $dataLoader = $this->getDataLoaderInstance('person.national_code_state_prefixes');
+
+        return $this->exec(new NationalCodeFaker($dataLoader, $state));
     }
 
     public function secondaryAddress(): string

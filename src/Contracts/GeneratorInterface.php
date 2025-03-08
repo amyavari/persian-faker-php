@@ -74,6 +74,15 @@ interface GeneratorInterface
     public function name(?string $gender = null): string;
 
     /**
+     * Get a random Iranian national code
+     *
+     * @param  string|null  $state  The name of the state in Iran. See https://github.com/amyavari/persian-faker-php?tab=readme-ov-file#person
+     *
+     * @example '0087199084', '1127905589'
+     */
+    public function nationalCode(?string $state = null): string;
+
+    /**
      * Get a random secondary address
      *
      * @example 'واحد 18' , 'طبقه 3' , 'سوئیت 4'

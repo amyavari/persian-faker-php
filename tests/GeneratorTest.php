@@ -117,6 +117,19 @@ class GeneratorTest extends TestCase
         $this->assertIsArray(explode(' ', $name));
     }
 
+    public function test_it_returns_national_code(): void
+    {
+        $loader = new DataLoader('person.national_code_state_prefixes');
+        $statePrefixes = $loader->get();
+
+        $state = array_rand($statePrefixes);
+
+        $nationalCode = $this->generator->nationalCode($state);
+
+        $this->assertIsString($nationalCode);
+        $this->assertContains(substr($nationalCode, 0, 3), $statePrefixes[$state]);
+    }
+
     public function test_it_returns_secondary_address(): void
     {
         $loader = new DataLoader('address.secondary_address_prefixes');

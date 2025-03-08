@@ -41,6 +41,9 @@ firstName($gender = null|'male'|'female') // 'علی محمد'
 firstNameMale()                           // 'علی محمد'
 firstNameFemale()                         // 'نیوشا'
 lastName()                                // 'یاوری'
+
+// جدید
+nationalCode($state = null)               // '0087199084', '1127905589'
 ```
 
 ### توابع ایجاد اطلاعات یک آدرس

@@ -16,6 +16,7 @@ use AliYavari\PersianFaker\Fakers\Address\StreetNameFaker;
 use AliYavari\PersianFaker\Fakers\Company\CatchphraseFaker;
 use AliYavari\PersianFaker\Fakers\Company\CompanyNameFaker;
 use AliYavari\PersianFaker\Fakers\Company\JobTitleFaker;
+use AliYavari\PersianFaker\Fakers\Payment\BankNameFaker;
 use AliYavari\PersianFaker\Fakers\Person\FirstNameFaker;
 use AliYavari\PersianFaker\Fakers\Person\LastNameFaker;
 use AliYavari\PersianFaker\Fakers\Person\NationalCodeFaker;
@@ -264,6 +265,14 @@ class Generator implements GeneratorInterface
         $dataLoader = $this->getDataLoaderInstance('text.words');
 
         return $this->exec(new TextFaker($dataLoader, $maxNbChars));
+    }
+
+    public function bank(): string
+    {
+        /** @var \AliYavari\PersianFaker\Contracts\DataLoaderInterface<int, string> */
+        $dataLoader = $this->getDataLoaderInstance('payment.bank_names');
+
+        return $this->exec(new BankNameFaker($dataLoader));
     }
 
     // *******************************

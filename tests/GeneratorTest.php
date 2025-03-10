@@ -394,4 +394,15 @@ class GeneratorTest extends TestCase
         $this->assertIsString($text);
         $this->assertLessThanOrEqual(300, mb_strlen($text));
     }
+
+    public function test_it_returns_bank_name(): void
+    {
+        $loader = new DataLoader('payment.bank_names');
+        $banks = $loader->get();
+
+        $bank = $this->generator->bank();
+
+        $this->assertIsString($bank);
+        $this->assertContains($bank, $banks);
+    }
 }

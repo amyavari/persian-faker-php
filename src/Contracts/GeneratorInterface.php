@@ -237,4 +237,11 @@ interface GeneratorInterface
      * @param  int  $maxNbChars  The maximum number of characters to which the returned text should be limited.
      */
     public function text(int $maxNbChars = 200): string;
+
+    /**
+     * Get a random bank name in Iran
+     *
+     * @example 'ملت', 'مهر ایران'
+     */
+    public function bank(): string;
 }

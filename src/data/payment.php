@@ -6,6 +6,7 @@ declare(strict_types=1);
  * Provides mock data for payment-related fakers, including:
  * - Bank names
  * - Iran banks' BIN (Bank Identification Number)
+ * - Iran banks' Sheba identifier code
  */
 
 return [
@@ -39,5 +40,35 @@ return [
         'ansar' => '627381',
         'iran_zamin' => '505785',
         'taavon' => '502908',
+    ],
+    'bank_sheba_codes' => [
+        'melli' => '017',
+        'sepah' => '015',
+        'tos_e_saderat' => '020',
+        'sanat_madan' => '011',
+        'keshavarzi' => '016',
+        'maskan' => '014',
+        'saderat' => '019',
+        'post' => '021',
+        'mellat' => '012',
+        'tejarat' => '018',
+        'refah' => '013',
+        'parsian' => '054',
+        'noor' => '090',
+        'pasargad' => '057',
+        'melal' => '091',
+        'ghavamin' => '052',
+        'mehr_iran' => '099',
+        'karafarin' => '053',
+        'gardeshgari' => '064',
+        'saman' => '056',
+        'sina' => '059',
+        'sarmaye' => '058',
+        'shahr' => '061',
+        'dey' => '066',
+        'eghtesad_novin' => '055',
+        'ansar' => '063',
+        'iran_zamin' => '069',
+        'taavon' => '070',
     ],
 ];

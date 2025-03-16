@@ -422,4 +422,22 @@ class GeneratorTest extends TestCase
         $this->assertSame($bankBins[$bank], substr($cardNumberDigits, 0, 6));
         $this->assertSame(16, strlen($cardNumberDigits));
     }
+
+    public function test_it_returns_fake_bank_sheba_number(): void
+    {
+        $loader = new DataLoader('payment.bank_sheba_codes');
+        $bankCodes = $loader->get();
+
+        $separator = $this->getOneRandomElement([' ', '-']);
+        $bank = array_rand($bankCodes);
+
+        $shebaNumber = $this->generator->shebaNumber(withIR: false, separator: $separator, bank: $bank);
+
+        $this->assertIsString($shebaNumber);
+        $this->assertSame(30, strlen($shebaNumber));
+
+        $shebaNumberDigits = str_replace($separator, '', $shebaNumber);
+        $this->assertSame($bankCodes[$bank], substr($shebaNumberDigits, 2, 3));
+        $this->assertSame(24, strlen($shebaNumberDigits));
+    }
 }

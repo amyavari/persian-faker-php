@@ -137,7 +137,7 @@ class GeneratorTest extends TestCase
 
         $secondaryAddress = $this->generator->secondaryAddress();
 
-        [$prefix,$number] = explode(' ', $secondaryAddress);
+        [$prefix, $number] = explode(' ', $secondaryAddress);
 
         $this->assertIsString($secondaryAddress);
         $this->assertContains($prefix, $secondaryAddressPrefixes);
@@ -200,7 +200,6 @@ class GeneratorTest extends TestCase
             $this->assertSame(11, strlen($postCode));
         } else {
             $this->assertSame(10, strlen($postCode));
-
         }
     }
 
@@ -393,5 +392,52 @@ class GeneratorTest extends TestCase
 
         $this->assertIsString($text);
         $this->assertLessThanOrEqual(300, mb_strlen($text));
+    }
+
+    public function test_it_returns_bank_name(): void
+    {
+        $loader = new DataLoader('payment.bank_names');
+        $banks = $loader->get();
+
+        $bank = $this->generator->bank();
+
+        $this->assertIsString($bank);
+        $this->assertContains($bank, $banks);
+    }
+
+    public function test_it_returns_fake_bank_card_number(): void
+    {
+        $loader = new DataLoader('payment.bank_bins');
+        $bankBins = $loader->get();
+
+        $separator = $this->getOneRandomElement([' ', '-']);
+        $bank = array_rand($bankBins);
+
+        $cardNumber = $this->generator->cardNumber(separator: $separator, bank: $bank);
+
+        $this->assertIsString($cardNumber);
+        $this->assertSame(19, strlen($cardNumber));
+
+        $cardNumberDigits = str_replace($separator, '', $cardNumber);
+        $this->assertSame($bankBins[$bank], substr($cardNumberDigits, 0, 6));
+        $this->assertSame(16, strlen($cardNumberDigits));
+    }
+
+    public function test_it_returns_fake_bank_sheba_number(): void
+    {
+        $loader = new DataLoader('payment.bank_sheba_codes');
+        $bankCodes = $loader->get();
+
+        $separator = $this->getOneRandomElement([' ', '-']);
+        $bank = array_rand($bankCodes);
+
+        $shebaNumber = $this->generator->shebaNumber(withIR: false, separator: $separator, bank: $bank);
+
+        $this->assertIsString($shebaNumber);
+        $this->assertSame(30, strlen($shebaNumber));
+
+        $shebaNumberDigits = str_replace($separator, '', $shebaNumber);
+        $this->assertSame($bankCodes[$bank], substr($shebaNumberDigits, 2, 3));
+        $this->assertSame(24, strlen($shebaNumberDigits));
     }
 }

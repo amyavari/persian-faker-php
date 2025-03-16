@@ -237,4 +237,32 @@ interface GeneratorInterface
      * @param  int  $maxNbChars  The maximum number of characters to which the returned text should be limited.
      */
     public function text(int $maxNbChars = 200): string;
+
+    /**
+     * Get a random bank name in Iran
+     *
+     * @example 'ملت', 'مهر ایران'
+     */
+    public function bank(): string;
+
+    /**
+     * Get a random bank card number in Iran
+     *
+     * @param  string  $separator  The separator between the each four digits.
+     * @param  string|null  $bank  The name of the bank in Iran. See https://github.com/amyavari/persian-faker-php?tab=readme-ov-file#payment
+     *
+     * @example '6395 9969 9173 6339', '6062561240210751'
+     */
+    public function cardNumber(string $separator = '', ?string $bank = null): string;
+
+    /**
+     * Get a random bank Sheba number in Iran
+     *
+     * @param  bool  $withIR  Determines whether the output should include 'IR' (true) or not (false)
+     * @param  string  $separator  The separator used to format the Sheba number in its standard representation.
+     * @param  string|null  $bank  The name of the bank in Iran. See https://github.com/amyavari/persian-faker-php?tab=readme-ov-file#payment
+     *
+     * @example '6395 9969 9173 6339', '6062561240210751'
+     */
+    public function shebaNumber(bool $withIR = true, string $separator = '', ?string $bank = null): string;
 }

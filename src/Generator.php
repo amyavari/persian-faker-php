@@ -16,6 +16,9 @@ use AliYavari\PersianFaker\Fakers\Address\StreetNameFaker;
 use AliYavari\PersianFaker\Fakers\Company\CatchphraseFaker;
 use AliYavari\PersianFaker\Fakers\Company\CompanyNameFaker;
 use AliYavari\PersianFaker\Fakers\Company\JobTitleFaker;
+use AliYavari\PersianFaker\Fakers\Payment\BankNameFaker;
+use AliYavari\PersianFaker\Fakers\Payment\CardNumberFaker;
+use AliYavari\PersianFaker\Fakers\Payment\ShebaFaker;
 use AliYavari\PersianFaker\Fakers\Person\FirstNameFaker;
 use AliYavari\PersianFaker\Fakers\Person\LastNameFaker;
 use AliYavari\PersianFaker\Fakers\Person\NationalCodeFaker;
@@ -263,7 +266,31 @@ class Generator implements GeneratorInterface
         /** @var \AliYavari\PersianFaker\Contracts\DataLoaderInterface<int, string> */
         $dataLoader = $this->getDataLoaderInstance('text.words');
 
-        return $this->exec(new TextFaker($dataLoader, $maxNbChars));
+        return $this->exec(new TextFaker($dataLoader, maxNbChars: $maxNbChars));
+    }
+
+    public function bank(): string
+    {
+        /** @var \AliYavari\PersianFaker\Contracts\DataLoaderInterface<int, string> */
+        $dataLoader = $this->getDataLoaderInstance('payment.bank_names');
+
+        return $this->exec(new BankNameFaker($dataLoader));
+    }
+
+    public function cardNumber(string $separator = '', ?string $bank = null): string
+    {
+        /** @var \AliYavari\PersianFaker\Contracts\DataLoaderInterface<string, string> */
+        $dataLoader = $this->getDataLoaderInstance('payment.bank_bins');
+
+        return $this->exec(new CardNumberFaker($dataLoader, separator: $separator, bank: $bank));
+    }
+
+    public function shebaNumber(bool $withIR = true, string $separator = '', ?string $bank = null): string
+    {
+        /** @var \AliYavari\PersianFaker\Contracts\DataLoaderInterface<string, string> */
+        $dataLoader = $this->getDataLoaderInstance('payment.bank_sheba_codes');
+
+        return $this->exec(new ShebaFaker($dataLoader, withIR: $withIR, separator: $separator, bank: $bank));
     }
 
     // *******************************

@@ -244,4 +244,14 @@ interface GeneratorInterface
      * @example 'ملت', 'مهر ایران'
      */
     public function bank(): string;
+
+    /**
+     * Get a random bank card number in Iran
+     *
+     * @param  string  $separator  The separator between the each four digits.
+     * @param  string|null  $bank  The name of the bank in Iran. See https://github.com/amyavari/persian-faker-php?tab=readme-ov-file#payment
+     *
+     * @example '6395 9969 9173 6339', '6062561240210751'
+     */
+    public function cardNumber(string $separator = '', ?string $bank = null): string;
 }

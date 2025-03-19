@@ -12,6 +12,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 -   The `bank()` method in the payment details section.
 -   The `cardNumber()` method in the payment details section.
 -   The `shebaNumber()` method in the payment details section.
+-   The `safeColorName()` method in the color details section.
+-   The `colorName()` method in the color details section.
 
 ## [1.1.0] - 2025-03-08
 

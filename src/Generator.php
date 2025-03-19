@@ -13,6 +13,7 @@ use AliYavari\PersianFaker\Fakers\Address\PostCodeFaker;
 use AliYavari\PersianFaker\Fakers\Address\SecondaryAddressFaker;
 use AliYavari\PersianFaker\Fakers\Address\StateFaker;
 use AliYavari\PersianFaker\Fakers\Address\StreetNameFaker;
+use AliYavari\PersianFaker\Fakers\Colors\ColorNameFaker;
 use AliYavari\PersianFaker\Fakers\Company\CatchphraseFaker;
 use AliYavari\PersianFaker\Fakers\Company\CompanyNameFaker;
 use AliYavari\PersianFaker\Fakers\Company\JobTitleFaker;
@@ -291,6 +292,22 @@ class Generator implements GeneratorInterface
         $dataLoader = $this->getDataLoaderInstance('payment.bank_sheba_codes');
 
         return $this->exec(new ShebaFaker($dataLoader, withIR: $withIR, separator: $separator, bank: $bank));
+    }
+
+    public function safeColorName(): string
+    {
+        /** @var \AliYavari\PersianFaker\Contracts\DataLoaderInterface<string, list<string>> */
+        $dataLoader = $this->getDataLoaderInstance('color.colors');
+
+        return $this->exec(new ColorNameFaker($dataLoader, onlyMain: true));
+    }
+
+    public function colorName(): string
+    {
+        /** @var \AliYavari\PersianFaker\Contracts\DataLoaderInterface<string, list<string>> */
+        $dataLoader = $this->getDataLoaderInstance('color.colors');
+
+        return $this->exec(new ColorNameFaker($dataLoader, onlyMain: false));
     }
 
     // *******************************

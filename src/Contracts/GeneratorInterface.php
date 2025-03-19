@@ -265,4 +265,18 @@ interface GeneratorInterface
      * @example '6395 9969 9173 6339', '6062561240210751'
      */
     public function shebaNumber(bool $withIR = true, string $separator = '', ?string $bank = null): string;
+
+    /**
+     * Get a random safe (main) color name
+     *
+     * @example 'سیاه', 'آبی'
+     */
+    public function safeColorName(): string;
+
+    /**
+     * Get a random color name
+     *
+     * @example 'سبز زمردی', 'زغالی'
+     */
+    public function colorName(): string;
 }

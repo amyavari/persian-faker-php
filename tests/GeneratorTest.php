@@ -440,4 +440,26 @@ class GeneratorTest extends TestCase
         $this->assertSame($bankCodes[$bank], substr($shebaNumberDigits, 2, 3));
         $this->assertSame(24, strlen($shebaNumberDigits));
     }
+
+    public function test_it_returns_safe_color_name(): void
+    {
+        $loader = new DataLoader('color.colors');
+        $colors = $loader->get();
+
+        $color = $this->generator->safeColorName();
+
+        $this->assertIsString($color);
+        $this->assertContains($color, $colors['main']);
+    }
+
+    public function test_it_returns_color_name(): void
+    {
+        $loader = new DataLoader('color.colors');
+        $colors = $loader->get();
+
+        $color = $this->generator->colorName();
+
+        $this->assertIsString($color);
+        $this->assertContains($color, array_merge($colors['main'], $colors['all']));
+    }
 }

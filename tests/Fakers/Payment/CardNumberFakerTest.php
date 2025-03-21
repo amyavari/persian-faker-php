@@ -95,7 +95,7 @@ class CardNumberFakerTest extends TestCase
     public function test_it_calculate_check_digit_if_sum_is_multiple_of_ten(): void
     {
         $faker = new CardNumberFaker($this->loader);
-        $checkDigit = $this->callProtectedMethod($faker, 'calculateCheckDigit', [456789777221852]);
+        $checkDigit = $this->callProtectedMethod($faker, 'calculateCheckDigit', [456789777221862]);
 
         $this->assertSame(0, $checkDigit);
     }
@@ -188,14 +188,16 @@ class CardNumberFakerTest extends TestCase
         /-------------------------------------
         / Iran's Bank Card Number Validation Algorithm
         /-------------------------------------
-        / Iranian bank card number is a 10-digit number.
+        / Iranian bank card number is a 16-digit number.
         / The 16th digit is known as the check digit.
         / To calculate the check digit, follow these steps:
         /
-        / 1. Multiply each of the first 15 digits (from the left) by its positional value,
-        /    where the position starts at 1 for the leftmost digit.
+        / 1. Multiply each of the first 15 digits by either 1 or 2, based on its positional value.
+        /    - Positions start at 1 for the leftmost digit.
+        /    - If the position is odd, multiply the digit by 2.
+        /    - If the position is even, multiply the digit by 1.
         / 2. If the result of any multiplication is a two-digit number (greater than 9),
-        /    add the digits together to reduce it to a single digit.
+        /    add the digits together to reduce it to a single digit (or equivalently, subtract 9 from the result).
         / 3. Sum all the results from the previous step.
         / 4. The check digit is the smallest number that, when added to the sum,
         /    results in a multiple of 10. In other words, subtract the sum from the
@@ -204,7 +206,15 @@ class CardNumberFakerTest extends TestCase
 
         $sum = 0;
         foreach (str_split((string) $digits) as $key => $value) {
-            $sum += $value * ($key + 1);
+            $multipleBy = (($key + 1) % 2 === 0) ? 1 : 2;
+
+            $product = $value * $multipleBy;
+
+            if ($product >= 10) {
+                $product -= 9;
+            }
+
+            $sum += $product;
         }
 
         if ($sum % 10 === 0) {

@@ -101,7 +101,15 @@ class CardNumberFaker implements FakerInterface
 
         $sum = 0;
         foreach (str_split($digits) as $key => $value) {
-            $sum += $value * ($key + 1); /** @phpstan-ignore binaryOp.invalid */
+            $multipleBy = (($key + 1) % 2 === 0) ? 1 : 2;
+
+            $product = (int) $value * $multipleBy;
+
+            if ($product >= 10) {
+                $product -= 9;
+            }
+
+            $sum += $product;
         }
 
         if ($sum % 10 === 0) {

@@ -251,7 +251,7 @@ interface GeneratorInterface
      * @param  string  $separator  The separator between the each four digits.
      * @param  string|null  $bank  The name of the bank in Iran. See https://github.com/amyavari/persian-faker-php?tab=readme-ov-file#payment
      *
-     * @example '6395 9969 9173 6339', '6062561240210751'
+     * @example '6395 9969 9173 6339', '5894639748556308'
      */
     public function cardNumber(string $separator = '', ?string $bank = null): string;
 
@@ -262,7 +262,7 @@ interface GeneratorInterface
      * @param  string  $separator  The separator used to format the Sheba number in its standard representation.
      * @param  string|null  $bank  The name of the bank in Iran. See https://github.com/amyavari/persian-faker-php?tab=readme-ov-file#payment
      *
-     * @example '6395 9969 9173 6339', '6062561240210751'
+     * @example '830140000740311641195878', 'IR72-0540-0008-5961-5112-7527-92'
      */
     public function shebaNumber(bool $withIR = true, string $separator = '', ?string $bank = null): string;
 

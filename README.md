@@ -118,6 +118,26 @@ text($maxNbChars = 200)
 // 'ثانیه رنگ هفته ماه ملی پاییز انسان تنظیم تخم‌مرغ بخار نهاد صعود بیعت تند تفکر توانا پناهگاه برنامه سکه برگ'
 ```
 
+### Payment
+
+To view the complete documentation for the payment methods, please refer to [docs/en/07-payment.md](./docs/en/07-payment.md)
+
+```php
+// New methods
+bank()                                                              // 'ملت', 'مهر ایران'
+cardNumber($separator = '', $bank = null)                           // '6273 8157 2593 3210', '5894639748556308'
+shebaNumber($withIR = true|false, $separator = '', $bank = null)    // 'IR72-0540-0008-5961-5112-7527-92'
+```
+
+### Color
+
+To view the complete documentation for the color methods, please refer to [docs/en/08-color.md](./docs/en/08-color.md)
+
+```php
+safeColorName()                       // 'سیاه', 'آبی'
+colorName()                           // 'سبز زمردی', 'زغالی', 'زرد'
+```
+
 ## Contributing
 
 Thank you for considering contributing to the Persian Faker PHP! The contribution guide can be found in the [CONTRIBUTING.md](CONTRIBUTING.md)

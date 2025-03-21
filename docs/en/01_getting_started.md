@@ -103,3 +103,23 @@ paragraphs($nb = 3, $asText = false|true)
 text($maxNbChars = 200)
 // 'ثانیه رنگ هفته ماه ملی پاییز انسان تنظیم تخم‌مرغ بخار نهاد صعود بیعت تند تفکر توانا پناهگاه برنامه سکه برگ'
 ```
+
+### Payment
+
+To view the complete documentation for the payment methods, please refer to [07-payment.md](07-payment.md)
+
+```php
+// New methods
+bank()                                                              // 'ملت', 'مهر ایران'
+cardNumber($separator = '', $bank = null)                           // '6273 8157 2593 3210', '5894639748556308'
+shebaNumber($withIR = true|false, $separator = '', $bank = null)    // 'IR72-0540-0008-5961-5112-7527-92'
+```
+
+### Color
+
+To view the complete documentation for the color methods, please refer to [08-color.md](08-color.md)
+
+```php
+safeColorName()                       // 'سیاه', 'آبی'
+colorName()                           // 'سبز زمردی', 'زغالی', 'زرد'
+```

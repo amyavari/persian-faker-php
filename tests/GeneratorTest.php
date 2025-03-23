@@ -225,7 +225,7 @@ class GeneratorTest extends TestCase
         $phoneNumber = $this->generator->phoneNumber($separator, $state);
 
         $this->assertIsString($phoneNumber);
-        $this->assertSame(substr($phoneNumber, 0, 3), $statePrefixes[$state]);
+        $this->assertSame($statePrefixes[$state], substr($phoneNumber, 0, 3));
         $this->assertSame(3, strpos($phoneNumber, (string) $separator));
     }
 

@@ -68,7 +68,7 @@ class PhoneNumberFakerTest extends TestCase
         $faker = new PhoneNumberFaker($this->loader, state: $state);
         $statePrefix = $this->callProtectedMethod($faker, 'getStatePrefix');
 
-        $this->assertSame($statePrefix, $this->statePrefixes[$state]);
+        $this->assertSame($this->statePrefixes[$state], $statePrefix);
     }
 
     public function test_it_generates_random_eight_digit_number(): void
@@ -119,7 +119,7 @@ class PhoneNumberFakerTest extends TestCase
 
         $this->assertIsString($phoneNumber);
         $this->assertSame(11, strlen($phoneNumber));
-        $this->assertSame(substr($phoneNumber, 0, 3), $this->statePrefixes[$state]);
+        $this->assertSame($this->statePrefixes[$state], substr($phoneNumber, 0, 3));
     }
 
     public function test_it_throws_an_exception_with_invalid_state_name(): void

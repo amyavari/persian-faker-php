@@ -70,7 +70,7 @@ class CardNumberFakerTest extends TestCase
         $faker = new CardNumberFaker($this->loader, bank: $bank);
         $bin = $this->callProtectedMethod($faker, 'getBin');
 
-        $this->assertSame($bin, $this->banksBins[$bank]);
+        $this->assertSame($this->banksBins[$bank], $bin);
     }
 
     public function test_it_generate_random_nine_digit_number(): void
@@ -100,17 +100,21 @@ class CardNumberFakerTest extends TestCase
         $this->assertSame(0, $checkDigit);
     }
 
-    public function test_it_throws_an_exception_if_input_number_is_not_fifteen_digits(): void
+    public function test_it_throws_an_exception_if_input_number_is_less_than_fifteen_digits(): void
     {
         $this->expectException(RangeException::class);
         $this->expectExceptionMessage('The input number must have 15 digits, 14-digit number is given.');
 
         $faker = new CardNumberFaker($this->loader);
         $this->callProtectedMethod($faker, 'calculateCheckDigit', ['12345678901234']);
+    }
 
+    public function test_it_throws_an_exception_if_input_number_is_more_than_fifteen_digits(): void
+    {
         $this->expectException(RangeException::class);
         $this->expectExceptionMessage('The input number must have 15 digits, 16-digit number is given.');
 
+        $faker = new CardNumberFaker($this->loader);
         $this->callProtectedMethod($faker, 'calculateCheckDigit', ['1234567890123456']);
     }
 
@@ -155,7 +159,7 @@ class CardNumberFakerTest extends TestCase
         $this->assertIsString($cardNumber);
         $this->assertIsNumeric($cardNumber);
         $this->assertSame(16, strlen($cardNumber));
-        $this->assertSame(substr($cardNumber, 0, 6), $this->banksBins[$bank]);
+        $this->assertSame($this->banksBins[$bank], substr($cardNumber, 0, 6));
         $this->assertTrue($this->isCheckDigitValid((int) substr($cardNumber, 0, 15), substr($cardNumber, -1)));
     }
 
@@ -181,6 +185,10 @@ class CardNumberFakerTest extends TestCase
 
         $faker->generate();
     }
+
+    // ----------------
+    // Helper Methods
+    // ----------------
 
     private function isCheckDigitValid(int $digits, string|int $checkDigit): bool
     {

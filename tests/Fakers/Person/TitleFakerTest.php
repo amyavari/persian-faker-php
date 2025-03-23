@@ -61,7 +61,7 @@ class TitleFakerTest extends TestCase
         $faker = new TitleFaker($this->loader, gender: null);
         $titles = $this->callProtectedMethod($faker, 'getTitles');
 
-        $this->assertEqualsCanonicalizing($titles, $this->flatten($this->titles));
+        $this->assertEqualsCanonicalizing($this->flatten($this->titles), $titles);
     }
 
     public function test_it_returns_titles_of_specific_gender_when_gender_is_set(): void
@@ -71,7 +71,7 @@ class TitleFakerTest extends TestCase
         $faker = new TitleFaker($this->loader, gender: $gender);
         $titles = $this->callProtectedMethod($faker, 'getTitles');
 
-        $this->assertEqualsCanonicalizing($titles, $this->titles[$gender]);
+        $this->assertEqualsCanonicalizing($this->titles[$gender], $titles);
     }
 
     public function test_it_returns_fake_title(): void

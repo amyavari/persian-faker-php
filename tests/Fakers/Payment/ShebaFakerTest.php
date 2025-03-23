@@ -70,7 +70,7 @@ class ShebaFakerTest extends TestCase
         $faker = new ShebaFaker($this->loader, bank: $bank);
         $bankCode = $this->callProtectedMethod($faker, 'getBankCode');
 
-        $this->assertSame($bankCode, $this->bankCodes[$bank]);
+        $this->assertSame($this->bankCodes[$bank], $bankCode);
     }
 
     public function test_it_generate_random_account_number_number(): void
@@ -106,17 +106,21 @@ class ShebaFakerTest extends TestCase
         $this->assertTrue($this->isCheckNumberValid($number, $checkDigit));
     }
 
-    public function test_it_throws_an_exception_if_input_number_is_not_22_digits(): void
+    public function test_it_throws_an_exception_if_input_number_is_less_than_22_digits(): void
     {
         $this->expectException(RangeException::class);
         $this->expectExceptionMessage('The input number must have 22 digits, 21-digit number is given.');
 
         $faker = new ShebaFaker($this->loader);
         $this->callProtectedMethod($faker, 'calculateCheckNumber', ['123456789012345678901']);
+    }
 
+    public function test_it_throws_an_exception_if_input_number_is_more_than_22_digits(): void
+    {
         $this->expectException(RangeException::class);
         $this->expectExceptionMessage('The input number must have 22 digits, 23-digit number is given.');
 
+        $faker = new ShebaFaker($this->loader);
         $this->callProtectedMethod($faker, 'calculateCheckNumber', ['12345678901234567890123']);
     }
 
@@ -169,7 +173,7 @@ class ShebaFakerTest extends TestCase
 
         $this->assertIsString($shebaNumber);
         $this->assertSame(26, strlen($shebaNumber));
-        $this->assertSame(substr($shebaNumber, 4, 3), $this->bankCodes[$bank]);
+        $this->assertSame($this->bankCodes[$bank], substr($shebaNumber, 4, 3));
         $this->assertTrue($this->isCheckNumberValid(substr($shebaNumber, 5), substr($shebaNumber, 2, 2)));
     }
 
@@ -196,13 +200,17 @@ class ShebaFakerTest extends TestCase
         $faker->generate();
     }
 
+    // ----------------
+    // Helper Methods
+    // ----------------
+
     private function isCheckNumberValid(string $digits, string $checkDigit): bool
     {
         /*
         /--------------------------------------------------------------------------
         / Iran's Sheba Number Validation Algorithm
         /--------------------------------------------------------------------------
-        / The Iranian Sheba number follows the International Bank Account Number (IBAN) standard with some specific rules:
+        / It follows the International Bank Account Number (IBAN) standard with some specific rules:
         / - It is a 26-character string starting with 'IR' (the country code for Iran).
         / - The remaining characters are numeric and consist of:
         /   - A two-digit check number
@@ -214,7 +222,8 @@ class ShebaFakerTest extends TestCase
         / https://en.wikipedia.org/wiki/International_Bank_Account_Number
         /
         / Summary of Validation Algorithm:
-        / 1. Concatenate the 22-digit bank and account number, the numeric value of the country code, and the 2-digit check digit.
+        / 1. Concatenate the 22-digit bank and account number, the numeric value of the country code,
+        /    and the 2-digit check digit.
         / 2. Calculate the remainder of the division of this number by 97 — it should equal 1.
         /
         / Note: As the IBAN standard, 'IR' converts to 1827.

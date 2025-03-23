@@ -97,17 +97,21 @@ class NationalCodeFakerTest extends TestsTestCase
         $this->assertTrue($this->isCheckDigitValid($digits, $checkDigit));
     }
 
-    public function test_throws_an_exception_if_input_number_is_not_nine_digits(): void
+    public function test_throws_an_exception_if_input_number_is_less_than_nine_digits(): void
     {
         $this->expectException(RangeException::class);
         $this->expectExceptionMessage('The input number must have 9 digits, 8-digit number is given.');
 
         $faker = new NationalCodeFaker($this->loader);
         $this->callProtectedMethod($faker, 'calculateCheckDigit', ['12345678']);
+    }
 
+    public function test_throws_an_exception_if_input_number_is_more_than_nine_digits(): void
+    {
         $this->expectException(RangeException::class);
         $this->expectExceptionMessage('The input number must have 9 digits, 10-digit number is given.');
 
+        $faker = new NationalCodeFaker($this->loader);
         $this->callProtectedMethod($faker, 'calculateCheckDigit', ['1234567890']);
     }
 
@@ -153,6 +157,10 @@ class NationalCodeFakerTest extends TestsTestCase
         $faker = new NationalCodeFaker($this->loader, state: 'anonymous');
         $faker->generate();
     }
+
+    // ----------------
+    // Helper Methods
+    // ----------------
 
     private function isCheckDigitValid(string $digits, string|int $checkDigit): bool
     {

@@ -100,17 +100,21 @@ class CardNumberFakerTest extends TestCase
         $this->assertSame(0, $checkDigit);
     }
 
-    public function test_it_throws_an_exception_if_input_number_is_not_fifteen_digits(): void
+    public function test_it_throws_an_exception_if_input_number_is_less_than_fifteen_digits(): void
     {
         $this->expectException(RangeException::class);
         $this->expectExceptionMessage('The input number must have 15 digits, 14-digit number is given.');
 
         $faker = new CardNumberFaker($this->loader);
         $this->callProtectedMethod($faker, 'calculateCheckDigit', ['12345678901234']);
+    }
 
+    public function test_it_throws_an_exception_if_input_number_is_more_than_fifteen_digits(): void
+    {
         $this->expectException(RangeException::class);
         $this->expectExceptionMessage('The input number must have 15 digits, 16-digit number is given.');
 
+        $faker = new CardNumberFaker($this->loader);
         $this->callProtectedMethod($faker, 'calculateCheckDigit', ['1234567890123456']);
     }
 
@@ -181,6 +185,10 @@ class CardNumberFakerTest extends TestCase
 
         $faker->generate();
     }
+
+    // ----------------
+    // Helper Methods
+    // ----------------
 
     private function isCheckDigitValid(int $digits, string|int $checkDigit): bool
     {

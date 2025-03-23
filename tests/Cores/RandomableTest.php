@@ -40,6 +40,11 @@ class RandomableTest extends TestCase
         $this->expectExceptionMessage('The number of returned elements must be 1 or more, 0 is given.');
 
         $this->getMultipleRandomElements($data, 0);
+    }
+
+    public function test_it_throws_an_exception_if_number_of_returned_elements_is_negative(): void
+    {
+        $data = ['item_one', 'item_two', 'item_three', 'item_four', 'item_five'];
 
         $this->expectException(InvalidElementNumberException::class);
         $this->expectExceptionMessage('The number of returned elements must be 1 or more, -1 is given.');

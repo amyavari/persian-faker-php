@@ -63,7 +63,7 @@ class CellPhoneFakerTest extends TestCase
         $faker = new CellPhoneFaker($this->loader, provider: null);
         $prefixes = $this->callProtectedMethod($faker, 'getPrefixes');
 
-        $this->assertEqualsCanonicalizing($prefixes, $this->flatten($this->phonePrefixes));
+        $this->assertEqualsCanonicalizing($this->flatten($this->phonePrefixes), $prefixes);
     }
 
     public function test_it_returns_prefixes_of_specific_provider_when_provider_is_set(): void
@@ -73,7 +73,7 @@ class CellPhoneFakerTest extends TestCase
         $faker = new CellPhoneFaker($this->loader, provider: $provider);
         $prefixes = $this->callProtectedMethod($faker, 'getPrefixes');
 
-        $this->assertEqualsCanonicalizing($prefixes, $this->phonePrefixes[$provider]);
+        $this->assertEqualsCanonicalizing($this->phonePrefixes[$provider], $prefixes);
 
     }
 

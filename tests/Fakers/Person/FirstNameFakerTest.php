@@ -61,7 +61,7 @@ class FirstNameFakerTest extends TestCase
         $faker = new FirstNameFaker($this->loader, gender: null);
         $names = $this->callProtectedMethod($faker, 'getNames');
 
-        $this->assertEqualsCanonicalizing($names, $this->flatten($this->names));
+        $this->assertEqualsCanonicalizing($this->flatten($this->names), $names);
     }
 
     public function test_it_returns_names_of_specific_gender_when_gender_is_set(): void
@@ -71,7 +71,7 @@ class FirstNameFakerTest extends TestCase
         $faker = new FirstNameFaker($this->loader, gender: $gender);
         $names = $this->callProtectedMethod($faker, 'getNames');
 
-        $this->assertEqualsCanonicalizing($names, $this->names[$gender]);
+        $this->assertEqualsCanonicalizing($this->names[$gender], $names);
     }
 
     public function test_it_returns_fake_first_name(): void

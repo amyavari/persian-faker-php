@@ -70,7 +70,7 @@ class CardNumberFakerTest extends TestCase
         $faker = new CardNumberFaker($this->loader, bank: $bank);
         $bin = $this->callProtectedMethod($faker, 'getBin');
 
-        $this->assertSame($bin, $this->banksBins[$bank]);
+        $this->assertSame($this->banksBins[$bank], $bin);
     }
 
     public function test_it_generate_random_nine_digit_number(): void
@@ -159,7 +159,7 @@ class CardNumberFakerTest extends TestCase
         $this->assertIsString($cardNumber);
         $this->assertIsNumeric($cardNumber);
         $this->assertSame(16, strlen($cardNumber));
-        $this->assertSame(substr($cardNumber, 0, 6), $this->banksBins[$bank]);
+        $this->assertSame($this->banksBins[$bank], substr($cardNumber, 0, 6));
         $this->assertTrue($this->isCheckDigitValid((int) substr($cardNumber, 0, 15), substr($cardNumber, -1)));
     }
 

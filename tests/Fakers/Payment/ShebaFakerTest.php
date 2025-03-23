@@ -70,7 +70,7 @@ class ShebaFakerTest extends TestCase
         $faker = new ShebaFaker($this->loader, bank: $bank);
         $bankCode = $this->callProtectedMethod($faker, 'getBankCode');
 
-        $this->assertSame($bankCode, $this->bankCodes[$bank]);
+        $this->assertSame($this->bankCodes[$bank], $bankCode);
     }
 
     public function test_it_generate_random_account_number_number(): void
@@ -173,7 +173,7 @@ class ShebaFakerTest extends TestCase
 
         $this->assertIsString($shebaNumber);
         $this->assertSame(26, strlen($shebaNumber));
-        $this->assertSame(substr($shebaNumber, 4, 3), $this->bankCodes[$bank]);
+        $this->assertSame($this->bankCodes[$bank], substr($shebaNumber, 4, 3));
         $this->assertTrue($this->isCheckNumberValid(substr($shebaNumber, 5), substr($shebaNumber, 2, 2)));
     }
 

@@ -64,7 +64,7 @@ class PhoneNumberFaker implements FakerInterface
 
     protected function generateRandomPhoneNumber(): string
     {
-        return (string) random_int(10000000, 99999999);
+        return (string) random_int(10_000_000, 99_999_999);
     }
 
     protected function formatPhone(string $statePrefix, string $phoneNumber): string

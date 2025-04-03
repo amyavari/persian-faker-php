@@ -85,13 +85,13 @@ class ShebaFakerTest extends TestCase
 
     public function test_it_fills_remain_places_with_0(): void
     {
-        $number = random_int(1000000000, 99999999999999);
+        $number = (string) random_int(1_000_000_000, 99_999_999_999_999);
 
         $faker = new ShebaFaker($this->loader);
         $filledNumber = $this->callProtectedMethod($faker, 'fillEmptyPlaces', [$number]);
 
         $this->assertSame(18, strlen((string) $filledNumber));
-        $this->assertMatchesRegularExpression('/^0+$/', str_replace((string) $number, '', $filledNumber));
+        $this->assertMatchesRegularExpression('/^0+$/', str_replace($number, '', $filledNumber));
     }
 
     public function test_it_calculate_check_digit(): void

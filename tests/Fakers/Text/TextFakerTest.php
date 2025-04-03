@@ -27,7 +27,7 @@ class TextFakerTest extends TestCase
 
     public function test_chars_number_validation_passes_when_the_number_is_in_valid_range(): void
     {
-        $number = random_int(10, 1000);
+        $number = random_int(10, 1_000);
 
         $faker = new TextFaker($this->loader, maxNbChars: $number);
         $isValid = $this->callProtectedMethod($faker, 'isCharsNumberValid');
@@ -37,7 +37,7 @@ class TextFakerTest extends TestCase
 
     public function test_chars_number_validation_fails_when_the_number_is_in_valid_range(): void
     {
-        $number = $this->getOneRandomElement([-1, 9, 1001]);
+        $number = $this->getOneRandomElement([-1, 9, 1_001]);
 
         $faker = new TextFaker($this->loader, maxNbChars: $number);
         $isValid = $this->callProtectedMethod($faker, 'isCharsNumberValid');

@@ -95,7 +95,7 @@ class SentenceFakerTest extends TestCase
         $number = $this->callProtectedMethod($faker, 'getVariableWordsNumber');
 
         $this->assertIsInt($number);
-        $this->assertSame(1, $number); // min is 1
+        $this->assertSame(1, $number); // Min is 1
     }
 
     public function test_it_returns_max_valid_number_as_variable_number_if_calculated_number_is_greater_than_it(): void
@@ -104,7 +104,7 @@ class SentenceFakerTest extends TestCase
         $number = $this->callProtectedMethod($faker, 'getVariableWordsNumber');
 
         $this->assertIsInt($number);
-        $this->assertSame(100, $number); // max is 100
+        $this->assertSame(100, $number); // Max is 100
     }
 
     public function test_it_adds_dot_at_the_end_of_a_sentence(): void

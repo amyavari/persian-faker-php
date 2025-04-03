@@ -6,7 +6,7 @@ namespace AliYavari\PersianFaker\Fakers\Person;
 
 use AliYavari\PersianFaker\Contracts\DataLoaderInterface;
 use Mockery;
-use PHPUnit\Framework\TestCase;
+use Tests\TestCase;
 
 class LastNameFakerTest extends TestCase
 {

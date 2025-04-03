@@ -8,7 +8,6 @@ use AliYavari\PersianFaker\Contracts\GeneratorInterface;
 use AliYavari\PersianFaker\Cores\Randomable;
 use AliYavari\PersianFaker\DataLoader;
 use AliYavari\PersianFaker\Generator;
-use PHPUnit\Framework\TestCase;
 
 /**
  * This includes integration tests

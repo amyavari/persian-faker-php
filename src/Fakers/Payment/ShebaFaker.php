@@ -81,7 +81,7 @@ class ShebaFaker implements FakerInterface
 
     protected function generateRandomAccountNumber(): string
     {
-        return random_int(100000000, 999999999).random_int(0, 999999);
+        return random_int(100_000_000, 999_999_999).random_int(0, 999_999);
     }
 
     protected function fillEmptyPlaces(string $number): string

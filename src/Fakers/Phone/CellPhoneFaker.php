@@ -73,7 +73,7 @@ class CellPhoneFaker implements FakerInterface
 
     protected function generateRandomCellPhone(): string
     {
-        return (string) random_int(1000000, 9999999);
+        return (string) random_int(1_000_000, 9_999_999);
     }
 
     protected function formatPhone(string $providerPrefix, string $phoneNumber): string

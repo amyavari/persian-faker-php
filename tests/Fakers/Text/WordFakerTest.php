@@ -25,7 +25,7 @@ class WordFakerTest extends TestCase
         parent::setUp();
 
         $this->loader = Mockery::mock(DataLoaderInterface::class);
-        $this->loader->shouldReceive('get')->once()->andReturn($this->words);
+        $this->loader->shouldReceive('get')->once()->andReturn($this->words)->byDefault();
     }
 
     public function test_it_returns_specific_number_of_words(): void
@@ -121,6 +121,8 @@ class WordFakerTest extends TestCase
 
     public function test_it_returns_new_instance_with_configs_to_return_as_string_with_custom_words_number(): void
     {
+        $this->loader->shouldReceive('get')->twice()->andReturn($this->words);
+
         $faker = new WordFaker($this->loader, nbWords: 2, asText: false);
         $newFaker = $faker->shouldReturnString(5);
 

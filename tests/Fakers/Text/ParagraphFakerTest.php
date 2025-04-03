@@ -94,7 +94,7 @@ class ParagraphFakerTest extends TestCase
         $number = $this->callProtectedMethod($faker, 'getVariableSentencesNumber');
 
         $this->assertIsInt($number);
-        $this->assertSame(1, $number); // min is 1
+        $this->assertSame(1, $number); // Min is 1
     }
 
     public function test_it_returns_max_valid_number_as_variable_number_if_calculated_number_is_greater_than_it(): void
@@ -103,7 +103,7 @@ class ParagraphFakerTest extends TestCase
         $number = $this->callProtectedMethod($faker, 'getVariableSentencesNumber');
 
         $this->assertIsInt($number);
-        $this->assertSame(100, $number); // max is 100
+        $this->assertSame(100, $number); // Max is 100
     }
 
     public function test_it_returns_multiple_sentences_as_paragraph(): void

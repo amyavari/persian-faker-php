@@ -11,10 +11,10 @@ use AliYavari\PersianFaker\Exceptions\InvalidStateNameException;
 use AliYavari\PersianFaker\Fakers\Person\NationalCodeFaker;
 use Mockery;
 use RangeException;
-use Tests\TestCase as TestsTestCase;
+use Tests\TestCase;
 use TypeError;
 
-class NationalCodeFakerTest extends TestsTestCase
+class NationalCodeFakerTest extends TestCase
 {
     use Arrayable, Randomable;
 
@@ -89,7 +89,7 @@ class NationalCodeFakerTest extends TestsTestCase
 
     public function test_it_calculate_check_digit(): void
     {
-        $digits = (string) random_int(100000000, 999999999);
+        $digits = (string) random_int(100_000_000, 999_999_999);
 
         $faker = new NationalCodeFaker($this->loader);
         $checkDigit = $this->callProtectedMethod($faker, 'calculateCheckDigit', [$digits]);

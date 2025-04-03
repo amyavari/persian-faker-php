@@ -84,7 +84,7 @@ class CardNumberFakerTest extends TestCase
 
     public function test_it_calculate_check_digit(): void
     {
-        $number = random_int(100000000000000, 999999999999999);
+        $number = (string) random_int(100_000_000_000_000, 999_999_999_999_999);
 
         $faker = new CardNumberFaker($this->loader);
         $checkDigit = $this->callProtectedMethod($faker, 'calculateCheckDigit', [$number]);
@@ -95,7 +95,7 @@ class CardNumberFakerTest extends TestCase
     public function test_it_calculate_check_digit_if_sum_is_multiple_of_ten(): void
     {
         $faker = new CardNumberFaker($this->loader);
-        $checkDigit = $this->callProtectedMethod($faker, 'calculateCheckDigit', [456789777221862]);
+        $checkDigit = $this->callProtectedMethod($faker, 'calculateCheckDigit', ['456789777221862']);
 
         $this->assertSame(0, $checkDigit);
     }
@@ -146,7 +146,7 @@ class CardNumberFakerTest extends TestCase
         $this->assertIsNumeric($cardNumber);
         $this->assertSame(16, strlen($cardNumber));
         $this->assertContains(substr($cardNumber, 0, 6), $this->banksBins);
-        $this->assertTrue($this->isCheckDigitValid((int) substr($cardNumber, 0, 15), substr($cardNumber, -1)));
+        $this->assertTrue($this->isCheckDigitValid(substr($cardNumber, 0, 15), substr($cardNumber, -1)));
     }
 
     public function test_it_returns_fake_card_number_for_specific_bank(): void
@@ -160,7 +160,7 @@ class CardNumberFakerTest extends TestCase
         $this->assertIsNumeric($cardNumber);
         $this->assertSame(16, strlen($cardNumber));
         $this->assertSame($this->banksBins[$bank], substr($cardNumber, 0, 6));
-        $this->assertTrue($this->isCheckDigitValid((int) substr($cardNumber, 0, 15), substr($cardNumber, -1)));
+        $this->assertTrue($this->isCheckDigitValid(substr($cardNumber, 0, 15), substr($cardNumber, -1)));
     }
 
     public function test_it_returns_fake_card_number_with_specific_separator(): void
@@ -173,7 +173,7 @@ class CardNumberFakerTest extends TestCase
 
         $cardNumberDigits = str_replace('-', '', $cardNumber);
         $this->assertContains(substr($cardNumberDigits, 0, 6), $this->banksBins);
-        $this->assertTrue($this->isCheckDigitValid((int) substr($cardNumberDigits, 0, 15), substr($cardNumberDigits, -1)));
+        $this->assertTrue($this->isCheckDigitValid(substr($cardNumberDigits, 0, 15), substr($cardNumberDigits, -1)));
     }
 
     public function test_it_throws_an_exception_if_bank_name_is_not_valid(): void
@@ -190,7 +190,7 @@ class CardNumberFakerTest extends TestCase
     // Helper Methods
     // ----------------
 
-    private function isCheckDigitValid(int $digits, string|int $checkDigit): bool
+    private function isCheckDigitValid(string $digits, string|int $checkDigit): bool
     {
         /*
         /-------------------------------------
@@ -213,7 +213,7 @@ class CardNumberFakerTest extends TestCase
         */
 
         $sum = 0;
-        foreach (str_split((string) $digits) as $key => $value) {
+        foreach (str_split($digits) as $key => $value) {
             $multipleBy = (($key + 1) % 2 === 0) ? 1 : 2;
 
             $product = $value * $multipleBy;

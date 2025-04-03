@@ -76,7 +76,7 @@ class CardNumberFaker implements FakerInterface
 
     protected function generateRandomCardNumber(): int
     {
-        return random_int(100000000, 999999999);
+        return random_int(100_000_000, 999_999_999);
     }
 
     /**

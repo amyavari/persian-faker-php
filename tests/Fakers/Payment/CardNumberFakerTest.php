@@ -5,18 +5,16 @@ declare(strict_types=1);
 namespace Tests\Fakers\Payment;
 
 use AliYavari\PersianFaker\Contracts\DataLoaderInterface;
-use AliYavari\PersianFaker\Cores\Randomable;
 use AliYavari\PersianFaker\Exceptions\InvalidBankNameException;
 use AliYavari\PersianFaker\Fakers\Payment\CardNumberFaker;
 use Mockery;
+use PHPUnit\Framework\Attributes\DataProvider;
 use RangeException;
 use Tests\TestCase;
 use TypeError;
 
 class CardNumberFakerTest extends TestCase
 {
-    use Randomable;
-
     protected $loader;
 
     protected array $banksBins = ['bank1' => '123456', 'bank2' => '234567', 'bank3' => '456789'];
@@ -39,9 +37,7 @@ class CardNumberFakerTest extends TestCase
 
     public function test_bank_validation_passes_with_existed_bank_name(): void
     {
-        $bank = array_rand($this->banksBins);
-
-        $faker = new CardNumberFaker($this->loader, bank: $bank);
+        $faker = new CardNumberFaker($this->loader, bank: 'bank2');
         $isValid = $this->callProtectedMethod($faker, 'isBankValid');
 
         $this->assertTrue($isValid);
@@ -65,12 +61,10 @@ class CardNumberFakerTest extends TestCase
 
     public function test_it_returns_specific_bin_when_bank_name_is_set(): void
     {
-        $bank = array_rand($this->banksBins);
-
-        $faker = new CardNumberFaker($this->loader, bank: $bank);
+        $faker = new CardNumberFaker($this->loader, bank: 'bank2');
         $bin = $this->callProtectedMethod($faker, 'getBin');
 
-        $this->assertSame($this->banksBins[$bank], $bin);
+        $this->assertSame($this->banksBins['bank2'], $bin);
     }
 
     public function test_it_generate_random_nine_digit_number(): void
@@ -82,22 +76,14 @@ class CardNumberFakerTest extends TestCase
         $this->assertSame(9, strlen((string) $number));
     }
 
-    public function test_it_calculate_check_digit(): void
-    {
-        $number = (string) random_int(100_000_000_000_000, 999_999_999_999_999);
-
-        $faker = new CardNumberFaker($this->loader);
-        $checkDigit = $this->callProtectedMethod($faker, 'calculateCheckDigit', [$number]);
-
-        $this->assertTrue($this->isCheckDigitValid($number, $checkDigit));
-    }
-
-    public function test_it_calculate_check_digit_if_sum_is_multiple_of_ten(): void
+    #[DataProvider('checkDigitsProvider')]
+    public function test_it_calculate_check_digit(int $checkDigit, string $cardNumber): void
     {
         $faker = new CardNumberFaker($this->loader);
-        $checkDigit = $this->callProtectedMethod($faker, 'calculateCheckDigit', ['456789777221862']);
+        $calculatedCheckDigit = $this->callProtectedMethod($faker, 'calculateCheckDigit', [$cardNumber]);
 
-        $this->assertSame(0, $checkDigit);
+        $this->assertSame($checkDigit, $calculatedCheckDigit);
+        $this->assertCheckDigit($cardNumber, $checkDigit);
     }
 
     public function test_it_throws_an_exception_if_input_number_is_less_than_fifteen_digits(): void
@@ -127,14 +113,13 @@ class CardNumberFakerTest extends TestCase
         $this->callProtectedMethod($faker, 'calculateCheckDigit', ['a23456789012345']);
     }
 
-    public function test_it_formats_card_number(): void
+    #[DataProvider('formatCardNumberSeparatorProvider')]
+    public function test_it_formats_card_number_by_given_separator(string $separator, string $expectedFormat): void
     {
-        $separator = $this->getOneRandomElement(['', ' ', '-']);
-
         $faker = new CardNumberFaker($this->loader, separator: $separator);
         $formattedNumber = $this->callProtectedMethod($faker, 'formatCardNumber', ['123456', 789012345, 6]);
 
-        $this->assertSame("1234{$separator}5678{$separator}9012{$separator}3456", $formattedNumber);
+        $this->assertSame($expectedFormat, $formattedNumber);
     }
 
     public function test_it_returns_fake_card_number_for_random_bank(): void
@@ -146,21 +131,19 @@ class CardNumberFakerTest extends TestCase
         $this->assertIsNumeric($cardNumber);
         $this->assertSame(16, strlen($cardNumber));
         $this->assertContains(substr($cardNumber, 0, 6), $this->banksBins);
-        $this->assertTrue($this->isCheckDigitValid(substr($cardNumber, 0, 15), substr($cardNumber, -1)));
+        $this->assertCheckDigit(substr($cardNumber, 0, 15), substr($cardNumber, -1));
     }
 
     public function test_it_returns_fake_card_number_for_specific_bank(): void
     {
-        $bank = array_rand($this->banksBins);
-
-        $faker = new CardNumberFaker($this->loader, bank: $bank);
+        $faker = new CardNumberFaker($this->loader, bank: 'bank2');
         $cardNumber = $faker->generate();
 
         $this->assertIsString($cardNumber);
         $this->assertIsNumeric($cardNumber);
         $this->assertSame(16, strlen($cardNumber));
-        $this->assertSame($this->banksBins[$bank], substr($cardNumber, 0, 6));
-        $this->assertTrue($this->isCheckDigitValid(substr($cardNumber, 0, 15), substr($cardNumber, -1)));
+        $this->assertSame($this->banksBins['bank2'], substr($cardNumber, 0, 6));
+        $this->assertCheckDigit(substr($cardNumber, 0, 15), substr($cardNumber, -1));
     }
 
     public function test_it_returns_fake_card_number_with_specific_separator(): void
@@ -173,7 +156,7 @@ class CardNumberFakerTest extends TestCase
 
         $cardNumberDigits = str_replace('-', '', $cardNumber);
         $this->assertContains(substr($cardNumberDigits, 0, 6), $this->banksBins);
-        $this->assertTrue($this->isCheckDigitValid(substr($cardNumberDigits, 0, 15), substr($cardNumberDigits, -1)));
+        $this->assertCheckDigit(substr($cardNumberDigits, 0, 15), substr($cardNumberDigits, -1));
     }
 
     public function test_it_throws_an_exception_if_bank_name_is_not_valid(): void
@@ -190,12 +173,12 @@ class CardNumberFakerTest extends TestCase
     // Helper Methods
     // ----------------
 
-    private function isCheckDigitValid(string $digits, string|int $checkDigit): bool
+    private function assertCheckDigit(string $digits, string|int $checkDigit): void
     {
         /*
-        /-------------------------------------
+        /----------------------------------------------
         / Iran's Bank Card Number Validation Algorithm
-        /-------------------------------------
+        /----------------------------------------------
         / Iranian bank card number is a 16-digit number.
         / The 16th digit is known as the check digit.
         / To calculate the check digit, follow these steps:
@@ -226,11 +209,43 @@ class CardNumberFakerTest extends TestCase
         }
 
         if ($sum % 10 === 0) {
-            return $checkDigit == 0;
+            $this->assertEquals(0, $checkDigit);
+
+            return;
         }
 
         $multipleOf10 = (intdiv($sum, 10) + 1) * 10;
 
-        return $multipleOf10 - $sum == $checkDigit;
+        $this->assertEquals($multipleOf10 - $sum, $checkDigit);
+    }
+
+    // ---------------
+    // Data Providers
+    // ---------------
+
+    /**
+     * Provides datasets in the format: `dataset => [int $checkDigit, string $cardNumber]`
+     */
+    public static function checkDigitsProvider(): iterable
+    {
+        yield 'products_only_one_digit' => [8, '123412341234123'];
+
+        yield 'products_have_two_digits' => [2, '473745009214726'];
+
+        yield 'sum_is_multiple_of_10' => [0, '456789777221862'];
+    }
+
+    /**
+     * Provides datasets in the format: `dataset => [string $separator, string $expectedFormat]`
+     *
+     * Base number is `1234567890123456`
+     */
+    public static function formatCardNumberSeparatorProvider(): iterable
+    {
+        yield 'space' => [' ', '1234 5678 9012 3456'];
+
+        yield 'dash' => ['-', '1234-5678-9012-3456'];
+
+        yield 'nothing' => ['', '1234567890123456'];
     }
 }

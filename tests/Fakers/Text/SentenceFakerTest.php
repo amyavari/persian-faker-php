@@ -4,18 +4,16 @@ declare(strict_types=1);
 
 namespace Tests\Fakers\Text;
 
-use AliYavari\PersianFaker\Cores\Randomable;
 use AliYavari\PersianFaker\Exceptions\InvalidElementNumberException;
 use AliYavari\PersianFaker\Fakers\Text\SentenceFaker;
 use AliYavari\PersianFaker\Fakers\Text\WordFaker;
 use Mockery;
+use PHPUnit\Framework\Attributes\DataProvider;
 use ReflectionClass;
 use Tests\TestCase;
 
 class SentenceFakerTest extends TestCase
 {
-    use Randomable;
-
     protected $wordFaker;
 
     protected function setUp(): void
@@ -27,18 +25,15 @@ class SentenceFakerTest extends TestCase
 
     public function test_word_number_validation_passes_when_number_is_in_valid_range(): void
     {
-        $number = random_int(1, 100);
-
-        $faker = new SentenceFaker($this->wordFaker, nbWords: $number);
+        $faker = new SentenceFaker($this->wordFaker, nbWords: 99);
         $isValid = $this->callProtectedMethod($faker, 'isWordsNumberValid');
 
         $this->assertTrue($isValid);
     }
 
-    public function test_word_number_validation_fails_when_number_is_in_valid_range(): void
+    #[DataProvider('wordNumberValidationRangeProvider')]
+    public function test_word_number_validation_fails_when_number_is_in_valid_range(int $number): void
     {
-        $number = $this->getOneRandomElement([-1, 0, 101]);
-
         $faker = new SentenceFaker($this->wordFaker, nbWords: $number);
         $isValid = $this->callProtectedMethod($faker, 'isWordsNumberValid');
 
@@ -47,18 +42,15 @@ class SentenceFakerTest extends TestCase
 
     public function test_sentence_number_validation_passes_when_number_is_in_valid_range(): void
     {
-        $number = random_int(1, 100);
-
-        $faker = new SentenceFaker($this->wordFaker, nbSentences: $number);
+        $faker = new SentenceFaker($this->wordFaker, nbSentences: 99);
         $isValid = $this->callProtectedMethod($faker, 'isSentencesNumberValid');
 
         $this->assertTrue($isValid);
     }
 
-    public function test_sentence_number_validation_fails_when_number_is_in_valid_range(): void
+    #[DataProvider('sentenceNumberValidationRangeProvider')]
+    public function test_sentence_number_validation_fails_when_number_is_in_valid_range(int $number): void
     {
-        $number = $this->getOneRandomElement([-1, 0, 101]);
-
         $faker = new SentenceFaker($this->wordFaker, nbSentences: $number);
         $isValid = $this->callProtectedMethod($faker, 'isSentencesNumberValid');
 
@@ -77,6 +69,7 @@ class SentenceFakerTest extends TestCase
 
     public function test_it_returns_number_with_variable(): void
     {
+        // Each time getVariableWordsNumber() is called, it returns different number.
         $runs = 10;
         $results = [];
 
@@ -118,22 +111,19 @@ class SentenceFakerTest extends TestCase
 
     public function test_it_returns_multiple_words_as_sentence(): void
     {
-        $number = random_int(1, 9);
-
-        $this->wordFaker->shouldReceive('shouldReturnString')->once()->with($number)->andReturn($this->wordFaker);
+        $this->wordFaker->shouldReceive('shouldReturnString')->once()->with(8)->andReturnSelf();
         $this->wordFaker->shouldReceive('generate')->once()->andReturn('This is test sentence');
 
         $faker = new SentenceFaker($this->wordFaker);
-        $sentence = $this->callProtectedMethod($faker, 'getSentence', [$number]);
+        $sentence = $this->callProtectedMethod($faker, 'getSentence', [8]);
 
         $this->assertIsString($sentence);
         $this->assertSame('This is test sentence.', $sentence);
-        $this->assertSame('.', substr($sentence, -1));
     }
 
     public function test_it_returns_fake_sentences_with_strict_number_of_words(): void
     {
-        $this->wordFaker->shouldReceive('shouldReturnString')->times(2)->with(50)->andReturn($this->wordFaker);
+        $this->wordFaker->shouldReceive('shouldReturnString')->times(2)->with(50)->andReturnSelf();
         $this->wordFaker->shouldReceive('generate')->times(2)->andReturn('This is test sentence');
 
         $faker = new SentenceFaker($this->wordFaker, nbWords: 50, nbSentences: 2, variableNbWords: false);
@@ -141,20 +131,22 @@ class SentenceFakerTest extends TestCase
 
         $this->assertIsArray($sentences);
         $this->assertCount(2, $sentences);
+
+        foreach ($sentences as $sentence) {
+            $this->assertSame('This is test sentence.', $sentence);
+        }
     }
 
     public function test_it_returns_fake_sentence_with_variable_number_of_words(): void
     {
-        /*
-        / Each time shouldReturnString() is called, it gets different number as its argument.
-        */
+        // Each time shouldReturnString() is called, it gets different number as its argument.
         $passedArgs = [];
 
         $this->wordFaker->shouldReceive('shouldReturnString')->times(10)->withArgs(function ($arg) use (&$passedArgs) {
             $passedArgs[] = $arg;
 
             return true;
-        })->andReturn($this->wordFaker);
+        })->andReturnSelf();
 
         $this->wordFaker->shouldReceive('generate')->times(10)->andReturn('This is test sentence');
 
@@ -192,7 +184,7 @@ class SentenceFakerTest extends TestCase
 
     public function test_it_returns_one_fake_sentence(): void
     {
-        $this->wordFaker->shouldReceive('shouldReturnString')->once()->andReturn($this->wordFaker);
+        $this->wordFaker->shouldReceive('shouldReturnString')->once()->andReturnSelf();
         $this->wordFaker->shouldReceive('generate')->once()->andReturn('This is test sentence');
 
         $faker = new SentenceFaker($this->wordFaker);
@@ -204,7 +196,7 @@ class SentenceFakerTest extends TestCase
 
     public function test_it_returns_fake_sentences_as_an_array(): void
     {
-        $this->wordFaker->shouldReceive('shouldReturnString')->times(4)->andReturn($this->wordFaker);
+        $this->wordFaker->shouldReceive('shouldReturnString')->times(4)->andReturnSelf();
         $this->wordFaker->shouldReceive('generate')->times(4)->andReturn('This is test sentence');
 
         $faker = new SentenceFaker($this->wordFaker, nbSentences: 4);
@@ -216,7 +208,7 @@ class SentenceFakerTest extends TestCase
 
     public function test_it_returns_fake_sentences_as_a_string(): void
     {
-        $this->wordFaker->shouldReceive('shouldReturnString')->times(4)->andReturn($this->wordFaker);
+        $this->wordFaker->shouldReceive('shouldReturnString')->times(4)->andReturnSelf();
         $this->wordFaker->shouldReceive('generate')->times(4)->andReturn('This is test sentence');
 
         $faker = new SentenceFaker($this->wordFaker, nbSentences: 4, asText: true);
@@ -246,9 +238,6 @@ class SentenceFakerTest extends TestCase
 
     public function test_it_returns_new_instance_with_configs_to_return_as_string_with_custom_sentences_number_and_variable_words_number(): void
     {
-        $this->wordFaker->shouldReceive('shouldReturnString')->andReturn($this->wordFaker);
-        $this->wordFaker->shouldReceive('generate')->andReturn('This is test sentence');
-
         $faker = new SentenceFaker($this->wordFaker);
         $newFaker = $faker->shouldReturnString(10, 2);
 
@@ -259,5 +248,33 @@ class SentenceFakerTest extends TestCase
         $this->assertTrue($reflectedSentenceFaker->getProperty('asText')->getValue($newFaker));
         $this->assertSame(10, $reflectedSentenceFaker->getProperty('nbWords')->getValue($newFaker));
         $this->assertSame(2, $reflectedSentenceFaker->getProperty('nbSentences')->getValue($newFaker));
+    }
+
+    // ---------------
+    // Data Providers
+    // ---------------
+
+    /**
+     * Provides datasets in the format: `dataset => [int $number]`
+     */
+    public static function wordNumberValidationRangeProvider(): iterable
+    {
+        yield 'greater_than_100' => [101];
+
+        yield 'zero' => [0];
+
+        yield 'negative' => [-1];
+    }
+
+    /**
+     * Provides datasets in the format: `dataset => [int $number]`
+     */
+    public static function sentenceNumberValidationRangeProvider(): iterable
+    {
+        yield 'greater_than_100' => [101];
+
+        yield 'zero' => [0];
+
+        yield 'negative' => [-1];
     }
 }

@@ -6,15 +6,15 @@ namespace Tests\Fakers\Phone;
 
 use AliYavari\PersianFaker\Contracts\DataLoaderInterface;
 use AliYavari\PersianFaker\Cores\Arrayable;
-use AliYavari\PersianFaker\Cores\Randomable;
 use AliYavari\PersianFaker\Exceptions\InvalidMobileProviderException;
 use AliYavari\PersianFaker\Fakers\Phone\CellPhoneFaker;
 use Mockery;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\TestCase;
 
 class CellPhoneFakerTest extends TestCase
 {
-    use Arrayable, Randomable;
+    use Arrayable;
 
     protected $loader;
 
@@ -42,9 +42,7 @@ class CellPhoneFakerTest extends TestCase
 
     public function test_provider_validation_passes_with_existed_provider(): void
     {
-        $provider = array_rand($this->phonePrefixes);
-
-        $faker = new CellPhoneFaker($this->loader, provider: $provider);
+        $faker = new CellPhoneFaker($this->loader, provider: 'provider_two');
         $isValid = $this->callProtectedMethod($faker, 'isProviderValid');
 
         $this->assertTrue($isValid);
@@ -63,18 +61,15 @@ class CellPhoneFakerTest extends TestCase
         $faker = new CellPhoneFaker($this->loader, provider: null);
         $prefixes = $this->callProtectedMethod($faker, 'getPrefixes');
 
-        $this->assertEqualsCanonicalizing($this->flatten($this->phonePrefixes), $prefixes);
+        $this->assertEqualsCanonicalizing($this->flatten($this->phonePrefixes), $prefixes); // All prefixes
     }
 
     public function test_it_returns_prefixes_of_specific_provider_when_provider_is_set(): void
     {
-        $provider = array_rand($this->phonePrefixes);
-
-        $faker = new CellPhoneFaker($this->loader, provider: $provider);
+        $faker = new CellPhoneFaker($this->loader, provider: 'provider_two');
         $prefixes = $this->callProtectedMethod($faker, 'getPrefixes');
 
-        $this->assertEqualsCanonicalizing($this->phonePrefixes[$provider], $prefixes);
-
+        $this->assertEqualsCanonicalizing($this->phonePrefixes['provider_two'], $prefixes);
     }
 
     public function test_it_generates_random_cell_phone_number(): void
@@ -86,14 +81,13 @@ class CellPhoneFakerTest extends TestCase
         $this->assertIsNumeric($number);
     }
 
-    public function test_it_formats_cell_phone_number(): void
+    #[DataProvider('formatPhoneNumberSeparatorProvider')]
+    public function test_it_formats_cell_phone_number(string $separator, string $expectedFormat): void
     {
-        $separator = $this->getOneRandomElement(['', ' ', '-']);
-
         $faker = new CellPhoneFaker($this->loader, separator: $separator);
         $formattedNumber = $this->callProtectedMethod($faker, 'formatPhone', ['0912', '1234567']);
 
-        $this->assertSame("0912{$separator}123{$separator}4567", $formattedNumber);
+        $this->assertSame($expectedFormat, $formattedNumber);
     }
 
     public function test_it_returns_fake_cell_phone_with_random_prefix(): void
@@ -118,14 +112,12 @@ class CellPhoneFakerTest extends TestCase
 
     public function test_it_returns_fake_cell_phone_for_specific_mobile_operator(): void
     {
-        $phoneProvider = array_rand($this->phonePrefixes);
-
-        $faker = new CellPhoneFaker($this->loader, provider: $phoneProvider);
+        $faker = new CellPhoneFaker($this->loader, provider: 'provider_two');
         $phone = $faker->generate(); // Expected format: 09121234567
 
         $this->assertIsString($phone);
         $this->assertSame(11, strlen($phone));
-        $this->assertContains(substr($phone, 0, 4), $this->phonePrefixes[$phoneProvider]);
+        $this->assertContains(substr($phone, 0, 4), $this->phonePrefixes['provider_two']);
     }
 
     public function test_it_throws_an_exception_with_invalid_mobile_provider_name(): void
@@ -135,5 +127,23 @@ class CellPhoneFakerTest extends TestCase
 
         $faker = new CellPhoneFaker($this->loader, provider: 'anonymous');
         $faker->generate();
+    }
+
+    // ---------------
+    // Data Providers
+    // ---------------
+
+    /**
+     * Provides datasets in the format: `dataset => [string $separator, string $expectedFormat]`
+     *
+     * Base number is `09121234567`
+     */
+    public static function formatPhoneNumberSeparatorProvider(): iterable
+    {
+        yield 'space' => [' ', '0912 123 4567'];
+
+        yield 'dash' => ['-', '0912-123-4567'];
+
+        yield 'nothing' => ['', '09121234567'];
     }
 }

@@ -4,17 +4,15 @@ declare(strict_types=1);
 
 namespace Tests\Fakers\Text;
 
-use AliYavari\PersianFaker\Cores\Randomable;
 use AliYavari\PersianFaker\Exceptions\InvalidElementNumberException;
 use AliYavari\PersianFaker\Fakers\Text\ParagraphFaker;
 use AliYavari\PersianFaker\Fakers\Text\SentenceFaker;
 use Mockery;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\TestCase;
 
 class ParagraphFakerTest extends TestCase
 {
-    use Randomable;
-
     protected $sentenceFaker;
 
     protected function setUp(): void
@@ -26,18 +24,15 @@ class ParagraphFakerTest extends TestCase
 
     public function test_sentence_number_validation_passes_when_number_is_in_valid_range(): void
     {
-        $number = random_int(1, 100);
-
-        $faker = new ParagraphFaker($this->sentenceFaker, nbSentences: $number);
+        $faker = new ParagraphFaker($this->sentenceFaker, nbSentences: 99);
         $isValid = $this->callProtectedMethod($faker, 'isSentencesNumberValid');
 
         $this->assertTrue($isValid);
     }
 
-    public function test_sentence_number_validation_fails_when_number_is_in_valid_range(): void
+    #[DataProvider('sentenceNumberValidationRangeProvider')]
+    public function test_sentence_number_validation_fails_when_number_is_in_valid_range(int $number): void
     {
-        $number = $this->getOneRandomElement([-1, 0, 101]);
-
         $faker = new ParagraphFaker($this->sentenceFaker, nbSentences: $number);
         $isValid = $this->callProtectedMethod($faker, 'isSentencesNumberValid');
 
@@ -46,18 +41,15 @@ class ParagraphFakerTest extends TestCase
 
     public function test_paragraph_number_validation_passes_when_number_is_in_valid_range(): void
     {
-        $number = random_int(1, 100);
-
-        $faker = new ParagraphFaker($this->sentenceFaker, nbParagraphs: $number);
+        $faker = new ParagraphFaker($this->sentenceFaker, nbParagraphs: 99);
         $isValid = $this->callProtectedMethod($faker, 'isParagraphsNumberValid');
 
         $this->assertTrue($isValid);
     }
 
-    public function test_paragraph_number_validation_fails_when_number_is_in_valid_range(): void
+    #[DataProvider('paragraphNumberValidationRangeProvider')]
+    public function test_paragraph_number_validation_fails_when_number_is_in_valid_range(int $number): void
     {
-        $number = $this->getOneRandomElement([-1, 0, 101]);
-
         $faker = new ParagraphFaker($this->sentenceFaker, nbParagraphs: $number);
         $isValid = $this->callProtectedMethod($faker, 'isParagraphsNumberValid');
 
@@ -76,6 +68,7 @@ class ParagraphFakerTest extends TestCase
 
     public function test_it_returns_number_with_variable(): void
     {
+        // Each time getVariableSentencesNumber() is called, it returns different number.
         $runs = 10;
         $results = [];
 
@@ -106,16 +99,15 @@ class ParagraphFakerTest extends TestCase
         $this->assertSame(100, $number); // Max is 100
     }
 
-    public function test_it_returns_multiple_sentences_as_paragraph(): void
+    public function test_it_returns_multiple_sentences_as_a_paragraph(): void
     {
-        $nbWords = 6;
-        $nbSentences = random_int(1, 9);
+        $nbWords = 6; // Default number of words in each sentence
 
-        $this->sentenceFaker->shouldReceive('shouldReturnString')->once()->with($nbWords, $nbSentences)->andReturn($this->sentenceFaker);
+        $this->sentenceFaker->shouldReceive('shouldReturnString')->once()->with($nbWords, 8)->andReturnSelf();
         $this->sentenceFaker->shouldReceive('generate')->once()->andReturn('This is test sentence. Second sentence.');
 
         $faker = new ParagraphFaker($this->sentenceFaker);
-        $paragraph = $this->callProtectedMethod($faker, 'getParagraph', [$nbSentences]);
+        $paragraph = $this->callProtectedMethod($faker, 'getParagraph', [8]);
 
         $this->assertIsString($paragraph);
         $this->assertSame('This is test sentence. Second sentence.', $paragraph);
@@ -123,9 +115,9 @@ class ParagraphFakerTest extends TestCase
 
     public function test_it_returns_fake_paragraphs_with_strict_number_of_sentences(): void
     {
-        $nbWords = 6;
+        $nbWords = 6; // Default number of words in each sentence
 
-        $this->sentenceFaker->shouldReceive('shouldReturnString')->times(2)->with($nbWords, 50)->andReturn($this->sentenceFaker);
+        $this->sentenceFaker->shouldReceive('shouldReturnString')->times(2)->with($nbWords, 50)->andReturnSelf();
         $this->sentenceFaker->shouldReceive('generate')->times(2)->andReturn('This is test sentence. Second sentence.');
 
         $faker = new ParagraphFaker($this->sentenceFaker, nbSentences: 50, nbParagraphs: 2, variableNbSentences: false);
@@ -133,22 +125,24 @@ class ParagraphFakerTest extends TestCase
 
         $this->assertIsArray($paragraphs);
         $this->assertCount(2, $paragraphs);
+
+        foreach ($paragraphs as $paragraph) {
+            $this->assertSame('This is test sentence. Second sentence.', $paragraph);
+        }
     }
 
     public function test_it_returns_fake_paragraphs_with_variable_number_of_sentences(): void
     {
-        /*
-        / Each time shouldReturnString() is called, it gets different number as its argument.
-        */
+        // Each time shouldReturnString() is called, it gets different number of $nbSentence as its argument.
         $passedArgs = [];
 
         $this->sentenceFaker->shouldReceive('shouldReturnString')->times(10)->withArgs(function ($nbWords, $nbSentences) use (&$passedArgs) {
             $passedArgs[] = $nbSentences;
 
             return true;
-        })->andReturn($this->sentenceFaker);
+        })->andReturnSelf();
 
-        $this->sentenceFaker->shouldReceive('generate')->times(10)->andReturn('This is test sentence');
+        $this->sentenceFaker->shouldReceive('generate')->times(10)->andReturn('This is test sentence. Second sentence.');
 
         $faker = new ParagraphFaker($this->sentenceFaker, nbSentences: 50, nbParagraphs: 10, variableNbSentences: true);
         $paragraphs = $this->callProtectedMethod($faker, 'getRandomParagraphs');
@@ -184,7 +178,7 @@ class ParagraphFakerTest extends TestCase
 
     public function test_it_returns_one_fake_paragraph(): void
     {
-        $this->sentenceFaker->shouldReceive('shouldReturnString')->once()->andReturn($this->sentenceFaker);
+        $this->sentenceFaker->shouldReceive('shouldReturnString')->once()->andReturnSelf();
         $this->sentenceFaker->shouldReceive('generate')->once()->andReturn('This is test sentence. Second sentence.');
 
         $faker = new ParagraphFaker($this->sentenceFaker);
@@ -196,7 +190,7 @@ class ParagraphFakerTest extends TestCase
 
     public function test_it_returns_fake_paragraphs_as_an_array(): void
     {
-        $this->sentenceFaker->shouldReceive('shouldReturnString')->times(4)->andReturn($this->sentenceFaker);
+        $this->sentenceFaker->shouldReceive('shouldReturnString')->times(4)->andReturnSelf();
         $this->sentenceFaker->shouldReceive('generate')->times(4)->andReturn('This is test sentence. Second sentence.');
 
         $faker = new ParagraphFaker($this->sentenceFaker, nbParagraphs: 4);
@@ -208,7 +202,7 @@ class ParagraphFakerTest extends TestCase
 
     public function test_it_returns_fake_paragraphs_as_a_string(): void
     {
-        $this->sentenceFaker->shouldReceive('shouldReturnString')->times(4)->andReturn($this->sentenceFaker);
+        $this->sentenceFaker->shouldReceive('shouldReturnString')->times(4)->andReturnSelf();
         $this->sentenceFaker->shouldReceive('generate')->times(4)->andReturn('This is test sentence. Second sentence.');
 
         $faker = new ParagraphFaker($this->sentenceFaker, nbParagraphs: 4, asText: true);
@@ -234,5 +228,33 @@ class ParagraphFakerTest extends TestCase
 
         $faker = new ParagraphFaker($this->sentenceFaker, nbParagraphs: 0);
         $faker->generate();
+    }
+
+    // ---------------
+    // Data Providers
+    // ---------------
+
+    /**
+     * Provides datasets in the format: `dataset => [int $number]`
+     */
+    public static function sentenceNumberValidationRangeProvider(): iterable
+    {
+        yield 'greater_than_100' => [101];
+
+        yield 'zero' => [0];
+
+        yield 'negative' => [-1];
+    }
+
+    /**
+     * Provides datasets in the format: `dataset => [int $number]`
+     */
+    public static function paragraphNumberValidationRangeProvider(): iterable
+    {
+        yield 'greater_than_100' => [101];
+
+        yield 'zero' => [0];
+
+        yield 'negative' => [-1];
     }
 }

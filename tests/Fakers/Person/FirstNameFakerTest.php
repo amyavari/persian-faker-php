@@ -40,9 +40,7 @@ class FirstNameFakerTest extends TestCase
 
     public function test_gender_validation_passes_with_existed_gender(): void
     {
-        $gender = array_rand($this->names);
-
-        $faker = new FirstNameFaker($this->loader, gender: $gender);
+        $faker = new FirstNameFaker($this->loader, gender: 'female');
         $isValid = $this->callProtectedMethod($faker, 'isGenderValid');
 
         $this->assertTrue($isValid);
@@ -61,17 +59,15 @@ class FirstNameFakerTest extends TestCase
         $faker = new FirstNameFaker($this->loader, gender: null);
         $names = $this->callProtectedMethod($faker, 'getNames');
 
-        $this->assertEqualsCanonicalizing($this->flatten($this->names), $names);
+        $this->assertEqualsCanonicalizing($this->flatten($this->names), $names); // All names
     }
 
     public function test_it_returns_names_of_specific_gender_when_gender_is_set(): void
     {
-        $gender = array_rand($this->names);
-
-        $faker = new FirstNameFaker($this->loader, gender: $gender);
+        $faker = new FirstNameFaker($this->loader, gender: 'female');
         $names = $this->callProtectedMethod($faker, 'getNames');
 
-        $this->assertEqualsCanonicalizing($this->names[$gender], $names);
+        $this->assertEqualsCanonicalizing($this->names['female'], $names);
     }
 
     public function test_it_returns_fake_first_name(): void
@@ -80,28 +76,16 @@ class FirstNameFakerTest extends TestCase
         $name = $faker->generate();
 
         $this->assertIsString($name);
-        $this->assertContains($name, $this->flatten($this->names));
+        $this->assertContains($name, $this->flatten($this->names)); // All names
     }
 
-    public function test_it_returns_fake_male_first_name(): void
+    public function test_it_returns_fake_first_name_with_gender_is_set(): void
     {
-
-        $faker = new FirstNameFaker($this->loader, 'male');
+        $faker = new FirstNameFaker($this->loader, gender: 'male');
         $name = $faker->generate();
 
         $this->assertIsString($name);
         $this->assertContains($name, $this->names['male']);
-
-    }
-
-    public function test_it_returns_fake_female_first_name(): void
-    {
-
-        $faker = new FirstNameFaker($this->loader, 'female');
-        $name = $faker->generate();
-
-        $this->assertIsString($name);
-        $this->assertContains($name, $this->names['female']);
     }
 
     public function test_it_throws_an_exception_with_invalid_gender(): void

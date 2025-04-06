@@ -65,7 +65,7 @@ class ColorNameFakerTest extends TestCase
         $colors = $this->callProtectedMethod($faker, 'getColors');
 
         $this->assertIsArray($colors);
-        $this->assertEqualsCanonicalizing($this->flatten($this->colors), $colors);
+        $this->assertEqualsCanonicalizing($this->flatten($this->colors), $colors); // `main` and `all` colors
     }
 
     public function test_it_returns_fake_color_name(): void
@@ -74,7 +74,7 @@ class ColorNameFakerTest extends TestCase
         $color = $faker->generate();
 
         $this->assertIsString($color);
-        $this->assertContains($color, $this->flatten($this->colors));
+        $this->assertContains($color, $this->flatten($this->colors)); // `main` and `all` colors
     }
 
     public function test_it_returns_fake_main_color_name(): void

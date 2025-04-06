@@ -30,6 +30,10 @@ class RandomableTest extends TestCase
 
         $this->assertIsArray($randomItems);
         $this->assertCount(3, $randomItems);
+
+        foreach ($randomItems as $item) {
+            $this->assertContains($item, $data);
+        }
     }
 
     public function test_it_throws_an_exception_if_number_of_returned_elements_is_less_that_1(): void

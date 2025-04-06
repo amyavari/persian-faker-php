@@ -12,6 +12,15 @@ use TypeError;
 
 class DataLoaderTest extends TestCase
 {
+    protected string $dataDirectoryPath;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->dataDirectoryPath = dirname(__DIR__, 1).DIRECTORY_SEPARATOR.'src'.DIRECTORY_SEPARATOR.'data'.DIRECTORY_SEPARATOR;
+    }
+
     public function test_it_returns_array_value_with_one_dimensional_key(): void
     {
         $array = [
@@ -74,32 +83,28 @@ class DataLoaderTest extends TestCase
 
     public function test_it_loads_file_inside_data_directory(): void
     {
-        // This test needs corresponded test.php file in ./src/data directory
-        $fileName = 'test';
+        file_put_contents($this->dataDirectoryPath.'test.php', '<?php return [];');
 
         $loader = new DataLoader('');
-        $fileContent = $this->callProtectedMethod($loader, 'loadFile', [$fileName]);
+        $fileContent = $this->callProtectedMethod($loader, 'loadFile', ['test']);
 
         $this->assertIsArray($fileContent);
+
+        unlink($this->dataDirectoryPath.'test.php');
     }
 
     public function test_it_throws_an_exception_with_invalid_file_name(): void
     {
-        $fileName = 'wrongFile';
-        $expectedFilePath = dirname(__DIR__, 1).DIRECTORY_SEPARATOR.'src'.DIRECTORY_SEPARATOR.'data'.DIRECTORY_SEPARATOR.'wrongFile.php';
-
         $this->expectException(FileNotFoundException::class);
-        $this->expectExceptionMessage(sprintf('The file %s is not found.', $expectedFilePath));
+        $this->expectExceptionMessage(sprintf('The file %s is not found.', $this->dataDirectoryPath.'wrongFile.php'));
 
         $loader = new DataLoader('');
-        $this->callProtectedMethod($loader, 'loadFile', [$fileName]);
+        $this->callProtectedMethod($loader, 'loadFile', ['wrongFile']);
     }
 
     public function test_it_separates_file_name_and_keys_from_path(): void
     {
-        $path = 'fileName.first_key.second_key';
-
-        $loader = new DataLoader($path);
+        $loader = new DataLoader(path: 'fileName.first_key.second_key');
         $fileNameAndKeys = $this->callProtectedMethod($loader, 'getFileNameAndKeys');
 
         $this->assertSame([
@@ -121,14 +126,26 @@ class DataLoaderTest extends TestCase
 
     public function test_it_returns_data_from_correct_file_name_and_keys(): void
     {
-        // This test needs corresponded test.php file in ./src/data directory
-        $path = 'test.first_key.second_key';
+        $fileContent = '
+        <?php
+        return [
+            "first_key" => [
+                "second_key" => [
+                    "key" => "value",
+                ],
+            ],
+        ];
+        ';
 
-        $loader = new DataLoader($path);
+        file_put_contents($this->dataDirectoryPath.'test.php', $fileContent);
+
+        $loader = new DataLoader(path: 'test.first_key.second_key');
         $content = $loader->get();
 
         $this->assertSame([
             'key' => 'value',
         ], $content);
+
+        unlink($this->dataDirectoryPath.'test.php');
     }
 }

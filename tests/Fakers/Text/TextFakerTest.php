@@ -5,16 +5,14 @@ declare(strict_types=1);
 namespace Tests\Fakers\Text;
 
 use AliYavari\PersianFaker\Contracts\DataLoaderInterface;
-use AliYavari\PersianFaker\Cores\Randomable;
 use AliYavari\PersianFaker\Exceptions\InvalidElementNumberException;
 use AliYavari\PersianFaker\Fakers\Text\TextFaker;
 use Mockery;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\TestCase;
 
 class TextFakerTest extends TestCase
 {
-    use Randomable;
-
     protected $loader;
 
     protected function setUp(): void
@@ -22,23 +20,20 @@ class TextFakerTest extends TestCase
         parent::setUp();
 
         $this->loader = Mockery::mock(DataLoaderInterface::class);
-        $this->loader->shouldReceive('get')->andReturn(['تست', 'تست', 'تست', 'تست']);
+        $this->loader->shouldReceive('get')->once()->andReturn(['تست', 'تست', 'تست', 'تست']);
     }
 
     public function test_chars_number_validation_passes_when_the_number_is_in_valid_range(): void
     {
-        $number = random_int(10, 1_000);
-
-        $faker = new TextFaker($this->loader, maxNbChars: $number);
+        $faker = new TextFaker($this->loader, maxNbChars: 999);
         $isValid = $this->callProtectedMethod($faker, 'isCharsNumberValid');
 
         $this->assertTrue($isValid);
     }
 
-    public function test_chars_number_validation_fails_when_the_number_is_in_valid_range(): void
+    #[DataProvider('charNumberValidationRangeProvider')]
+    public function test_chars_number_validation_fails_when_the_number_is_in_valid_range(int $number): void
     {
-        $number = $this->getOneRandomElement([-1, 9, 1_001]);
-
         $faker = new TextFaker($this->loader, maxNbChars: $number);
         $isValid = $this->callProtectedMethod($faker, 'isCharsNumberValid');
 
@@ -87,14 +82,11 @@ class TextFakerTest extends TestCase
 
     public function test_it_returns_fake_text_with_limited_characters(): void
     {
-        $number = random_int(100, 300);
-
-        $faker = new TextFaker($this->loader, maxNbChars: $number);
+        $faker = new TextFaker($this->loader, maxNbChars: 200);
         $text = $faker->generate();
 
         $this->assertIsString($text);
-        $this->assertLessThanOrEqual($number, mb_strlen($text));
-        $this->assertGreaterThan($number - mb_strlen(' تست'), mb_strlen($text));
+        $this->assertSame(199, mb_strlen($text)); // Test words are 3 characters plus 1 space between words.
     }
 
     public function test_it_throws_an_exception_if_char_number_is_not_between_10_and_1000(): void
@@ -104,5 +96,21 @@ class TextFakerTest extends TestCase
 
         $faker = new TextFaker($this->loader, maxNbChars: 9);
         $faker->generate();
+    }
+
+    // ---------------
+    // Data Providers
+    // ---------------
+
+    /**
+     * Provides datasets in the format: `dataset => [int $number]`
+     */
+    public static function charNumberValidationRangeProvider(): iterable
+    {
+        yield 'greater_than_1000' => [1_001];
+
+        yield 'less_than_10' => [9];
+
+        yield 'negative' => [-1];
     }
 }

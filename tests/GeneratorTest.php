@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Tests;
 
 use AliYavari\PersianFaker\Contracts\GeneratorInterface;
-use AliYavari\PersianFaker\Cores\Randomable;
+use AliYavari\PersianFaker\Cores\Arrayable;
 use AliYavari\PersianFaker\DataLoader;
 use AliYavari\PersianFaker\Generator;
 
@@ -14,7 +14,7 @@ use AliYavari\PersianFaker\Generator;
  */
 class GeneratorTest extends TestCase
 {
-    use Randomable;
+    use Arrayable;
 
     protected GeneratorInterface $generator;
 
@@ -28,77 +28,87 @@ class GeneratorTest extends TestCase
     public function test_it_returns_title(): void
     {
         $loader = new DataLoader('person.titles');
-        ['male' => $maleTitles, 'female' => $femaleTitles] = $loader->get();
+        $titles = $loader->get(); // ['male' => [...], 'female' => [...]]
 
-        $gender = $this->getOneRandomElement([null, 'male', 'female']);
-
-        $title = $this->generator->title($gender);
+        // Default (random gender)
+        $title = $this->generator->title();
 
         $this->assertIsString($title);
-        $this->assertContains($title, array_merge($maleTitles, $femaleTitles));
+        $this->assertContains($title, $this->flatten($titles));
+
+        // For specific gender
+        $title = $this->generator->title('male');
+
+        $this->assertIsString($title);
+        $this->assertContains($title, $titles['male']);
     }
 
     public function test_it_returns_male_title(): void
     {
         $loader = new DataLoader('person.titles');
-        ['male' => $maleTitles, 'female' => $femaleTitles] = $loader->get();
+        $titles = $loader->get(); // ['male' => [...], 'female' => [...]]
 
         $title = $this->generator->titleMale();
 
         $this->assertIsString($title);
-        $this->assertContains($title, $maleTitles);
+        $this->assertContains($title, $titles['male']);
     }
 
     public function test_it_returns_female_title(): void
     {
         $loader = new DataLoader('person.titles');
-        ['male' => $maleTitles, 'female' => $femaleTitles] = $loader->get();
+        $titles = $loader->get(); // ['male' => [...], 'female' => [...]]
 
         $title = $this->generator->titleFemale();
 
         $this->assertIsString($title);
-        $this->assertContains($title, $femaleTitles);
+        $this->assertContains($title, $titles['female']);
     }
 
     public function test_it_returns_first_name(): void
     {
         $loader = new DataLoader('person.first_names');
-        ['male' => $maleNames, 'female' => $femaleNames] = $loader->get();
+        $names = $loader->get(); // ['male' => [...], 'female' => [...]]
 
-        $gender = $this->getOneRandomElement([null, 'male', 'female']);
-
-        $firstName = $this->generator->firstName($gender);
+        // Default (random gender)
+        $firstName = $this->generator->firstName();
 
         $this->assertIsString($firstName);
-        $this->assertContains($firstName, array_merge($maleNames, $femaleNames));
+        $this->assertContains($firstName, $this->flatten($names));
+
+        // For specific gender
+        $firstName = $this->generator->firstName('male');
+
+        $this->assertIsString($firstName);
+        $this->assertContains($firstName, $names['male']);
     }
 
     public function test_it_returns_male_first_name(): void
     {
         $loader = new DataLoader('person.first_names');
-        ['male' => $maleNames, 'female' => $femaleNames] = $loader->get();
+        $names = $loader->get(); // ['male' => [...], 'female' => [...]]
 
         $firstName = $this->generator->firstNameMale();
 
         $this->assertIsString($firstName);
-        $this->assertContains($firstName, $maleNames);
+        $this->assertContains($firstName, $names['male']);
     }
 
     public function test_it_returns_female_first_name(): void
     {
         $loader = new DataLoader('person.first_names');
-        ['male' => $maleNames, 'female' => $femaleNames] = $loader->get();
+        $names = $loader->get(); // ['male' => [...], 'female' => [...]]
 
         $firstName = $this->generator->firstNameFemale();
 
         $this->assertIsString($firstName);
-        $this->assertContains($firstName, $femaleNames);
+        $this->assertContains($firstName, $names['female']);
     }
 
     public function test_it_returns_last_name(): void
     {
         $loader = new DataLoader('person.last_names');
-        $lastNames = $loader->get();
+        $lastNames = $loader->get(); // [...]
 
         $lastName = $this->generator->lastName();
 
@@ -108,9 +118,14 @@ class GeneratorTest extends TestCase
 
     public function test_it_returns_full_name(): void
     {
-        $gender = $this->getOneRandomElement([null, 'male', 'female']);
+        // Default (random gender)
+        $name = $this->generator->name();
 
-        $name = $this->generator->name($gender);
+        $this->assertIsString($name);
+        $this->assertIsArray(explode(' ', $name));
+
+        // For specific gender
+        $name = $this->generator->name('male');
 
         $this->assertIsString($name);
         $this->assertIsArray(explode(' ', $name));
@@ -119,20 +134,25 @@ class GeneratorTest extends TestCase
     public function test_it_returns_national_code(): void
     {
         $loader = new DataLoader('person.national_code_state_prefixes');
-        $statePrefixes = $loader->get();
+        $statePrefixes = $loader->get(); // ['STATE_NAME' => [...]]
 
-        $state = array_rand($statePrefixes);
-
-        $nationalCode = $this->generator->nationalCode($state);
+        // Default (random state)
+        $nationalCode = $this->generator->nationalCode();
 
         $this->assertIsString($nationalCode);
-        $this->assertContains(substr($nationalCode, 0, 3), $statePrefixes[$state]);
+        $this->assertContains(substr($nationalCode, 0, 3), $this->flatten($statePrefixes));
+
+        // For specific state
+        $nationalCode = $this->generator->nationalCode('yazd');
+
+        $this->assertIsString($nationalCode);
+        $this->assertContains(substr($nationalCode, 0, 3), $statePrefixes['yazd']);
     }
 
     public function test_it_returns_secondary_address(): void
     {
         $loader = new DataLoader('address.secondary_address_prefixes');
-        $secondaryAddressPrefixes = $loader->get();
+        $secondaryAddressPrefixes = $loader->get(); // [...]
 
         $secondaryAddress = $this->generator->secondaryAddress();
 
@@ -146,7 +166,7 @@ class GeneratorTest extends TestCase
     public function test_it_returns_state(): void
     {
         $loader = new DataLoader('address.states');
-        $states = $loader->get();
+        $states = $loader->get(); // [...]
 
         $state = $this->generator->state();
 
@@ -157,7 +177,7 @@ class GeneratorTest extends TestCase
     public function test_it_returns_city(): void
     {
         $loader = new DataLoader('address.cities');
-        $cities = $loader->get();
+        $cities = $loader->get(); // [...]
 
         $city = $this->generator->city();
 
@@ -168,7 +188,7 @@ class GeneratorTest extends TestCase
     public function test_it_returns_street_name(): void
     {
         $loader = new DataLoader('address.street_names');
-        $streetNames = $loader->get();
+        $streetNames = $loader->get(); // [...]
 
         $streetName = $this->generator->streetName();
 
@@ -179,7 +199,7 @@ class GeneratorTest extends TestCase
     public function test_it_returns_address(): void
     {
         $loader = new DataLoader('address.addresses');
-        $addresses = $loader->get();
+        $addresses = $loader->get(); // [...]
 
         $address = $this->generator->address();
 
@@ -189,23 +209,23 @@ class GeneratorTest extends TestCase
 
     public function test_it_returns_post_code(): void
     {
-        $withSeparator = $this->getOneRandomElement([true, false]);
-
-        $postCode = $this->generator->postCode($withSeparator);
+        // Default (without separator)
+        $postCode = $this->generator->postCode();
 
         $this->assertIsString($postCode);
+        $this->assertSame(10, strlen($postCode));
 
-        if ($withSeparator) {
-            $this->assertSame(11, strlen($postCode));
-        } else {
-            $this->assertSame(10, strlen($postCode));
-        }
+        // With separator
+        $postCode = $this->generator->postCode(true);
+
+        $this->assertIsString($postCode);
+        $this->assertSame(11, strlen($postCode));
     }
 
     public function test_it_returns_state_phone_prefix(): void
     {
         $loader = new DataLoader('phone.state_prefixes');
-        $statePrefixes = $loader->get();
+        $statePrefixes = $loader->get(); // ['STATE_NAME' => 'PREFIX']
 
         $statePrefix = $this->generator->statePhonePrefix();
 
@@ -216,37 +236,49 @@ class GeneratorTest extends TestCase
     public function test_it_returns_phone_number(): void
     {
         $loader = new DataLoader('phone.state_prefixes');
-        $statePrefixes = $loader->get();
+        $statePrefixes = $loader->get(); // ['STATE_NAME' => 'PREFIX']
 
-        $separator = $this->getOneRandomElement([' ', '-']);
-        $state = array_rand($statePrefixes);
-
-        $phoneNumber = $this->generator->phoneNumber($separator, $state);
+        // Default (without separator, random state)
+        $phoneNumber = $this->generator->phoneNumber();
 
         $this->assertIsString($phoneNumber);
-        $this->assertSame($statePrefixes[$state], substr($phoneNumber, 0, 3));
-        $this->assertSame(3, strpos($phoneNumber, (string) $separator));
+        $this->assertContains(substr($phoneNumber, 0, 3), $statePrefixes);
+        $this->assertSame(11, strlen($phoneNumber));
+
+        // With separator, for specific state
+        $phoneNumber = $this->generator->phoneNumber('-', 'yazd');
+
+        $this->assertIsString($phoneNumber);
+        $this->assertSame($statePrefixes['yazd'], substr($phoneNumber, 0, 3));
+        $this->assertSame(12, strlen($phoneNumber));
+        $this->assertSame(11, strlen(str_replace('-', '', $phoneNumber)));
     }
 
     public function test_it_returns_cell_phone_number(): void
     {
         $loader = new DataLoader('phone.mobile_prefixes');
-        $mobilePrefixes = $loader->get();
+        $mobilePrefixes = $loader->get(); // ['PROVIDER' => [...]]
 
-        $separator = $this->getOneRandomElement([' ', '-']);
-        $mobileProvider = array_rand($mobilePrefixes);
-
-        $cellPhoneNumber = $this->generator->cellPhone($separator, $mobileProvider);
+        // Default (without separator, random provider)
+        $cellPhoneNumber = $this->generator->cellPhone();
 
         $this->assertIsString($cellPhoneNumber);
-        $this->assertContains(substr($cellPhoneNumber, 0, 4), $mobilePrefixes[$mobileProvider]);
-        $this->assertSame(4, strpos($cellPhoneNumber, (string) $separator));
+        $this->assertContains(substr($cellPhoneNumber, 0, 4), $this->flatten($mobilePrefixes));
+        $this->assertSame(11, strlen($cellPhoneNumber));
+
+        // With separator, for specific state
+        $cellPhoneNumber = $this->generator->cellPhone('-', 'mtn');
+
+        $this->assertIsString($cellPhoneNumber);
+        $this->assertContains(substr($cellPhoneNumber, 0, 4), $mobilePrefixes['mtn']);
+        $this->assertSame(13, strlen($cellPhoneNumber));
+        $this->assertSame(11, strlen(str_replace('-', '', $cellPhoneNumber)));
     }
 
     public function test_it_returns_company_name(): void
     {
         $loader = new DataLoader('company.companies');
-        $companies = $loader->get();
+        $companies = $loader->get(); // [...]
 
         $company = $this->generator->company();
 
@@ -257,7 +289,7 @@ class GeneratorTest extends TestCase
     public function test_it_returns_company_catchphrase(): void
     {
         $loader = new DataLoader('company.catchphrases');
-        $catchphrases = $loader->get();
+        $catchphrases = $loader->get(); // [...]
 
         $catchphrase = $this->generator->catchphrase();
 
@@ -268,7 +300,7 @@ class GeneratorTest extends TestCase
     public function test_it_returns_job_title(): void
     {
         $loader = new DataLoader('company.job_titles');
-        $jobTitles = $loader->get();
+        $jobTitles = $loader->get(); // [...]
 
         $jobTitle = $this->generator->jobTitle();
 
@@ -279,7 +311,7 @@ class GeneratorTest extends TestCase
     public function test_it_returns_word(): void
     {
         $loader = new DataLoader('text.words');
-        $words = $loader->get();
+        $words = $loader->get(); // [...]
 
         $word = $this->generator->word();
 
@@ -289,7 +321,6 @@ class GeneratorTest extends TestCase
 
     public function test_it_returns_words_as_array(): void
     {
-
         $words = $this->generator->words(4, false);
 
         $this->assertIsArray($words);
@@ -306,7 +337,6 @@ class GeneratorTest extends TestCase
 
     public function test_it_returns_sentence_with_strict_number_of_words(): void
     {
-
         $sentence = $this->generator->sentence(50, false);
 
         $this->assertIsString($sentence);
@@ -396,7 +426,7 @@ class GeneratorTest extends TestCase
     public function test_it_returns_bank_name(): void
     {
         $loader = new DataLoader('payment.bank_names');
-        $banks = $loader->get();
+        $banks = $loader->get(); // [...]
 
         $bank = $this->generator->bank();
 
@@ -407,43 +437,55 @@ class GeneratorTest extends TestCase
     public function test_it_returns_fake_bank_card_number(): void
     {
         $loader = new DataLoader('payment.bank_bins');
-        $bankBins = $loader->get();
+        $bankBins = $loader->get(); // ['BANK_NAME' => 'BIN']
 
-        $separator = $this->getOneRandomElement([' ', '-']);
-        $bank = array_rand($bankBins);
+        // Default (without separator, random bank)
+        $cardNumber = $this->generator->cardNumber();
 
-        $cardNumber = $this->generator->cardNumber(separator: $separator, bank: $bank);
+        $this->assertIsString($cardNumber);
+        $this->assertSame(16, strlen($cardNumber));
+        $this->assertContains(substr($cardNumber, 0, 6), $bankBins);
+
+        // With separator, for specific bank
+        $cardNumber = $this->generator->cardNumber('-', 'mellat');
 
         $this->assertIsString($cardNumber);
         $this->assertSame(19, strlen($cardNumber));
 
-        $cardNumberDigits = str_replace($separator, '', $cardNumber);
-        $this->assertSame($bankBins[$bank], substr($cardNumberDigits, 0, 6));
-        $this->assertSame(16, strlen($cardNumberDigits));
+        $rawCardNumber = str_replace('-', '', $cardNumber);
+        $this->assertSame(16, strlen($rawCardNumber));
+        $this->assertSame($bankBins['mellat'], substr($rawCardNumber, 0, 6));
     }
 
     public function test_it_returns_fake_bank_sheba_number(): void
     {
         $loader = new DataLoader('payment.bank_sheba_codes');
-        $bankCodes = $loader->get();
+        $bankCodes = $loader->get(); // ['BANK_NAME' => 'CODE']
 
-        $separator = $this->getOneRandomElement([' ', '-']);
-        $bank = array_rand($bankCodes);
+        // Default (with IR, without separator, random bank)
+        $shebaNumber = $this->generator->shebaNumber();
 
-        $shebaNumber = $this->generator->shebaNumber(withIR: false, separator: $separator, bank: $bank);
+        $this->assertIsString($shebaNumber);
+        $this->assertSame(26, strlen($shebaNumber));
+        $this->assertSame('IR', substr($shebaNumber, 0, 2));
+        $this->assertContains(substr($shebaNumber, 4, 3), $bankCodes);
+
+        // Without IR, with separator, for specific bank
+        $shebaNumber = $this->generator->shebaNumber(false, '-', 'mellat');
 
         $this->assertIsString($shebaNumber);
         $this->assertSame(30, strlen($shebaNumber));
+        $this->assertNotEquals('IR', substr($shebaNumber, 0, 2));
 
-        $shebaNumberDigits = str_replace($separator, '', $shebaNumber);
-        $this->assertSame($bankCodes[$bank], substr($shebaNumberDigits, 2, 3));
-        $this->assertSame(24, strlen($shebaNumberDigits));
+        $rawShebaNumber = str_replace('-', '', $shebaNumber);
+        $this->assertSame(24, strlen($rawShebaNumber));
+        $this->assertSame($bankCodes['mellat'], substr($rawShebaNumber, 2, 3));
     }
 
     public function test_it_returns_safe_color_name(): void
     {
         $loader = new DataLoader('color.colors');
-        $colors = $loader->get();
+        $colors = $loader->get(); // ['main' => [...], 'all' => [...]]
 
         $color = $this->generator->safeColorName();
 
@@ -454,11 +496,11 @@ class GeneratorTest extends TestCase
     public function test_it_returns_color_name(): void
     {
         $loader = new DataLoader('color.colors');
-        $colors = $loader->get();
+        $colors = $loader->get(); // ['main' => [...], 'all' => [...]]
 
         $color = $this->generator->colorName();
 
         $this->assertIsString($color);
-        $this->assertContains($color, array_merge($colors['main'], $colors['all']));
+        $this->assertContains($color, $this->flatten($colors));
     }
 }

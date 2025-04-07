@@ -5,18 +5,16 @@ declare(strict_types=1);
 namespace Tests\Fakers\Payment;
 
 use AliYavari\PersianFaker\Contracts\DataLoaderInterface;
-use AliYavari\PersianFaker\Cores\Randomable;
 use AliYavari\PersianFaker\Exceptions\InvalidBankNameException;
 use AliYavari\PersianFaker\Fakers\Payment\ShebaFaker;
 use Mockery;
+use PHPUnit\Framework\Attributes\DataProvider;
 use RangeException;
 use Tests\TestCase;
 use TypeError;
 
 class ShebaFakerTest extends TestCase
 {
-    use Randomable;
-
     protected $loader;
 
     protected array $bankCodes = ['bank1' => '012', 'bank2' => '090', 'bank3' => '064'];
@@ -39,9 +37,7 @@ class ShebaFakerTest extends TestCase
 
     public function test_bank_validation_passes_with_existed_bank_name(): void
     {
-        $bank = array_rand($this->bankCodes);
-
-        $faker = new ShebaFaker($this->loader, bank: $bank);
+        $faker = new ShebaFaker($this->loader, bank: 'bank2');
         $isValid = $this->callProtectedMethod($faker, 'isBankValid');
 
         $this->assertTrue($isValid);
@@ -65,12 +61,10 @@ class ShebaFakerTest extends TestCase
 
     public function test_it_returns_specific_bank_code_when_bank_name_is_set(): void
     {
-        $bank = array_rand($this->bankCodes);
-
-        $faker = new ShebaFaker($this->loader, bank: $bank);
+        $faker = new ShebaFaker($this->loader, bank: 'bank2');
         $bankCode = $this->callProtectedMethod($faker, 'getBankCode');
 
-        $this->assertSame($this->bankCodes[$bank], $bankCode);
+        $this->assertSame($this->bankCodes['bank2'], $bankCode);
     }
 
     public function test_it_generate_random_account_number_number(): void
@@ -79,31 +73,28 @@ class ShebaFakerTest extends TestCase
         $number = $this->callProtectedMethod($faker, 'generateRandomAccountNumber');
 
         $this->assertIsNumeric($number);
-        $this->assertGreaterThanOrEqual(10, strlen((string) $number));
-        $this->assertLessThanOrEqual(15, strlen((string) $number));
+        $this->assertGreaterThanOrEqual(10, strlen($number));
+        $this->assertLessThanOrEqual(15, strlen($number));
     }
 
     public function test_it_fills_remain_places_with_0(): void
     {
-        $number = (string) random_int(1_000_000_000, 99_999_999_999_999);
-
         $faker = new ShebaFaker($this->loader);
-        $filledNumber = $this->callProtectedMethod($faker, 'fillEmptyPlaces', [$number]);
+        $filledNumber = (string) $this->callProtectedMethod($faker, 'fillEmptyPlaces', ['12345678901']); // 11 digits
 
-        $this->assertSame(18, strlen((string) $filledNumber));
-        $this->assertMatchesRegularExpression('/^0+$/', str_replace($number, '', $filledNumber));
+        $this->assertSame(18, strlen($filledNumber));
+        $this->assertSame('0000000', substr($filledNumber, 0, 7));
+        $this->assertSame('12345678901', substr($filledNumber, -11));
     }
 
-    public function test_it_calculate_check_digit(): void
+    #[DataProvider('checkNumbersProvider')]
+    public function test_it_calculate_check_number(string $checkNumber, string $sheba): void
     {
-        $number = '0'.random_int(10, 99).'0000000000'.random_int(100_000_000, 999_999_999); // The mimic of real number format
-
         $faker = new ShebaFaker($this->loader);
-        $checkDigit = $this->callProtectedMethod($faker, 'calculateCheckNumber', [$number]);
+        $calculatedCheckNumber = $this->callProtectedMethod($faker, 'calculateCheckNumber', [$sheba]);
 
-        $this->assertIsString($checkDigit);
-        $this->assertSame(2, strlen($checkDigit));
-        $this->assertTrue($this->isCheckNumberValid($number, $checkDigit));
+        $this->assertSame($checkNumber, $calculatedCheckNumber);
+        $this->assertCheckNumber($sheba, $calculatedCheckNumber);
     }
 
     public function test_it_throws_an_exception_if_input_number_is_less_than_22_digits(): void
@@ -133,24 +124,22 @@ class ShebaFakerTest extends TestCase
         $this->callProtectedMethod($faker, 'calculateCheckNumber', ['a123456789012345678901']);
     }
 
-    public function test_it_formats_sheba_number_with_ir(): void
+    #[DataProvider('formatShebaWithIrSeparatorProvider')]
+    public function test_it_formats_sheba_number_with_ir(string $separator, string $expectedFormat): void
     {
-        $separator = $this->getOneRandomElement(['', ' ', '-']);
-
         $faker = new ShebaFaker($this->loader, separator: $separator, withIR: true);
         $formattedNumber = $this->callProtectedMethod($faker, 'formatShebaNumber', ['016', '0', '000001234567890123', '70']);
 
-        $this->assertSame("IR70{$separator}0160{$separator}0000{$separator}0123{$separator}4567{$separator}8901{$separator}23", $formattedNumber);
+        $this->assertSame($expectedFormat, $formattedNumber);
     }
 
-    public function test_it_formats_sheba_number_without_ir(): void
+    #[DataProvider('formatShebaWithoutIrSeparatorProvider')]
+    public function test_it_formats_sheba_number_without_ir(string $separator, string $expectedFormat): void
     {
-        $separator = $this->getOneRandomElement(['', ' ', '-']);
-
         $faker = new ShebaFaker($this->loader, separator: $separator, withIR: false);
         $formattedNumber = $this->callProtectedMethod($faker, 'formatShebaNumber', ['016', '0', '000001234567890123', '70']);
 
-        $this->assertSame("70{$separator}0160{$separator}0000{$separator}0123{$separator}4567{$separator}8901{$separator}23", $formattedNumber);
+        $this->assertSame($expectedFormat, $formattedNumber);
     }
 
     public function test_it_returns_fake_sheba_number_for_random_bank(): void
@@ -161,20 +150,18 @@ class ShebaFakerTest extends TestCase
         $this->assertIsString($shebaNumber);
         $this->assertSame(26, strlen($shebaNumber));
         $this->assertContains(substr($shebaNumber, 4, 3), $this->bankCodes);
-        $this->assertTrue($this->isCheckNumberValid(substr($shebaNumber, 5), substr($shebaNumber, 2, 2)));
+        $this->assertCheckNumber(substr($shebaNumber, 5), substr($shebaNumber, 2, 2));
     }
 
     public function test_it_returns_fake_sheba_number_for_specific_bank(): void
     {
-        $bank = array_rand($this->bankCodes);
-
-        $faker = new ShebaFaker($this->loader, bank: $bank);
+        $faker = new ShebaFaker($this->loader, bank: 'bank2');
         $shebaNumber = $faker->generate();
 
         $this->assertIsString($shebaNumber);
         $this->assertSame(26, strlen($shebaNumber));
-        $this->assertSame($this->bankCodes[$bank], substr($shebaNumber, 4, 3));
-        $this->assertTrue($this->isCheckNumberValid(substr($shebaNumber, 5), substr($shebaNumber, 2, 2)));
+        $this->assertSame($this->bankCodes['bank2'], substr($shebaNumber, 4, 3));
+        $this->assertCheckNumber(substr($shebaNumber, 5), substr($shebaNumber, 2, 2));
     }
 
     public function test_it_returns_fake_sheba_number_with_specific_separator(): void
@@ -187,7 +174,7 @@ class ShebaFakerTest extends TestCase
 
         $shebaNumberDigits = str_replace('-', '', $shebaNumber);
         $this->assertContains(substr($shebaNumberDigits, 4, 3), $this->bankCodes);
-        $this->assertTrue($this->isCheckNumberValid(substr($shebaNumberDigits, 5), substr($shebaNumberDigits, 2, 2)));
+        $this->assertCheckNumber(substr($shebaNumberDigits, 5), substr($shebaNumberDigits, 2, 2));
     }
 
     public function test_it_throws_an_exception_if_bank_name_is_not_valid(): void
@@ -204,7 +191,7 @@ class ShebaFakerTest extends TestCase
     // Helper Methods
     // ----------------
 
-    private function isCheckNumberValid(string $digits, string $checkDigit): bool
+    private function assertCheckNumber(string $digits, string $checkDigit): void
     {
         /*
         /--------------------------------------------------------------------------
@@ -233,6 +220,48 @@ class ShebaFakerTest extends TestCase
 
         $reminder = bcmod($preparedNumber, '97');
 
-        return $reminder === '1';
+        $this->assertSame('1', $reminder);
+    }
+
+    // ---------------
+    // Data Providers
+    // ---------------
+
+    /**
+     * Provides datasets in the format: `dataset => [string $checkNumber, string $sheba]`
+     */
+    public static function checkNumbersProvider(): iterable
+    {
+        yield 'two_digits' => ['87', '0570028180010653892101'];
+
+        yield 'one_digits' => ['02', '0190000000101975503003'];
+    }
+
+    /**
+     * Provides datasets in the format: `dataset => [string $separator, string $expectedFormat]`
+     *
+     * Base number is `IR700160000001234567890123`
+     */
+    public static function formatShebaWithIrSeparatorProvider(): iterable
+    {
+        yield 'space' => [' ', 'IR70 0160 0000 0123 4567 8901 23'];
+
+        yield 'dash' => ['-', 'IR70-0160-0000-0123-4567-8901-23'];
+
+        yield 'nothing' => ['', 'IR700160000001234567890123'];
+    }
+
+    /**
+     * Provides datasets in the format: `dataset => [string $separator, string $expectedFormat]`
+     *
+     * Base number is `700160000001234567890123`
+     */
+    public static function formatShebaWithoutIrSeparatorProvider(): iterable
+    {
+        yield 'space' => [' ', '70 0160 0000 0123 4567 8901 23'];
+
+        yield 'dash' => ['-', '70-0160-0000-0123-4567-8901-23'];
+
+        yield 'nothing' => ['', '700160000001234567890123'];
     }
 }

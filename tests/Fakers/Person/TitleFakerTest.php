@@ -40,9 +40,7 @@ class TitleFakerTest extends TestCase
 
     public function test_gender_validation_passes_with_existed_gender(): void
     {
-        $gender = array_rand($this->titles);
-
-        $faker = new TitleFaker($this->loader, gender: $gender);
+        $faker = new TitleFaker($this->loader, gender: 'male');
         $isValid = $this->callProtectedMethod($faker, 'isGenderValid');
 
         $this->assertTrue($isValid);
@@ -61,17 +59,15 @@ class TitleFakerTest extends TestCase
         $faker = new TitleFaker($this->loader, gender: null);
         $titles = $this->callProtectedMethod($faker, 'getTitles');
 
-        $this->assertEqualsCanonicalizing($this->flatten($this->titles), $titles);
+        $this->assertEqualsCanonicalizing($this->flatten($this->titles), $titles); // All titles
     }
 
     public function test_it_returns_titles_of_specific_gender_when_gender_is_set(): void
     {
-        $gender = array_rand($this->titles);
-
-        $faker = new TitleFaker($this->loader, gender: $gender);
+        $faker = new TitleFaker($this->loader, gender: 'female');
         $titles = $this->callProtectedMethod($faker, 'getTitles');
 
-        $this->assertEqualsCanonicalizing($this->titles[$gender], $titles);
+        $this->assertEqualsCanonicalizing($this->titles['female'], $titles);
     }
 
     public function test_it_returns_fake_title(): void
@@ -80,25 +76,16 @@ class TitleFakerTest extends TestCase
         $title = $titleFaker->generate();
 
         $this->assertIsString($title);
-        $this->assertContains($title, $this->flatten($this->titles));
+        $this->assertContains($title, $this->flatten($this->titles)); // All titles
     }
 
-    public function test_it_returns_fake_title_for_male(): void
+    public function test_it_returns_fake_title_with_gender_is_set(): void
     {
-        $titleFaker = new TitleFaker($this->loader, 'male');
+        $titleFaker = new TitleFaker($this->loader, gender: 'male');
         $title = $titleFaker->generate();
 
         $this->assertIsString($title);
         $this->assertContains($title, $this->titles['male']);
-    }
-
-    public function test_it_returns_fake_title_for_female(): void
-    {
-        $titleFaker = new TitleFaker($this->loader, 'female');
-        $title = $titleFaker->generate();
-
-        $this->assertIsString($title);
-        $this->assertContains($title, $this->titles['female']);
     }
 
     public function test_it_throws_an_exception_with_invalid_gender(): void

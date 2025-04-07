@@ -6,17 +6,17 @@ namespace Tests\Fakers\Person;
 
 use AliYavari\PersianFaker\Contracts\DataLoaderInterface;
 use AliYavari\PersianFaker\Cores\Arrayable;
-use AliYavari\PersianFaker\Cores\Randomable;
 use AliYavari\PersianFaker\Exceptions\InvalidStateNameException;
 use AliYavari\PersianFaker\Fakers\Person\NationalCodeFaker;
 use Mockery;
+use PHPUnit\Framework\Attributes\DataProvider;
 use RangeException;
 use Tests\TestCase;
 use TypeError;
 
 class NationalCodeFakerTest extends TestCase
 {
-    use Arrayable, Randomable;
+    use Arrayable;
 
     protected $loader;
 
@@ -44,9 +44,7 @@ class NationalCodeFakerTest extends TestCase
 
     public function test_state_validation_passes_with_existed_state(): void
     {
-        $state = array_rand($this->statePrefixes);
-
-        $faker = new NationalCodeFaker($this->loader, state: $state);
+        $faker = new NationalCodeFaker($this->loader, state: 'state_two');
         $isValid = $this->callProtectedMethod($faker, 'isStateValid');
 
         $this->assertTrue($isValid);
@@ -65,17 +63,15 @@ class NationalCodeFakerTest extends TestCase
         $faker = new NationalCodeFaker($this->loader, state: null);
         $statePrefix = $this->callProtectedMethod($faker, 'getStatePrefix');
 
-        $this->assertContains($statePrefix, $this->flatten($this->statePrefixes));
+        $this->assertContains($statePrefix, $this->flatten($this->statePrefixes)); // All prefixes
     }
 
     public function test_it_returns_prefixes_of_specific_state_when_state_is_set(): void
     {
-        $state = array_rand($this->statePrefixes);
-
-        $faker = new NationalCodeFaker($this->loader, state: $state);
+        $faker = new NationalCodeFaker($this->loader, state: 'state_two');
         $statePrefix = $this->callProtectedMethod($faker, 'getStatePrefix');
 
-        $this->assertContains($statePrefix, $this->statePrefixes[$state]);
+        $this->assertContains($statePrefix, $this->statePrefixes['state_two']);
     }
 
     public function test_it_generates_random_six_digit_number(): void
@@ -87,14 +83,14 @@ class NationalCodeFakerTest extends TestCase
         $this->assertIsNumeric($number);
     }
 
-    public function test_it_calculate_check_digit(): void
+    #[DataProvider('checkDigitsProvider')]
+    public function test_it_calculate_check_digit(int $checkDigit, string $nationalCode): void
     {
-        $digits = (string) random_int(100_000_000, 999_999_999);
-
         $faker = new NationalCodeFaker($this->loader);
-        $checkDigit = $this->callProtectedMethod($faker, 'calculateCheckDigit', [$digits]);
+        $calculatedCheckDigit = $this->callProtectedMethod($faker, 'calculateCheckDigit', [$nationalCode]);
 
-        $this->assertTrue($this->isCheckDigitValid($digits, $checkDigit));
+        $this->assertSame($checkDigit, $calculatedCheckDigit);
+        $this->assertCheckDigit($nationalCode, $calculatedCheckDigit);
     }
 
     public function test_throws_an_exception_if_input_number_is_less_than_nine_digits(): void
@@ -132,21 +128,19 @@ class NationalCodeFakerTest extends TestCase
         $this->assertIsString($nationalCode);
         $this->assertSame(10, strlen($nationalCode));
         $this->assertIsNumeric($nationalCode);
-        $this->assertTrue($this->isCheckDigitValid(substr($nationalCode, 0, 9), substr($nationalCode, -1)));
+        $this->assertCheckDigit(substr($nationalCode, 0, 9), substr($nationalCode, -1));
     }
 
     public function test_it_returns_fake_national_code_for_specific_state(): void
     {
-        $state = array_rand($this->statePrefixes);
-
-        $faker = new NationalCodeFaker($this->loader, state: $state);
+        $faker = new NationalCodeFaker($this->loader, state: 'state_two');
         $nationalCode = $faker->generate();
 
         $this->assertIsString($nationalCode);
         $this->assertSame(10, strlen($nationalCode));
         $this->assertIsNumeric($nationalCode);
-        $this->assertContains(substr($nationalCode, 0, 3), $this->statePrefixes[$state]);
-        $this->assertTrue($this->isCheckDigitValid(substr($nationalCode, 0, 9), substr($nationalCode, -1)));
+        $this->assertContains(substr($nationalCode, 0, 3), $this->statePrefixes['state_two']);
+        $this->assertCheckDigit(substr($nationalCode, 0, 9), substr($nationalCode, -1));
     }
 
     public function test_it_throws_an_exception_with_invalid_state_name(): void
@@ -162,7 +156,7 @@ class NationalCodeFakerTest extends TestCase
     // Helper Methods
     // ----------------
 
-    private function isCheckDigitValid(string $digits, string|int $checkDigit): bool
+    private function assertCheckDigit(string $digits, string|int $checkDigit): void
     {
         /*
         /-------------------------------------
@@ -188,9 +182,27 @@ class NationalCodeFakerTest extends TestCase
         $remainder = $sum % 11;
 
         if ($remainder < 2) {
-            return $remainder == $checkDigit;
+            $this->assertEquals($remainder, $checkDigit);
+
+            return;
         }
 
-        return (11 - $remainder) == $checkDigit;
+        $this->assertEquals(11 - $remainder, $checkDigit);
+    }
+
+    // ---------------
+    // Data Providers
+    // ---------------
+
+    /**
+     * Provides datasets in the format: `dataset => [int $checkDigit, string $nationalCode]`
+     */
+    public static function checkDigitsProvider(): iterable
+    {
+        yield 'reminder_greater_than_2' => [6, '773168995'];
+
+        yield 'reminder_equal_to_2' => [9, '773168985'];
+
+        yield 'reminder_less_than_2' => [1, '773168993'];
     }
 }

@@ -5,17 +5,15 @@ declare(strict_types=1);
 namespace Tests\Fakers\Text;
 
 use AliYavari\PersianFaker\Contracts\DataLoaderInterface;
-use AliYavari\PersianFaker\Cores\Randomable;
 use AliYavari\PersianFaker\Exceptions\InvalidElementNumberException;
 use AliYavari\PersianFaker\Fakers\Text\WordFaker;
 use Mockery;
+use PHPUnit\Framework\Attributes\DataProvider;
 use ReflectionClass;
 use Tests\TestCase;
 
 class WordFakerTest extends TestCase
 {
-    use Randomable;
-
     protected $loader;
 
     protected array $words = ['text', 'a', 'by', 'tree', 'did', 'polish', 'PHP', 'application', 'an'];
@@ -30,13 +28,11 @@ class WordFakerTest extends TestCase
 
     public function test_it_returns_specific_number_of_words(): void
     {
-        $number = random_int(1, 9);
-
-        $faker = new WordFaker($this->loader, nbWords: $number);
+        $faker = new WordFaker($this->loader, nbWords: 8);
         $words = $this->callProtectedMethod($faker, 'getWords');
 
         $this->assertIsArray($words);
-        $this->assertCount($number, $words);
+        $this->assertCount(8, $words);
     }
 
     public function test_it_says_output_should_be_text_if_number_equals_to_one(): void
@@ -65,18 +61,15 @@ class WordFakerTest extends TestCase
 
     public function test_number_validation_passes_when_number_is_in_valid_range(): void
     {
-        $number = random_int(1, 100);
-
-        $faker = new WordFaker($this->loader, nbWords: $number);
+        $faker = new WordFaker($this->loader, nbWords: 99);
         $isValid = $this->callProtectedMethod($faker, 'isNumberValid');
 
         $this->assertTrue($isValid);
     }
 
-    public function test_number_validation_fails_when_number_is_not_in_valid_range(): void
+    #[DataProvider('wordNumberValidationRangeProvider')]
+    public function test_number_validation_fails_when_number_is_not_in_valid_range(int $number): void
     {
-        $number = $this->getOneRandomElement([-1, 0, 101]);
-
         $faker = new WordFaker($this->loader, nbWords: $number);
         $isValid = $this->callProtectedMethod($faker, 'isNumberValid');
 
@@ -99,6 +92,10 @@ class WordFakerTest extends TestCase
 
         $this->assertIsArray($words);
         $this->assertCount(3, $words);
+
+        foreach ($words as $word) {
+            $this->assertContains($word, $this->words);
+        }
     }
 
     public function test_it_returns_fake_words_as_sentence(): void
@@ -131,5 +128,21 @@ class WordFakerTest extends TestCase
         $reflectedWordFaker = new ReflectionClass(WordFaker::class);
         $this->assertTrue($reflectedWordFaker->getProperty('asText')->getValue($newFaker));
         $this->assertSame(5, $reflectedWordFaker->getProperty('nbWords')->getValue($newFaker));
+    }
+
+    // ---------------
+    // Data Providers
+    // ---------------
+
+    /**
+     * Provides datasets in the format: `dataset => [int $number]`
+     */
+    public static function wordNumberValidationRangeProvider(): iterable
+    {
+        yield 'greater_than_100' => [101];
+
+        yield 'zero' => [0];
+
+        yield 'negative' => [-1];
     }
 }

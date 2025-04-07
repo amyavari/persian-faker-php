@@ -5,16 +5,14 @@ declare(strict_types=1);
 namespace Tests\Fakers\Phone;
 
 use AliYavari\PersianFaker\Contracts\DataLoaderInterface;
-use AliYavari\PersianFaker\Cores\Randomable;
 use AliYavari\PersianFaker\Exceptions\InvalidStateNameException;
 use AliYavari\PersianFaker\Fakers\Phone\PhoneNumberFaker;
 use Mockery;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\TestCase;
 
 class PhoneNumberFakerTest extends TestCase
 {
-    use Randomable;
-
     protected $loader;
 
     protected array $statePrefixes = ['yazd' => '035', 'teh' => '021', 'esf' => '031', 'gil' => '013'];
@@ -37,9 +35,7 @@ class PhoneNumberFakerTest extends TestCase
 
     public function test_state_validation_passes_with_existed_state(): void
     {
-        $state = array_rand($this->statePrefixes);
-
-        $faker = new PhoneNumberFaker($this->loader, state: $state);
+        $faker = new PhoneNumberFaker($this->loader, state: 'teh');
         $isValid = $this->callProtectedMethod($faker, 'isStateValid');
 
         $this->assertTrue($isValid);
@@ -63,12 +59,10 @@ class PhoneNumberFakerTest extends TestCase
 
     public function test_it_returns_specific_state_prefix_when_state_is_set(): void
     {
-        $state = array_rand($this->statePrefixes);
-
-        $faker = new PhoneNumberFaker($this->loader, state: $state);
+        $faker = new PhoneNumberFaker($this->loader, state: 'teh');
         $statePrefix = $this->callProtectedMethod($faker, 'getStatePrefix');
 
-        $this->assertSame($this->statePrefixes[$state], $statePrefix);
+        $this->assertSame($this->statePrefixes['teh'], $statePrefix);
     }
 
     public function test_it_generates_random_eight_digit_number(): void
@@ -80,14 +74,13 @@ class PhoneNumberFakerTest extends TestCase
         $this->assertIsNumeric($number);
     }
 
-    public function test_it_formats_phone_number(): void
+    #[DataProvider('formatPhoneNumberSeparatorProvider')]
+    public function test_it_formats_phone_number(string $separator, string $expectedFormat): void
     {
-        $separator = $this->getOneRandomElement(['', ' ', '-']);
-
         $faker = new PhoneNumberFaker($this->loader, separator: $separator);
         $formattedPhone = $this->callProtectedMethod($faker, 'formatPhone', ['021', '12345678']);
 
-        $this->assertSame("021{$separator}12345678", $formattedPhone);
+        $this->assertSame($expectedFormat, $formattedPhone);
     }
 
     public function test_it_returns_fake_phone_number_with_random_prefix(): void
@@ -112,14 +105,12 @@ class PhoneNumberFakerTest extends TestCase
 
     public function test_it_returns_fake_phone_number_for_specific_state(): void
     {
-        $state = array_rand($this->statePrefixes);
-
-        $faker = new PhoneNumberFaker($this->loader, state: $state);
+        $faker = new PhoneNumberFaker($this->loader, state: 'teh');
         $phoneNumber = $faker->generate(); // Expected format: 02112345678
 
         $this->assertIsString($phoneNumber);
         $this->assertSame(11, strlen($phoneNumber));
-        $this->assertSame($this->statePrefixes[$state], substr($phoneNumber, 0, 3));
+        $this->assertSame($this->statePrefixes['teh'], substr($phoneNumber, 0, 3));
     }
 
     public function test_it_throws_an_exception_with_invalid_state_name(): void
@@ -129,5 +120,23 @@ class PhoneNumberFakerTest extends TestCase
 
         $faker = new PhoneNumberFaker($this->loader, state: 'anonymous');
         $faker->generate();
+    }
+
+    // ---------------
+    // Data Providers
+    // ---------------
+
+    /**
+     * Provides datasets in the format: `dataset => [string $separator, string $expectedFormat]`
+     *
+     * Base number is `02112345678`
+     */
+    public static function formatPhoneNumberSeparatorProvider(): iterable
+    {
+        yield 'space' => [' ', '021 12345678'];
+
+        yield 'dash' => ['-', '021-12345678'];
+
+        yield 'nothing' => ['', '02112345678'];
     }
 }

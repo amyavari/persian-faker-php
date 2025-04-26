@@ -24,6 +24,14 @@ composer require --dev amyavari/persian-faker-php
 $persianFaker = \AliYavari\PersianFaker\Factory::create();
 ```
 
+## فراخوانی از طریق Helper
+
+اگر به جای اینکه از فراخوانی کلاس `Factory` استفاده کنید، می توانید از فراخوانی Helper استفاده کنید:
+
+```php
+$persianFaker = persian_faker();
+```
+
 ## توابع موجود
 
 اکثر توابع کتابخانه `persian-faker-php` فقط پیاده سازی توابع کتابخانه [fakerphp/faker](https://fakerphp.org/) برای پشتیبانی از زبان فارسی و اطلاعات کشور ایران می باشد. پیاده سازی، آرگومان های ورودی و خروجی عیناً مانند کتابخانه اصلی پیاده سازی شده اند.

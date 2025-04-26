@@ -27,6 +27,9 @@
         "symfony/var-dumper": "^7.1.6"
     },
     "autoload": {
+        "files": [
+            "helpers.php"
+        ],
         "psr-4": {
             "AliYavari\\PersianFaker\\": "src/"
         }

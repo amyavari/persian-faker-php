@@ -5,6 +5,7 @@
 /composer.lock
 /phpunit.xml
 /.vscode/
+/.idea/
 /vendor/
 *.swp
 *.swo

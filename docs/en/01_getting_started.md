@@ -24,6 +24,14 @@ You can easily create an instance of Faker in your PHP projects by calling the `
 $persianFaker = \AliYavari\PersianFaker\Factory::create();
 ```
 
+## Usage Helper
+
+If you prefer a simpler way to get a Persian Faker instance, you can use the global `persian_faker()` helper function provided by this package. This is especially useful in Laravel or any PHP project where global helpers are available.
+
+```php
+$persianFaker = persian_faker();
+```
+
 ## Available Methods
 
 Most methods in `persian-faker-php` are extensions of the [fakerphp/faker](https://fakerphp.org/) library, supporting only Persian language and Iran-specific data. The implementation and arguments for these methods are the same as those in the original Faker library.

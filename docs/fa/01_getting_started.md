@@ -26,7 +26,7 @@ $persianFaker = \AliYavari\PersianFaker\Factory::create();
 
 ## فراخوانی از طریق Helper
 
-اگر به جای اینکه از فراخوانی کلاس `Factory` استفاده کنید، می توانید از فراخوانی Helper استفاده کنید:
+به جای  فراخوانی و استفاده از کلاس `Factory`، می توانید از  Helper (تابع گلوبال) زیر استفاده کنید:
 
 ```php
 $persianFaker = persian_faker();

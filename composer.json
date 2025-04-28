@@ -28,7 +28,7 @@
     },
     "autoload": {
         "files": [
-            "helpers.php"
+            "./src/helpers.php"
         ],
         "psr-4": {
             "AliYavari\\PersianFaker\\": "src/"

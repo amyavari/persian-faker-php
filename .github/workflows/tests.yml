@@ -2,10 +2,18 @@ name: Tests
 
 on:
   push:
+    paths-ignore:
+      - "**.md"
+      - "docs/**"
     branches:
       - main
       - ci/test
   pull_request:
+    paths-ignore:
+      - "**.md"
+      - "docs/**"
+  schedule:
+    - cron: "0 0 * * *"
 
 jobs:
   tests:

@@ -8,6 +8,7 @@ use AliYavari\PersianFaker\Cores\Arrayable;
 use AliYavari\PersianFaker\Exceptions\InvalidMultiDimensionalArray;
 use AliYavari\PersianFaker\Exceptions\InvalidStringArrayException;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use stdClass;
 use Tests\TestCase;
 
@@ -35,7 +36,8 @@ final class ArrayableTest extends TestCase
         yield 'array' => [['arr'], 'array'];
     }
 
-    public function test_it_flattens_a_single_level_of_an_array(): void
+    #[Test]
+    public function it_flattens_a_single_level_of_an_array(): void
     {
         $arr = [
             'level_one_string' => ['array_one', 'array_two'],
@@ -48,7 +50,8 @@ final class ArrayableTest extends TestCase
         $this->assertSame($expected, $this->flatten($arr));
     }
 
-    public function test_flatten_throws_an_exception_if_input_is_not_one_dimensional_array(): void
+    #[Test]
+    public function flatten_throws_an_exception_if_input_is_not_one_dimensional_array(): void
     {
         $arr = [
             'invalid_element' => 'single_value',
@@ -62,7 +65,8 @@ final class ArrayableTest extends TestCase
         $this->flatten($arr);
     }
 
-    public function test_it_turns_an_array_of_string_to_one_string(): void
+    #[Test]
+    public function it_turns_an_array_of_string_to_one_string(): void
     {
         $arr = [
             'first text',
@@ -76,7 +80,8 @@ final class ArrayableTest extends TestCase
         $this->assertSame('first text second With Number 2', $output);
     }
 
-    public function test_it_turns_an_array_of_string_to_one_string_with_custom_separator(): void
+    #[Test]
+    public function it_turns_an_array_of_string_to_one_string_with_custom_separator(): void
     {
         $arr = [
             'first text',
@@ -90,8 +95,9 @@ final class ArrayableTest extends TestCase
         $this->assertSame('first text-second-With Number 2', $output);
     }
 
+    #[Test]
     #[DataProvider('invalidToStringElementProvider')]
-    public function test_to_string_throws_an_exception_if_elements_of_input_array_are_not_string(mixed $element, string $type): void
+    public function to_string_throws_an_exception_if_elements_of_input_array_are_not_string(mixed $element, string $type): void
     {
         $arr = [
             'first text',

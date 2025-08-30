@@ -7,6 +7,7 @@ namespace Tests\Fakers\Company;
 use AliYavari\PersianFaker\Contracts\DataLoaderInterface;
 use AliYavari\PersianFaker\Fakers\Company\CatchphraseFaker;
 use Mockery;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 final class CatchPhraseFakerTest extends TestCase
@@ -23,7 +24,8 @@ final class CatchPhraseFakerTest extends TestCase
         $this->loader->shouldReceive('get')->once()->andReturn($this->catchphrases);
     }
 
-    public function test_it_returns_fake_catchphrase(): void
+    #[Test]
+    public function it_returns_fake_catchphrase(): void
     {
         $faker = new CatchphraseFaker($this->loader);
         $catchphrase = $faker->generate();

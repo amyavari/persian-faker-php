@@ -7,6 +7,7 @@ namespace Tests\Fakers\Address;
 use AliYavari\PersianFaker\Contracts\DataLoaderInterface;
 use AliYavari\PersianFaker\Fakers\Address\StreetNameFaker;
 use Mockery;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 final class StreetNameFakerTest extends TestCase
@@ -23,7 +24,8 @@ final class StreetNameFakerTest extends TestCase
         $this->loader->shouldReceive('get')->once()->andReturn($this->streetNames);
     }
 
-    public function test_it_returns_fake_street_name(): void
+    #[Test]
+    public function it_returns_fake_street_name(): void
     {
         $faker = new StreetNameFaker($this->loader);
         $streetName = $faker->generate();

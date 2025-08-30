@@ -7,6 +7,7 @@ namespace Tests\Fakers\Address;
 use AliYavari\PersianFaker\Contracts\DataLoaderInterface;
 use AliYavari\PersianFaker\Fakers\SimplePicker;
 use Mockery;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 final class SimplePickerTest extends TestCase
@@ -23,7 +24,8 @@ final class SimplePickerTest extends TestCase
         $this->loader->shouldReceive('get')->once()->andReturn($this->simpleArray);
     }
 
-    public function test_it_returns_random_element_from_loaded_data(): void
+    #[Test]
+    public function it_returns_random_element_from_loaded_data(): void
     {
         $faker = new class($this->loader) extends SimplePicker {};
         $element = $this->callProtectedMethod($faker, 'generate');

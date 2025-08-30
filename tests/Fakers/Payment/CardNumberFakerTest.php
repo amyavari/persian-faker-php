@@ -9,6 +9,7 @@ use AliYavari\PersianFaker\Exceptions\InvalidBankNameException;
 use AliYavari\PersianFaker\Fakers\Payment\CardNumberFaker;
 use Mockery;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use RangeException;
 use Tests\TestCase;
 use TypeError;
@@ -57,7 +58,8 @@ final class CardNumberFakerTest extends TestCase
         yield 'nothing' => ['', '1234567890123456'];
     }
 
-    public function test_bank_validation_passes_with_null_bank_name(): void
+    #[Test]
+    public function bank_validation_passes_with_null_bank_name(): void
     {
         $faker = new CardNumberFaker($this->loader, bank: null);
         $isValid = $this->callProtectedMethod($faker, 'isBankValid');
@@ -65,7 +67,8 @@ final class CardNumberFakerTest extends TestCase
         $this->assertTrue($isValid);
     }
 
-    public function test_bank_validation_passes_with_existed_bank_name(): void
+    #[Test]
+    public function bank_validation_passes_with_existed_bank_name(): void
     {
         $faker = new CardNumberFaker($this->loader, bank: 'bank2');
         $isValid = $this->callProtectedMethod($faker, 'isBankValid');
@@ -73,7 +76,8 @@ final class CardNumberFakerTest extends TestCase
         $this->assertTrue($isValid);
     }
 
-    public function test_bank_validation_fails_with_not_existed_bank_name(): void
+    #[Test]
+    public function bank_validation_fails_with_not_existed_bank_name(): void
     {
         $faker = new CardNumberFaker($this->loader, bank: 'newName');
         $isValid = $this->callProtectedMethod($faker, 'isBankValid');
@@ -81,7 +85,8 @@ final class CardNumberFakerTest extends TestCase
         $this->assertFalse($isValid);
     }
 
-    public function test_it_returns_random_bin_when_bank_name_is_null_or_not_set(): void
+    #[Test]
+    public function it_returns_random_bin_when_bank_name_is_null_or_not_set(): void
     {
         $faker = new CardNumberFaker($this->loader, bank: null);
         $bin = $this->callProtectedMethod($faker, 'getBin');
@@ -89,7 +94,8 @@ final class CardNumberFakerTest extends TestCase
         $this->assertContains($bin, $this->banksBins);
     }
 
-    public function test_it_returns_specific_bin_when_bank_name_is_set(): void
+    #[Test]
+    public function it_returns_specific_bin_when_bank_name_is_set(): void
     {
         $faker = new CardNumberFaker($this->loader, bank: 'bank2');
         $bin = $this->callProtectedMethod($faker, 'getBin');
@@ -97,7 +103,8 @@ final class CardNumberFakerTest extends TestCase
         $this->assertSame($this->banksBins['bank2'], $bin);
     }
 
-    public function test_it_generate_random_nine_digit_number(): void
+    #[Test]
+    public function it_generate_random_nine_digit_number(): void
     {
         $faker = new CardNumberFaker($this->loader);
         $number = $this->callProtectedMethod($faker, 'generateRandomCardNumber');
@@ -106,8 +113,9 @@ final class CardNumberFakerTest extends TestCase
         $this->assertSame(9, mb_strlen((string) $number));
     }
 
+    #[Test]
     #[DataProvider('checkDigitsProvider')]
-    public function test_it_calculate_check_digit(int $checkDigit, string $cardNumber): void
+    public function it_calculate_check_digit(int $checkDigit, string $cardNumber): void
     {
         $faker = new CardNumberFaker($this->loader);
         $calculatedCheckDigit = $this->callProtectedMethod($faker, 'calculateCheckDigit', [$cardNumber]);
@@ -116,7 +124,8 @@ final class CardNumberFakerTest extends TestCase
         $this->assertCheckDigit($cardNumber, $checkDigit);
     }
 
-    public function test_it_throws_an_exception_if_input_number_is_less_than_fifteen_digits(): void
+    #[Test]
+    public function it_throws_an_exception_if_input_number_is_less_than_fifteen_digits(): void
     {
         $this->expectException(RangeException::class);
         $this->expectExceptionMessage('The input number must have 15 digits, 14-digit number is given.');
@@ -125,7 +134,8 @@ final class CardNumberFakerTest extends TestCase
         $this->callProtectedMethod($faker, 'calculateCheckDigit', ['12345678901234']);
     }
 
-    public function test_it_throws_an_exception_if_input_number_is_more_than_fifteen_digits(): void
+    #[Test]
+    public function it_throws_an_exception_if_input_number_is_more_than_fifteen_digits(): void
     {
         $this->expectException(RangeException::class);
         $this->expectExceptionMessage('The input number must have 15 digits, 16-digit number is given.');
@@ -134,7 +144,8 @@ final class CardNumberFakerTest extends TestCase
         $this->callProtectedMethod($faker, 'calculateCheckDigit', ['1234567890123456']);
     }
 
-    public function test_throws_an_exception_if_input_number_is_not_numeric(): void
+    #[Test]
+    public function throws_an_exception_if_input_number_is_not_numeric(): void
     {
         $this->expectException(TypeError::class);
         $this->expectExceptionMessage('The input must be numeric. string is given.');
@@ -143,8 +154,9 @@ final class CardNumberFakerTest extends TestCase
         $this->callProtectedMethod($faker, 'calculateCheckDigit', ['a23456789012345']);
     }
 
+    #[Test]
     #[DataProvider('formatCardNumberSeparatorProvider')]
-    public function test_it_formats_card_number_by_given_separator(string $separator, string $expectedFormat): void
+    public function it_formats_card_number_by_given_separator(string $separator, string $expectedFormat): void
     {
         $faker = new CardNumberFaker($this->loader, separator: $separator);
         $formattedNumber = $this->callProtectedMethod($faker, 'formatCardNumber', ['123456', 789012345, 6]);
@@ -152,7 +164,8 @@ final class CardNumberFakerTest extends TestCase
         $this->assertSame($expectedFormat, $formattedNumber);
     }
 
-    public function test_it_returns_fake_card_number_for_random_bank(): void
+    #[Test]
+    public function it_returns_fake_card_number_for_random_bank(): void
     {
         $faker = new CardNumberFaker($this->loader);
         $cardNumber = $faker->generate();
@@ -164,7 +177,8 @@ final class CardNumberFakerTest extends TestCase
         $this->assertCheckDigit(mb_substr($cardNumber, 0, 15), mb_substr($cardNumber, -1));
     }
 
-    public function test_it_returns_fake_card_number_for_specific_bank(): void
+    #[Test]
+    public function it_returns_fake_card_number_for_specific_bank(): void
     {
         $faker = new CardNumberFaker($this->loader, bank: 'bank2');
         $cardNumber = $faker->generate();
@@ -176,7 +190,8 @@ final class CardNumberFakerTest extends TestCase
         $this->assertCheckDigit(mb_substr($cardNumber, 0, 15), mb_substr($cardNumber, -1));
     }
 
-    public function test_it_returns_fake_card_number_with_specific_separator(): void
+    #[Test]
+    public function it_returns_fake_card_number_with_specific_separator(): void
     {
         $faker = new CardNumberFaker($this->loader, separator: '-');
         $cardNumber = $faker->generate();
@@ -189,7 +204,8 @@ final class CardNumberFakerTest extends TestCase
         $this->assertCheckDigit(mb_substr($cardNumberDigits, 0, 15), mb_substr($cardNumberDigits, -1));
     }
 
-    public function test_it_throws_an_exception_if_bank_name_is_not_valid(): void
+    #[Test]
+    public function it_throws_an_exception_if_bank_name_is_not_valid(): void
     {
         $faker = new CardNumberFaker($this->loader, bank: 'anonymous');
 

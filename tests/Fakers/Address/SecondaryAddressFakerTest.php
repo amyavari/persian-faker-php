@@ -7,6 +7,7 @@ namespace Tests\Fakers\Address;
 use AliYavari\PersianFaker\Contracts\DataLoaderInterface;
 use AliYavari\PersianFaker\Fakers\Address\SecondaryAddressFaker;
 use Mockery;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 final class SecondaryAddressFakerTest extends TestCase
@@ -23,7 +24,8 @@ final class SecondaryAddressFakerTest extends TestCase
         $this->loader->shouldReceive('get')->once()->andReturn($this->secondaryAddPrefixes);
     }
 
-    public function test_it_returns_random_secondary_address_prefix(): void
+    #[Test]
+    public function it_returns_random_secondary_address_prefix(): void
     {
         $faker = new SecondaryAddressFaker($this->loader);
         $prefix = $this->callProtectedMethod($faker, 'getRandomPrefix');
@@ -32,7 +34,8 @@ final class SecondaryAddressFakerTest extends TestCase
         $this->assertContains($prefix, $this->secondaryAddPrefixes);
     }
 
-    public function test_it_returns_fake_secondary_address(): void
+    #[Test]
+    public function it_returns_fake_secondary_address(): void
     {
         $faker = new SecondaryAddressFaker($this->loader);
         $secondaryAddress = $faker->generate(); // Expected format: floor 12

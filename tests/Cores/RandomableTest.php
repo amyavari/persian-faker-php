@@ -6,13 +6,15 @@ namespace Tests\Cores;
 
 use AliYavari\PersianFaker\Cores\Randomable;
 use AliYavari\PersianFaker\Exceptions\InvalidElementNumberException;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 final class RandomableTest extends TestCase
 {
     use Randomable;
 
-    public function test_it_returns_one_random_item(): void
+    #[Test]
+    public function it_returns_one_random_item(): void
     {
         $data = ['item_one', 'item_two', 'item_three'];
 
@@ -22,7 +24,8 @@ final class RandomableTest extends TestCase
         $this->assertContains($randomItem, $data);
     }
 
-    public function test_it_returns_multiple_random_items(): void
+    #[Test]
+    public function it_returns_multiple_random_items(): void
     {
         $data = ['item_one', 'item_two', 'item_three', 'item_four', 'item_five'];
 
@@ -36,7 +39,8 @@ final class RandomableTest extends TestCase
         }
     }
 
-    public function test_it_throws_an_exception_if_number_of_returned_elements_is_less_that_1(): void
+    #[Test]
+    public function it_throws_an_exception_if_number_of_returned_elements_is_less_that_1(): void
     {
         $data = ['item_one', 'item_two', 'item_three', 'item_four', 'item_five'];
 
@@ -46,7 +50,8 @@ final class RandomableTest extends TestCase
         $this->getMultipleRandomElements($data, 0);
     }
 
-    public function test_it_throws_an_exception_if_number_of_returned_elements_is_negative(): void
+    #[Test]
+    public function it_throws_an_exception_if_number_of_returned_elements_is_negative(): void
     {
         $data = ['item_one', 'item_two', 'item_three', 'item_four', 'item_five'];
 

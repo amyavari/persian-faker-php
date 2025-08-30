@@ -5,11 +5,13 @@ declare(strict_types=1);
 namespace Tests\Fakers\Address;
 
 use AliYavari\PersianFaker\Fakers\Address\PostCodeFaker;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 final class PostCodeFakerTest extends TestCase
 {
-    public function test_it_returns_random_post_code_number(): void
+    #[Test]
+    public function it_returns_random_post_code_number(): void
     {
         $faker = new PostCodeFaker;
         $postCode = $this->callProtectedMethod($faker, 'generateRandomPostCode');
@@ -19,7 +21,8 @@ final class PostCodeFakerTest extends TestCase
         $this->assertMatchesRegularExpression('/^[1-9]{10}$/', $postCode);
     }
 
-    public function test_it_adds_separator_to_post_code(): void
+    #[Test]
+    public function it_adds_separator_to_post_code(): void
     {
         $faker = new PostCodeFaker;
         $formattedPostCode = $this->callProtectedMethod($faker, 'addSeparator', ['1234567890']);
@@ -27,7 +30,8 @@ final class PostCodeFakerTest extends TestCase
         $this->assertSame('12345-67890', $formattedPostCode);
     }
 
-    public function test_it_returns_post_code_without_separator(): void
+    #[Test]
+    public function it_returns_post_code_without_separator(): void
     {
         $faker = new PostCodeFaker;
         $postCode = $faker->generate(); // Expected format: 1234567890
@@ -37,7 +41,8 @@ final class PostCodeFakerTest extends TestCase
         $this->assertMatchesRegularExpression('/^[1-9]{10}$/', $postCode);
     }
 
-    public function test_it_returns_post_code_with_separator(): void
+    #[Test]
+    public function it_returns_post_code_with_separator(): void
     {
         $faker = new PostCodeFaker(withSeparator: true);
         $postCode = $faker->generate(); // Expected format: 12345-67890

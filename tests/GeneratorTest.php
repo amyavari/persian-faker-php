@@ -8,6 +8,7 @@ use AliYavari\PersianFaker\Contracts\GeneratorInterface;
 use AliYavari\PersianFaker\Cores\Arrayable;
 use AliYavari\PersianFaker\DataLoader;
 use AliYavari\PersianFaker\Generator;
+use PHPUnit\Framework\Attributes\Test;
 
 /**
  * This includes integration tests
@@ -25,7 +26,8 @@ final class GeneratorTest extends TestCase
         $this->generator = new Generator;
     }
 
-    public function test_it_returns_title(): void
+    #[Test]
+    public function it_returns_title(): void
     {
         $loader = new DataLoader('person.titles');
         $titles = $loader->get(); // ['male' => [...], 'female' => [...]]
@@ -43,7 +45,8 @@ final class GeneratorTest extends TestCase
         $this->assertContains($title, $titles['male']);
     }
 
-    public function test_it_returns_male_title(): void
+    #[Test]
+    public function it_returns_male_title(): void
     {
         $loader = new DataLoader('person.titles');
         $titles = $loader->get(); // ['male' => [...], 'female' => [...]]
@@ -54,7 +57,8 @@ final class GeneratorTest extends TestCase
         $this->assertContains($title, $titles['male']);
     }
 
-    public function test_it_returns_female_title(): void
+    #[Test]
+    public function it_returns_female_title(): void
     {
         $loader = new DataLoader('person.titles');
         $titles = $loader->get(); // ['male' => [...], 'female' => [...]]
@@ -65,7 +69,8 @@ final class GeneratorTest extends TestCase
         $this->assertContains($title, $titles['female']);
     }
 
-    public function test_it_returns_first_name(): void
+    #[Test]
+    public function it_returns_first_name(): void
     {
         $loader = new DataLoader('person.first_names');
         $names = $loader->get(); // ['male' => [...], 'female' => [...]]
@@ -83,7 +88,8 @@ final class GeneratorTest extends TestCase
         $this->assertContains($firstName, $names['male']);
     }
 
-    public function test_it_returns_male_first_name(): void
+    #[Test]
+    public function it_returns_male_first_name(): void
     {
         $loader = new DataLoader('person.first_names');
         $names = $loader->get(); // ['male' => [...], 'female' => [...]]
@@ -94,7 +100,8 @@ final class GeneratorTest extends TestCase
         $this->assertContains($firstName, $names['male']);
     }
 
-    public function test_it_returns_female_first_name(): void
+    #[Test]
+    public function it_returns_female_first_name(): void
     {
         $loader = new DataLoader('person.first_names');
         $names = $loader->get(); // ['male' => [...], 'female' => [...]]
@@ -105,7 +112,8 @@ final class GeneratorTest extends TestCase
         $this->assertContains($firstName, $names['female']);
     }
 
-    public function test_it_returns_last_name(): void
+    #[Test]
+    public function it_returns_last_name(): void
     {
         $loader = new DataLoader('person.last_names');
         $lastNames = $loader->get(); // [...]
@@ -116,7 +124,8 @@ final class GeneratorTest extends TestCase
         $this->assertContains($lastName, $lastNames);
     }
 
-    public function test_it_returns_full_name(): void
+    #[Test]
+    public function it_returns_full_name(): void
     {
         // Default (random gender)
         $name = $this->generator->name();
@@ -131,7 +140,8 @@ final class GeneratorTest extends TestCase
         $this->assertIsArray(explode(' ', $name));
     }
 
-    public function test_it_returns_national_code(): void
+    #[Test]
+    public function it_returns_national_code(): void
     {
         $loader = new DataLoader('person.national_code_state_prefixes');
         $statePrefixes = $loader->get(); // ['STATE_NAME' => [...]]
@@ -149,7 +159,8 @@ final class GeneratorTest extends TestCase
         $this->assertContains(mb_substr($nationalCode, 0, 3), $statePrefixes['yazd']);
     }
 
-    public function test_it_returns_secondary_address(): void
+    #[Test]
+    public function it_returns_secondary_address(): void
     {
         $loader = new DataLoader('address.secondary_address_prefixes');
         $secondaryAddressPrefixes = $loader->get(); // [...]
@@ -163,7 +174,8 @@ final class GeneratorTest extends TestCase
         $this->assertIsNumeric($number);
     }
 
-    public function test_it_returns_state(): void
+    #[Test]
+    public function it_returns_state(): void
     {
         $loader = new DataLoader('address.states');
         $states = $loader->get(); // [...]
@@ -174,7 +186,8 @@ final class GeneratorTest extends TestCase
         $this->assertContains($state, $states);
     }
 
-    public function test_it_returns_city(): void
+    #[Test]
+    public function it_returns_city(): void
     {
         $loader = new DataLoader('address.cities');
         $cities = $loader->get(); // [...]
@@ -185,7 +198,8 @@ final class GeneratorTest extends TestCase
         $this->assertContains($city, $cities);
     }
 
-    public function test_it_returns_street_name(): void
+    #[Test]
+    public function it_returns_street_name(): void
     {
         $loader = new DataLoader('address.street_names');
         $streetNames = $loader->get(); // [...]
@@ -196,7 +210,8 @@ final class GeneratorTest extends TestCase
         $this->assertContains($streetName, $streetNames);
     }
 
-    public function test_it_returns_address(): void
+    #[Test]
+    public function it_returns_address(): void
     {
         $loader = new DataLoader('address.addresses');
         $addresses = $loader->get(); // [...]
@@ -207,7 +222,8 @@ final class GeneratorTest extends TestCase
         $this->assertContains($address, $addresses);
     }
 
-    public function test_it_returns_post_code(): void
+    #[Test]
+    public function it_returns_post_code(): void
     {
         // Default (without separator)
         $postCode = $this->generator->postCode();
@@ -222,7 +238,8 @@ final class GeneratorTest extends TestCase
         $this->assertSame(11, mb_strlen($postCode));
     }
 
-    public function test_it_returns_state_phone_prefix(): void
+    #[Test]
+    public function it_returns_state_phone_prefix(): void
     {
         $loader = new DataLoader('phone.state_prefixes');
         $statePrefixes = $loader->get(); // ['STATE_NAME' => 'PREFIX']
@@ -233,7 +250,8 @@ final class GeneratorTest extends TestCase
         $this->assertContains($statePrefix, $statePrefixes);
     }
 
-    public function test_it_returns_phone_number(): void
+    #[Test]
+    public function it_returns_phone_number(): void
     {
         $loader = new DataLoader('phone.state_prefixes');
         $statePrefixes = $loader->get(); // ['STATE_NAME' => 'PREFIX']
@@ -254,7 +272,8 @@ final class GeneratorTest extends TestCase
         $this->assertSame(11, mb_strlen(str_replace('-', '', $phoneNumber)));
     }
 
-    public function test_it_returns_cell_phone_number(): void
+    #[Test]
+    public function it_returns_cell_phone_number(): void
     {
         $loader = new DataLoader('phone.mobile_prefixes');
         $mobilePrefixes = $loader->get(); // ['PROVIDER' => [...]]
@@ -275,7 +294,8 @@ final class GeneratorTest extends TestCase
         $this->assertSame(11, mb_strlen(str_replace('-', '', $cellPhoneNumber)));
     }
 
-    public function test_it_returns_company_name(): void
+    #[Test]
+    public function it_returns_company_name(): void
     {
         $loader = new DataLoader('company.companies');
         $companies = $loader->get(); // [...]
@@ -286,7 +306,8 @@ final class GeneratorTest extends TestCase
         $this->assertContains($company, $companies);
     }
 
-    public function test_it_returns_company_catchphrase(): void
+    #[Test]
+    public function it_returns_company_catchphrase(): void
     {
         $loader = new DataLoader('company.catchphrases');
         $catchphrases = $loader->get(); // [...]
@@ -297,7 +318,8 @@ final class GeneratorTest extends TestCase
         $this->assertContains($catchphrase, $catchphrases);
     }
 
-    public function test_it_returns_job_title(): void
+    #[Test]
+    public function it_returns_job_title(): void
     {
         $loader = new DataLoader('company.job_titles');
         $jobTitles = $loader->get(); // [...]
@@ -308,7 +330,8 @@ final class GeneratorTest extends TestCase
         $this->assertContains($jobTitle, $jobTitles);
     }
 
-    public function test_it_returns_word(): void
+    #[Test]
+    public function it_returns_word(): void
     {
         $loader = new DataLoader('text.words');
         $words = $loader->get(); // [...]
@@ -319,7 +342,8 @@ final class GeneratorTest extends TestCase
         $this->assertContains($word, $words);
     }
 
-    public function test_it_returns_words_as_array(): void
+    #[Test]
+    public function it_returns_words_as_array(): void
     {
         $words = $this->generator->words(4, false);
 
@@ -327,7 +351,8 @@ final class GeneratorTest extends TestCase
         $this->assertCount(4, $words);
     }
 
-    public function test_it_returns_words_as_string(): void
+    #[Test]
+    public function it_returns_words_as_string(): void
     {
         $words = $this->generator->words(4, true);
 
@@ -335,7 +360,8 @@ final class GeneratorTest extends TestCase
         $this->assertCount(4, explode(' ', $words));
     }
 
-    public function test_it_returns_sentence_with_strict_number_of_words(): void
+    #[Test]
+    public function it_returns_sentence_with_strict_number_of_words(): void
     {
         $sentence = $this->generator->sentence(50, false);
 
@@ -343,7 +369,8 @@ final class GeneratorTest extends TestCase
         $this->assertCount(50, explode(' ', $sentence));
     }
 
-    public function test_it_returns_sentence_with_variable_number_of_words(): void
+    #[Test]
+    public function it_returns_sentence_with_variable_number_of_words(): void
     {
         $runs = 10;
         $wordNumbers = [];
@@ -359,7 +386,8 @@ final class GeneratorTest extends TestCase
         $this->assertGreaterThan(1, count(array_unique($wordNumbers)));
     }
 
-    public function test_it_returns_sentences_as_array(): void
+    #[Test]
+    public function it_returns_sentences_as_array(): void
     {
         $sentences = $this->generator->sentences(4, false);
 
@@ -367,7 +395,8 @@ final class GeneratorTest extends TestCase
         $this->assertCount(4, $sentences);
     }
 
-    public function test_it_returns_sentences_as_string(): void
+    #[Test]
+    public function it_returns_sentences_as_string(): void
     {
         $sentences = $this->generator->sentences(4, true);
 
@@ -375,7 +404,8 @@ final class GeneratorTest extends TestCase
         $this->assertCount(4, explode('. ', $sentences));
     }
 
-    public function test_it_returns_paragraph_with_strict_number_of_sentences(): void
+    #[Test]
+    public function it_returns_paragraph_with_strict_number_of_sentences(): void
     {
         $paragraph = $this->generator->paragraph(50, false);
 
@@ -383,7 +413,8 @@ final class GeneratorTest extends TestCase
         $this->assertCount(50, explode('. ', $paragraph));
     }
 
-    public function test_it_returns_paragraph_with_variable_number_of_sentences(): void
+    #[Test]
+    public function it_returns_paragraph_with_variable_number_of_sentences(): void
     {
         $runs = 10;
         $sentenceNumbers = [];
@@ -399,7 +430,8 @@ final class GeneratorTest extends TestCase
         $this->assertGreaterThan(1, count(array_unique($sentenceNumbers)));
     }
 
-    public function test_it_returns_paragraphs_as_array(): void
+    #[Test]
+    public function it_returns_paragraphs_as_array(): void
     {
         $paragraphs = $this->generator->paragraphs(4, false);
 
@@ -407,7 +439,8 @@ final class GeneratorTest extends TestCase
         $this->assertCount(4, $paragraphs);
     }
 
-    public function test_it_returns_paragraphs_as_string(): void
+    #[Test]
+    public function it_returns_paragraphs_as_string(): void
     {
         $paragraphs = $this->generator->paragraphs(4, true);
 
@@ -415,7 +448,8 @@ final class GeneratorTest extends TestCase
         $this->assertCount(4, explode("\n", $paragraphs));
     }
 
-    public function test_it_returns_text(): void
+    #[Test]
+    public function it_returns_text(): void
     {
         $text = $this->generator->text(300);
 
@@ -423,7 +457,8 @@ final class GeneratorTest extends TestCase
         $this->assertLessThanOrEqual(300, mb_strlen($text));
     }
 
-    public function test_it_returns_bank_name(): void
+    #[Test]
+    public function it_returns_bank_name(): void
     {
         $loader = new DataLoader('payment.bank_names');
         $banks = $loader->get(); // [...]
@@ -434,7 +469,8 @@ final class GeneratorTest extends TestCase
         $this->assertContains($bank, $banks);
     }
 
-    public function test_it_returns_fake_bank_card_number(): void
+    #[Test]
+    public function it_returns_fake_bank_card_number(): void
     {
         $loader = new DataLoader('payment.bank_bins');
         $bankBins = $loader->get(); // ['BANK_NAME' => 'BIN']
@@ -457,7 +493,8 @@ final class GeneratorTest extends TestCase
         $this->assertSame($bankBins['mellat'], mb_substr($rawCardNumber, 0, 6));
     }
 
-    public function test_it_returns_fake_bank_sheba_number(): void
+    #[Test]
+    public function it_returns_fake_bank_sheba_number(): void
     {
         $loader = new DataLoader('payment.bank_sheba_codes');
         $bankCodes = $loader->get(); // ['BANK_NAME' => 'CODE']
@@ -482,7 +519,8 @@ final class GeneratorTest extends TestCase
         $this->assertSame($bankCodes['mellat'], mb_substr($rawShebaNumber, 2, 3));
     }
 
-    public function test_it_returns_safe_color_name(): void
+    #[Test]
+    public function it_returns_safe_color_name(): void
     {
         $loader = new DataLoader('color.colors');
         $colors = $loader->get(); // ['main' => [...], 'all' => [...]]
@@ -493,7 +531,8 @@ final class GeneratorTest extends TestCase
         $this->assertContains($color, $colors['main']);
     }
 
-    public function test_it_returns_color_name(): void
+    #[Test]
+    public function it_returns_color_name(): void
     {
         $loader = new DataLoader('color.colors');
         $colors = $loader->get(); // ['main' => [...], 'all' => [...]]

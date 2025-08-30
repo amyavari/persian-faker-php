@@ -8,6 +8,7 @@ use AliYavari\PersianFaker\DataLoader;
 use AliYavari\PersianFaker\Exceptions\FileNotFoundException;
 use AliYavari\PersianFaker\Exceptions\InvalidDataKeyException;
 use AliYavari\PersianFaker\Exceptions\InvalidDataPathException;
+use PHPUnit\Framework\Attributes\Test;
 use TypeError;
 
 final class DataLoaderTest extends TestCase
@@ -21,7 +22,8 @@ final class DataLoaderTest extends TestCase
         $this->dataDirectoryPath = dirname(__DIR__, 1).DIRECTORY_SEPARATOR.'src'.DIRECTORY_SEPARATOR.'data'.DIRECTORY_SEPARATOR;
     }
 
-    public function test_it_returns_array_value_with_one_dimensional_key(): void
+    #[Test]
+    public function it_returns_array_value_with_one_dimensional_key(): void
     {
         $array = [
             'key' => 123,
@@ -34,7 +36,8 @@ final class DataLoaderTest extends TestCase
         $this->assertSame(123, $value);
     }
 
-    public function test_it_returns_array_value_with_multi_dimensional_key(): void
+    #[Test]
+    public function it_returns_array_value_with_multi_dimensional_key(): void
     {
         $array = [
             'first_key' => [
@@ -51,7 +54,8 @@ final class DataLoaderTest extends TestCase
         $this->assertSame(['one', 'two', 'three'], $value);
     }
 
-    public function test_it_throws_an_exception_with_invalid_array_key(): void
+    #[Test]
+    public function it_throws_an_exception_with_invalid_array_key(): void
     {
         $array = [
             'first_key' => 'single_value',
@@ -66,7 +70,8 @@ final class DataLoaderTest extends TestCase
         $this->callProtectedMethod($loader, 'getArrayDataByNestedKeys', [$array, $keys]);
     }
 
-    public function test_it_throws_an_exception_with_invalid_array_structure(): void
+    #[Test]
+    public function it_throws_an_exception_with_invalid_array_structure(): void
     {
         $array = [
             'first_key' => 'single_value',
@@ -81,7 +86,8 @@ final class DataLoaderTest extends TestCase
         $this->callProtectedMethod($loader, 'getArrayDataByNestedKeys', [$array, $keys]);
     }
 
-    public function test_it_loads_file_inside_data_directory(): void
+    #[Test]
+    public function it_loads_file_inside_data_directory(): void
     {
         file_put_contents($this->dataDirectoryPath.'test.php', '<?php return [];');
 
@@ -93,7 +99,8 @@ final class DataLoaderTest extends TestCase
         unlink($this->dataDirectoryPath.'test.php');
     }
 
-    public function test_it_throws_an_exception_with_invalid_file_name(): void
+    #[Test]
+    public function it_throws_an_exception_with_invalid_file_name(): void
     {
         $this->expectException(FileNotFoundException::class);
         $this->expectExceptionMessage(sprintf('The file %s is not found.', $this->dataDirectoryPath.'wrongFile.php'));
@@ -102,7 +109,8 @@ final class DataLoaderTest extends TestCase
         $this->callProtectedMethod($loader, 'loadFile', ['wrongFile']);
     }
 
-    public function test_it_separates_file_name_and_keys_from_path(): void
+    #[Test]
+    public function it_separates_file_name_and_keys_from_path(): void
     {
         $loader = new DataLoader(path: 'fileName.first_key.second_key');
         $fileNameAndKeys = $this->callProtectedMethod($loader, 'getFileNameAndKeys');
@@ -113,7 +121,8 @@ final class DataLoaderTest extends TestCase
         ], $fileNameAndKeys);
     }
 
-    public function test_it_throws_an_exception_with_invalid_file_and_keys_path(): void
+    #[Test]
+    public function it_throws_an_exception_with_invalid_file_and_keys_path(): void
     {
         $path = 'test-key';
 
@@ -124,7 +133,8 @@ final class DataLoaderTest extends TestCase
         $this->callProtectedMethod($loader, 'getFileNameAndKeys');
     }
 
-    public function test_it_returns_data_from_correct_file_name_and_keys(): void
+    #[Test]
+    public function it_returns_data_from_correct_file_name_and_keys(): void
     {
         $fileContent = '
         <?php

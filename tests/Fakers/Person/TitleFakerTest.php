@@ -9,6 +9,7 @@ use AliYavari\PersianFaker\Cores\Arrayable;
 use AliYavari\PersianFaker\Exceptions\InvalidGenderException;
 use AliYavari\PersianFaker\Fakers\Person\TitleFaker;
 use Mockery;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 final class TitleFakerTest extends TestCase
@@ -30,7 +31,8 @@ final class TitleFakerTest extends TestCase
         $this->loader->shouldReceive('get')->once()->andReturn($this->titles);
     }
 
-    public function test_gender_validation_passes_with_null_gender(): void
+    #[Test]
+    public function gender_validation_passes_with_null_gender(): void
     {
         $faker = new TitleFaker($this->loader, gender: null);
         $isValid = $this->callProtectedMethod($faker, 'isGenderValid');
@@ -38,7 +40,8 @@ final class TitleFakerTest extends TestCase
         $this->assertTrue($isValid);
     }
 
-    public function test_gender_validation_passes_with_existed_gender(): void
+    #[Test]
+    public function gender_validation_passes_with_existed_gender(): void
     {
         $faker = new TitleFaker($this->loader, gender: 'male');
         $isValid = $this->callProtectedMethod($faker, 'isGenderValid');
@@ -46,7 +49,8 @@ final class TitleFakerTest extends TestCase
         $this->assertTrue($isValid);
     }
 
-    public function test_gender_validation_fails_with_not_existed_gender(): void
+    #[Test]
+    public function gender_validation_fails_with_not_existed_gender(): void
     {
         $faker = new TitleFaker($this->loader, gender: 'newGender');
         $isValid = $this->callProtectedMethod($faker, 'isGenderValid');
@@ -54,7 +58,8 @@ final class TitleFakerTest extends TestCase
         $this->assertFalse($isValid);
     }
 
-    public function test_it_returns_all_titles_when_gender_is_not_set_or_is_null(): void
+    #[Test]
+    public function it_returns_all_titles_when_gender_is_not_set_or_is_null(): void
     {
         $faker = new TitleFaker($this->loader, gender: null);
         $titles = $this->callProtectedMethod($faker, 'getTitles');
@@ -62,7 +67,8 @@ final class TitleFakerTest extends TestCase
         $this->assertEqualsCanonicalizing($this->flatten($this->titles), $titles); // All titles
     }
 
-    public function test_it_returns_titles_of_specific_gender_when_gender_is_set(): void
+    #[Test]
+    public function it_returns_titles_of_specific_gender_when_gender_is_set(): void
     {
         $faker = new TitleFaker($this->loader, gender: 'female');
         $titles = $this->callProtectedMethod($faker, 'getTitles');
@@ -70,7 +76,8 @@ final class TitleFakerTest extends TestCase
         $this->assertEqualsCanonicalizing($this->titles['female'], $titles);
     }
 
-    public function test_it_returns_fake_title(): void
+    #[Test]
+    public function it_returns_fake_title(): void
     {
         $titleFaker = new TitleFaker($this->loader);
         $title = $titleFaker->generate();
@@ -79,7 +86,8 @@ final class TitleFakerTest extends TestCase
         $this->assertContains($title, $this->flatten($this->titles)); // All titles
     }
 
-    public function test_it_returns_fake_title_with_gender_is_set(): void
+    #[Test]
+    public function it_returns_fake_title_with_gender_is_set(): void
     {
         $titleFaker = new TitleFaker($this->loader, gender: 'male');
         $title = $titleFaker->generate();
@@ -88,7 +96,8 @@ final class TitleFakerTest extends TestCase
         $this->assertContains($title, $this->titles['male']);
     }
 
-    public function test_it_throws_an_exception_with_invalid_gender(): void
+    #[Test]
+    public function it_throws_an_exception_with_invalid_gender(): void
     {
         $this->expectException(InvalidGenderException::class);
         $this->expectExceptionMessage('The gender anonymous is not valid.');

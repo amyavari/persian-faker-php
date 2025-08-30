@@ -9,6 +9,7 @@ use AliYavari\PersianFaker\Cores\Arrayable;
 use AliYavari\PersianFaker\Exceptions\InvalidDataKeyException;
 use AliYavari\PersianFaker\Fakers\Colors\ColorNameFaker;
 use Mockery;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 final class ColorNameFakerTest extends TestCase
@@ -30,7 +31,8 @@ final class ColorNameFakerTest extends TestCase
         $this->loader->shouldReceive('get')->once()->andReturn($this->colors)->byDefault();
     }
 
-    public function test_validation_passes_with_existence_of_necessary_keys(): void
+    #[Test]
+    public function validation_passes_with_existence_of_necessary_keys(): void
     {
         $faker = new ColorNameFaker($this->loader);
         $hasKeys = $this->callProtectedMethod($faker, 'hasNecessaryKeys', [['main' => [], 'all' => []]]);
@@ -38,7 +40,8 @@ final class ColorNameFakerTest extends TestCase
         $this->assertTrue($hasKeys);
     }
 
-    public function test_validation_fails_with_missing_of_necessary_keys(): void
+    #[Test]
+    public function validation_fails_with_missing_of_necessary_keys(): void
     {
         $faker = new ColorNameFaker($this->loader);
         $hasKeys = $this->callProtectedMethod($faker, 'hasNecessaryKeys', [['main' => []]]);
@@ -50,7 +53,8 @@ final class ColorNameFakerTest extends TestCase
         $this->assertFalse($hasKeys);
     }
 
-    public function test_it_returns_only_main_colors_when_only_main_is_set_to_true(): void
+    #[Test]
+    public function it_returns_only_main_colors_when_only_main_is_set_to_true(): void
     {
         $faker = new ColorNameFaker($this->loader, onlyMain: true);
         $colors = $this->callProtectedMethod($faker, 'getColors');
@@ -59,7 +63,8 @@ final class ColorNameFakerTest extends TestCase
         $this->assertEqualsCanonicalizing($this->colors['main'], $colors);
     }
 
-    public function test_it_returns_all_colors_when_only_main_is_set_to_false(): void
+    #[Test]
+    public function it_returns_all_colors_when_only_main_is_set_to_false(): void
     {
         $faker = new ColorNameFaker($this->loader);
         $colors = $this->callProtectedMethod($faker, 'getColors');
@@ -68,7 +73,8 @@ final class ColorNameFakerTest extends TestCase
         $this->assertEqualsCanonicalizing($this->flatten($this->colors), $colors); // `main` and `all` colors
     }
 
-    public function test_it_returns_fake_color_name(): void
+    #[Test]
+    public function it_returns_fake_color_name(): void
     {
         $faker = new ColorNameFaker($this->loader);
         $color = $faker->generate();
@@ -77,7 +83,8 @@ final class ColorNameFakerTest extends TestCase
         $this->assertContains($color, $this->flatten($this->colors)); // `main` and `all` colors
     }
 
-    public function test_it_returns_fake_main_color_name(): void
+    #[Test]
+    public function it_returns_fake_main_color_name(): void
     {
         $faker = new ColorNameFaker($this->loader, onlyMain: true);
         $color = $faker->generate();
@@ -86,7 +93,8 @@ final class ColorNameFakerTest extends TestCase
         $this->assertContains($color, $this->colors['main']);
     }
 
-    public function test_it_throws_an_exception_if_necessary_keys_are_not_present(): void
+    #[Test]
+    public function it_throws_an_exception_if_necessary_keys_are_not_present(): void
     {
         $this->loader->shouldReceive('get')->once()->andReturn(['another_key' => []]);
 

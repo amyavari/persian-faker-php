@@ -7,6 +7,7 @@ namespace Tests\Fakers\Phone;
 use AliYavari\PersianFaker\Contracts\DataLoaderInterface;
 use AliYavari\PersianFaker\Fakers\Phone\StatePhonePrefixFaker;
 use Mockery;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 final class StatePhonePrefixFakerTest extends TestCase
@@ -23,7 +24,8 @@ final class StatePhonePrefixFakerTest extends TestCase
         $this->loader->shouldReceive('get')->once()->andReturn($this->statePrefixes);
     }
 
-    public function test_it_returns_fake_state_prefix(): void
+    #[Test]
+    public function it_returns_fake_state_prefix(): void
     {
         $faker = new StatePhonePrefixFaker($this->loader);
         $phonePrefix = $faker->generate();

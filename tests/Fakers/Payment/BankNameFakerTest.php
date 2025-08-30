@@ -7,6 +7,7 @@ namespace Tests\Fakers\Payment;
 use AliYavari\PersianFaker\Contracts\DataLoaderInterface;
 use AliYavari\PersianFaker\Fakers\Payment\BankNameFaker;
 use Mockery;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 final class BankNameFakerTest extends TestCase
@@ -23,7 +24,8 @@ final class BankNameFakerTest extends TestCase
         $this->loader->shouldReceive('get')->once()->andReturn($this->banks);
     }
 
-    public function test_it_returns_fake_bank_name(): void
+    #[Test]
+    public function it_returns_fake_bank_name(): void
     {
         $faker = new BankNameFaker($this->loader);
         $bank = $faker->generate();

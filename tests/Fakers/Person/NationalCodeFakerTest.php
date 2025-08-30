@@ -10,6 +10,7 @@ use AliYavari\PersianFaker\Exceptions\InvalidStateNameException;
 use AliYavari\PersianFaker\Fakers\Person\NationalCodeFaker;
 use Mockery;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use RangeException;
 use Tests\TestCase;
 use TypeError;
@@ -50,7 +51,8 @@ final class NationalCodeFakerTest extends TestCase
         yield 'reminder_less_than_2' => [1, '773168993'];
     }
 
-    public function test_state_validation_passes_with_null_state(): void
+    #[Test]
+    public function state_validation_passes_with_null_state(): void
     {
         $faker = new NationalCodeFaker($this->loader, state: null);
         $isValid = $this->callProtectedMethod($faker, 'isStateValid');
@@ -58,7 +60,8 @@ final class NationalCodeFakerTest extends TestCase
         $this->assertTrue($isValid);
     }
 
-    public function test_state_validation_passes_with_existed_state(): void
+    #[Test]
+    public function state_validation_passes_with_existed_state(): void
     {
         $faker = new NationalCodeFaker($this->loader, state: 'state_two');
         $isValid = $this->callProtectedMethod($faker, 'isStateValid');
@@ -66,7 +69,8 @@ final class NationalCodeFakerTest extends TestCase
         $this->assertTrue($isValid);
     }
 
-    public function test_state_validation_fails_with_not_existed_state(): void
+    #[Test]
+    public function state_validation_fails_with_not_existed_state(): void
     {
         $faker = new NationalCodeFaker($this->loader, state: 'newState');
         $isValid = $this->callProtectedMethod($faker, 'isStateValid');
@@ -74,7 +78,8 @@ final class NationalCodeFakerTest extends TestCase
         $this->assertFalse($isValid);
     }
 
-    public function test_it_returns_prefixes_of_all_states_when_state_is_not_set_or_is_null(): void
+    #[Test]
+    public function it_returns_prefixes_of_all_states_when_state_is_not_set_or_is_null(): void
     {
         $faker = new NationalCodeFaker($this->loader, state: null);
         $statePrefix = $this->callProtectedMethod($faker, 'getStatePrefix');
@@ -82,7 +87,8 @@ final class NationalCodeFakerTest extends TestCase
         $this->assertContains($statePrefix, $this->flatten($this->statePrefixes)); // All prefixes
     }
 
-    public function test_it_returns_prefixes_of_specific_state_when_state_is_set(): void
+    #[Test]
+    public function it_returns_prefixes_of_specific_state_when_state_is_set(): void
     {
         $faker = new NationalCodeFaker($this->loader, state: 'state_two');
         $statePrefix = $this->callProtectedMethod($faker, 'getStatePrefix');
@@ -90,7 +96,8 @@ final class NationalCodeFakerTest extends TestCase
         $this->assertContains($statePrefix, $this->statePrefixes['state_two']);
     }
 
-    public function test_it_generates_random_six_digit_number(): void
+    #[Test]
+    public function it_generates_random_six_digit_number(): void
     {
         $faker = new NationalCodeFaker($this->loader);
         $number = $this->callProtectedMethod($faker, 'generateRandomNationalCode');
@@ -99,8 +106,9 @@ final class NationalCodeFakerTest extends TestCase
         $this->assertIsNumeric($number);
     }
 
+    #[Test]
     #[DataProvider('checkDigitsProvider')]
-    public function test_it_calculate_check_digit(int $checkDigit, string $nationalCode): void
+    public function it_calculate_check_digit(int $checkDigit, string $nationalCode): void
     {
         $faker = new NationalCodeFaker($this->loader);
         $calculatedCheckDigit = $this->callProtectedMethod($faker, 'calculateCheckDigit', [$nationalCode]);
@@ -109,7 +117,8 @@ final class NationalCodeFakerTest extends TestCase
         $this->assertCheckDigit($nationalCode, $calculatedCheckDigit);
     }
 
-    public function test_throws_an_exception_if_input_number_is_less_than_nine_digits(): void
+    #[Test]
+    public function throws_an_exception_if_input_number_is_less_than_nine_digits(): void
     {
         $this->expectException(RangeException::class);
         $this->expectExceptionMessage('The input number must have 9 digits, 8-digit number is given.');
@@ -118,7 +127,8 @@ final class NationalCodeFakerTest extends TestCase
         $this->callProtectedMethod($faker, 'calculateCheckDigit', ['12345678']);
     }
 
-    public function test_throws_an_exception_if_input_number_is_more_than_nine_digits(): void
+    #[Test]
+    public function throws_an_exception_if_input_number_is_more_than_nine_digits(): void
     {
         $this->expectException(RangeException::class);
         $this->expectExceptionMessage('The input number must have 9 digits, 10-digit number is given.');
@@ -127,7 +137,8 @@ final class NationalCodeFakerTest extends TestCase
         $this->callProtectedMethod($faker, 'calculateCheckDigit', ['1234567890']);
     }
 
-    public function test_throws_an_exception_if_input_number_is_not_numeric(): void
+    #[Test]
+    public function throws_an_exception_if_input_number_is_not_numeric(): void
     {
         $this->expectException(TypeError::class);
         $this->expectExceptionMessage('The input must be numeric. string is given.');
@@ -136,7 +147,8 @@ final class NationalCodeFakerTest extends TestCase
         $this->callProtectedMethod($faker, 'calculateCheckDigit', ['a23456789']);
     }
 
-    public function test_it_returns_fake_national_code(): void
+    #[Test]
+    public function it_returns_fake_national_code(): void
     {
         $faker = new NationalCodeFaker($this->loader);
         $nationalCode = $faker->generate();
@@ -147,7 +159,8 @@ final class NationalCodeFakerTest extends TestCase
         $this->assertCheckDigit(mb_substr($nationalCode, 0, 9), mb_substr($nationalCode, -1));
     }
 
-    public function test_it_returns_fake_national_code_for_specific_state(): void
+    #[Test]
+    public function it_returns_fake_national_code_for_specific_state(): void
     {
         $faker = new NationalCodeFaker($this->loader, state: 'state_two');
         $nationalCode = $faker->generate();
@@ -159,7 +172,8 @@ final class NationalCodeFakerTest extends TestCase
         $this->assertCheckDigit(mb_substr($nationalCode, 0, 9), mb_substr($nationalCode, -1));
     }
 
-    public function test_it_throws_an_exception_with_invalid_state_name(): void
+    #[Test]
+    public function it_throws_an_exception_with_invalid_state_name(): void
     {
         $this->expectException(InvalidStateNameException::class);
         $this->expectExceptionMessage('The state name anonymous is not valid.');

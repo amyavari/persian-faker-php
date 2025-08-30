@@ -9,6 +9,7 @@ use AliYavari\PersianFaker\Exceptions\InvalidElementNumberException;
 use AliYavari\PersianFaker\Fakers\Text\WordFaker;
 use Mockery;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use ReflectionClass;
 use Tests\TestCase;
 
@@ -42,7 +43,8 @@ final class WordFakerTest extends TestCase
         yield 'negative' => [-1];
     }
 
-    public function test_it_returns_specific_number_of_words(): void
+    #[Test]
+    public function it_returns_specific_number_of_words(): void
     {
         $faker = new WordFaker($this->loader, nbWords: 8);
         $words = $this->callProtectedMethod($faker, 'getWords');
@@ -51,7 +53,8 @@ final class WordFakerTest extends TestCase
         $this->assertCount(8, $words);
     }
 
-    public function test_it_says_output_should_be_text_if_number_equals_to_one(): void
+    #[Test]
+    public function it_says_output_should_be_text_if_number_equals_to_one(): void
     {
         $faker = new WordFaker($this->loader, nbWords: 1);
         $shouldBeText = $this->callProtectedMethod($faker, 'shouldBeText');
@@ -59,7 +62,8 @@ final class WordFakerTest extends TestCase
         $this->assertTrue($shouldBeText);
     }
 
-    public function test_it_says_output_should_be_text_if_as_text_is_true(): void
+    #[Test]
+    public function it_says_output_should_be_text_if_as_text_is_true(): void
     {
         $faker = new WordFaker($this->loader, nbWords: 3, asText: true);
         $shouldBeText = $this->callProtectedMethod($faker, 'shouldBeText');
@@ -67,7 +71,8 @@ final class WordFakerTest extends TestCase
         $this->assertTrue($shouldBeText);
     }
 
-    public function test_it_says_output_should_not_be_text_if_as_text_is_false_with_number_greater_than_one(): void
+    #[Test]
+    public function it_says_output_should_not_be_text_if_as_text_is_false_with_number_greater_than_one(): void
     {
         $faker = new WordFaker($this->loader, nbWords: 2, asText: false);
         $shouldBeText = $this->callProtectedMethod($faker, 'shouldBeText');
@@ -75,7 +80,8 @@ final class WordFakerTest extends TestCase
         $this->assertFalse($shouldBeText);
     }
 
-    public function test_number_validation_passes_when_number_is_in_valid_range(): void
+    #[Test]
+    public function number_validation_passes_when_number_is_in_valid_range(): void
     {
         $faker = new WordFaker($this->loader, nbWords: 99);
         $isValid = $this->callProtectedMethod($faker, 'isNumberValid');
@@ -83,8 +89,9 @@ final class WordFakerTest extends TestCase
         $this->assertTrue($isValid);
     }
 
+    #[Test]
     #[DataProvider('wordNumberValidationRangeProvider')]
-    public function test_number_validation_fails_when_number_is_not_in_valid_range(int $number): void
+    public function number_validation_fails_when_number_is_not_in_valid_range(int $number): void
     {
         $faker = new WordFaker($this->loader, nbWords: $number);
         $isValid = $this->callProtectedMethod($faker, 'isNumberValid');
@@ -92,7 +99,8 @@ final class WordFakerTest extends TestCase
         $this->assertFalse($isValid);
     }
 
-    public function test_it_returns_one_fake_word(): void
+    #[Test]
+    public function it_returns_one_fake_word(): void
     {
         $faker = new WordFaker($this->loader);
         $word = $faker->generate();
@@ -101,7 +109,8 @@ final class WordFakerTest extends TestCase
         $this->assertContains($word, $this->words);
     }
 
-    public function test_it_returns_fake_words_as_array(): void
+    #[Test]
+    public function it_returns_fake_words_as_array(): void
     {
         $faker = new WordFaker($this->loader, nbWords: 3);
         $words = $faker->generate();
@@ -114,7 +123,8 @@ final class WordFakerTest extends TestCase
         }
     }
 
-    public function test_it_returns_fake_words_as_sentence(): void
+    #[Test]
+    public function it_returns_fake_words_as_sentence(): void
     {
         $faker = new WordFaker($this->loader, nbWords: 3, asText: true);
         $words = $faker->generate();
@@ -123,7 +133,8 @@ final class WordFakerTest extends TestCase
         $this->assertCount(3, explode(' ', $words));
     }
 
-    public function test_it_throws_an_exception_if_number_is_not_between_one_and_100(): void
+    #[Test]
+    public function it_throws_an_exception_if_number_is_not_between_one_and_100(): void
     {
         $this->expectException(InvalidElementNumberException::class);
         $this->expectExceptionMessage('The number should be in range 1-100, 0 is given.');
@@ -132,7 +143,8 @@ final class WordFakerTest extends TestCase
         $faker->generate();
     }
 
-    public function test_it_returns_new_instance_with_configs_to_return_as_string_with_custom_words_number(): void
+    #[Test]
+    public function it_returns_new_instance_with_configs_to_return_as_string_with_custom_words_number(): void
     {
         $this->loader->shouldReceive('get')->twice()->andReturn($this->words);
 

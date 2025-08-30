@@ -11,9 +11,9 @@ use Tests\TestCase;
 
 final class CityFakerTest extends TestCase
 {
-    protected $loader;
+    private $loader;
 
-    protected array $cities = ['city 1', 'city 2', 'city 3', 'city 4'];
+    private array $cities = ['city 1', 'city 2', 'city 3', 'city 4'];
 
     protected function setUp(): void
     {

@@ -13,7 +13,7 @@ use Tests\TestCase;
 
 final class ParagraphFakerTest extends TestCase
 {
-    protected $sentenceFaker;
+    private $sentenceFaker;
 
     protected function setUp(): void
     {

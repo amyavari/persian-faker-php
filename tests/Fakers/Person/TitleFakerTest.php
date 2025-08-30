@@ -15,9 +15,9 @@ final class TitleFakerTest extends TestCase
 {
     use Arrayable;
 
-    protected $loader;
+    private $loader;
 
-    protected array $titles = [
+    private array $titles = [
         'male' => ['Mr.', 'Sr.'],
         'female' => ['Ms.', 'Mrs.', 'Miss.'],
     ];

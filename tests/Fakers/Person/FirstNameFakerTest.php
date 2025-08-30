@@ -15,9 +15,9 @@ final class FirstNameFakerTest extends TestCase
 {
     use Arrayable;
 
-    protected $loader;
+    private $loader;
 
-    protected array $names = [
+    private array $names = [
         'male' => ['male one', 'male two', 'male three'],
         'female' => ['female one', 'female two', 'female three'],
     ];

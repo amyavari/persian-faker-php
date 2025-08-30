@@ -43,7 +43,7 @@ final class SecondaryAddressFaker implements FakerInterface
         return sprintf('%s %s', $this->getRandomPrefix(), $randomNumber);
     }
 
-    protected function getRandomPrefix(): string
+    private function getRandomPrefix(): string
     {
         return $this->getOneRandomElement($this->prefixes);
     }

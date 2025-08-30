@@ -15,9 +15,9 @@ use TypeError;
 
 final class ShebaFakerTest extends TestCase
 {
-    protected $loader;
+    private $loader;
 
-    protected array $bankCodes = ['bank1' => '012', 'bank2' => '090', 'bank3' => '064'];
+    private array $bankCodes = ['bank1' => '012', 'bank2' => '090', 'bank3' => '064'];
 
     protected function setUp(): void
     {

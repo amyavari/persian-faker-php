@@ -30,13 +30,13 @@ final class ColorNameFaker implements FakerInterface
     /**
      * @var Colors
      */
-    protected array $colors;
+    private array $colors;
 
     /**
      * @param  DataLoaderInterface<string, list<string>>  $loader
      * @param  bool  $onlyMain  Determines whether to return only the main (safe) color or any color.
      */
-    public function __construct(protected DataLoaderInterface $loader, protected bool $onlyMain = false)
+    public function __construct(private DataLoaderInterface $loader, private bool $onlyMain = false)
     {
         $colors = $loader->get();
 
@@ -61,7 +61,7 @@ final class ColorNameFaker implements FakerInterface
     /**
      * @param  array<mixed>  $data
      */
-    protected function hasNecessaryKeys(array $data): bool
+    private function hasNecessaryKeys(array $data): bool
     {
         return array_key_exists('main', $data) && array_key_exists('all', $data);
     }
@@ -69,7 +69,7 @@ final class ColorNameFaker implements FakerInterface
     /**
      * @return list<string>
      */
-    protected function getColors(): array
+    private function getColors(): array
     {
         return $this->onlyMain ? $this->colors['main'] : $this->flatten($this->colors);
     }

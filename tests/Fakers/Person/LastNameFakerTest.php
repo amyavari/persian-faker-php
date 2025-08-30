@@ -10,9 +10,9 @@ use Tests\TestCase;
 
 final class LastNameFakerTest extends TestCase
 {
-    protected $loader;
+    private $loader;
 
-    protected array $lastNames = ['name one', 'name two', 'name three', 'name four'];
+    private array $lastNames = ['name one', 'name two', 'name three', 'name four'];
 
     protected function setUp(): void
     {

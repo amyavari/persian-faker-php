@@ -24,14 +24,14 @@ final class PhoneNumberFaker implements FakerInterface
     /**
      * @var array<string, string>
      */
-    protected array $statePrefixes;
+    private array $statePrefixes;
 
     /**
      * @param  DataLoaderInterface<string, string>  $loader
      * @param  string  $separator  The separator between the mobile provider prefix, the first three digits, and the last four digits.
      * @param  string|null  $state  The name of the state in Iran. See ./src/Data/phone.php
      */
-    public function __construct(DataLoaderInterface $loader, protected string $separator = '', protected ?string $state = null)
+    public function __construct(DataLoaderInterface $loader, private string $separator = '', private ?string $state = null)
     {
         $this->statePrefixes = $loader->get();
     }
@@ -50,7 +50,7 @@ final class PhoneNumberFaker implements FakerInterface
         return $this->formatPhone($this->getStatePrefix(), $this->generateRandomPhoneNumber());
     }
 
-    protected function isStateValid(): bool
+    private function isStateValid(): bool
     {
         if (is_null($this->state)) {
             return true;
@@ -59,17 +59,17 @@ final class PhoneNumberFaker implements FakerInterface
         return array_key_exists($this->state, $this->statePrefixes);
     }
 
-    protected function getStatePrefix(): string
+    private function getStatePrefix(): string
     {
         return is_null($this->state) ? $this->getOneRandomElement($this->statePrefixes) : $this->statePrefixes[$this->state];
     }
 
-    protected function generateRandomPhoneNumber(): string
+    private function generateRandomPhoneNumber(): string
     {
         return (string) random_int(10_000_000, 99_999_999);
     }
 
-    protected function formatPhone(string $statePrefix, string $phoneNumber): string
+    private function formatPhone(string $statePrefix, string $phoneNumber): string
     {
         return sprintf('%s%s%s', $statePrefix, $this->separator, $phoneNumber);
     }

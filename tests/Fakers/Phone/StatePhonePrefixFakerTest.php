@@ -11,9 +11,9 @@ use Tests\TestCase;
 
 final class StatePhonePrefixFakerTest extends TestCase
 {
-    protected $loader;
+    private $loader;
 
-    protected array $statePrefixes = ['yazd' => '035', 'teh' => '021', 'esf' => '031', 'gil' => '013'];
+    private array $statePrefixes = ['yazd' => '035', 'teh' => '021', 'esf' => '031', 'gil' => '013'];
 
     protected function setUp(): void
     {

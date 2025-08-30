@@ -30,14 +30,14 @@ final class CardNumberFaker implements FakerInterface
     /**
      * @var array<string, string>>
      */
-    protected array $bankBins;
+    private array $bankBins;
 
     /**
      * @param  DataLoaderInterface<string, string>  $loader
      * @param  string  $separator  The separator between the each four digits.
      * @param  string|null  $bank  The name of the bank in Iran. See ./src/data/payment.php
      */
-    public function __construct(DataLoaderInterface $loader, protected string $separator = '', protected ?string $bank = null)
+    public function __construct(DataLoaderInterface $loader, private string $separator = '', private ?string $bank = null)
     {
         $this->bankBins = $loader->get();
     }
@@ -62,7 +62,7 @@ final class CardNumberFaker implements FakerInterface
         return $this->formatCardNumber($bankBin, $cardNumber, $checkDigit);
     }
 
-    protected function isBankValid(): bool
+    private function isBankValid(): bool
     {
         if (is_null($this->bank)) {
             return true;
@@ -71,12 +71,12 @@ final class CardNumberFaker implements FakerInterface
         return array_key_exists($this->bank, $this->bankBins);
     }
 
-    protected function getBin(): string
+    private function getBin(): string
     {
         return is_null($this->bank) ? $this->getOneRandomElement($this->bankBins) : $this->bankBins[$this->bank];
     }
 
-    protected function generateRandomCardNumber(): int
+    private function generateRandomCardNumber(): int
     {
         return random_int(100_000_000, 999_999_999);
     }
@@ -87,7 +87,7 @@ final class CardNumberFaker implements FakerInterface
      * @throws RangeException
      * @throws TypeError
      */
-    protected function calculateCheckDigit(string $digits): int
+    private function calculateCheckDigit(string $digits): int
     {
         if (mb_strlen($digits) !== 15) {
             throw new RangeException(
@@ -123,7 +123,7 @@ final class CardNumberFaker implements FakerInterface
         return $higherMultipleOf10 - $sum;
     }
 
-    protected function formatCardNumber(string $bankBin, int $cardNumber, int $checkDigit): string
+    private function formatCardNumber(string $bankBin, int $cardNumber, int $checkDigit): string
     {
         $fullCardNumber = $bankBin.$cardNumber.$checkDigit;
 

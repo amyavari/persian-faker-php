@@ -28,13 +28,13 @@ final class TitleFaker implements FakerInterface
     /**
      * @var array<string, list<string>>
      */
-    protected array $titles;
+    private array $titles;
 
     /**
      * @param  DataLoaderInterface<string, list<string>>  $loader
      * @param  string|null  $gender  The gender can be either 'male' or 'female'.
      */
-    public function __construct(DataLoaderInterface $loader, protected ?string $gender = null)
+    public function __construct(DataLoaderInterface $loader, private ?string $gender = null)
     {
         $this->titles = $loader->get();
     }
@@ -53,7 +53,7 @@ final class TitleFaker implements FakerInterface
         return $this->getOneRandomElement($this->getTitles());
     }
 
-    protected function isGenderValid(): bool
+    private function isGenderValid(): bool
     {
         if (is_null($this->gender)) {
             return true;
@@ -65,7 +65,7 @@ final class TitleFaker implements FakerInterface
     /**
      * @return list<string>
      */
-    protected function getTitles(): array
+    private function getTitles(): array
     {
         return is_null($this->gender) ? $this->flatten($this->titles) : $this->titles[$this->gender];
     }

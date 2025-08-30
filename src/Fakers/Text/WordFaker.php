@@ -34,7 +34,7 @@ final class WordFaker implements FakerInterface
     /**
      * @var list<string>
      */
-    protected array $words;
+    private array $words;
 
     /**
      * @param  DataLoaderInterface<int, string>  $loader
@@ -42,9 +42,9 @@ final class WordFaker implements FakerInterface
      * @param  bool  $asText  Whether the words should be returned as a string (true) or as an array (false).
      */
     public function __construct(
-        protected DataLoaderInterface $loader,
-        protected int $nbWords = 1,
-        protected bool $asText = false,
+        private DataLoaderInterface $loader,
+        private int $nbWords = 1,
+        private bool $asText = false,
     ) {
         $this->words = $loader->get();
     }
@@ -81,7 +81,7 @@ final class WordFaker implements FakerInterface
         return new self($this->loader, nbWords: $nbWords, asText: true);
     }
 
-    protected function isNumberValid(): bool
+    private function isNumberValid(): bool
     {
         return $this->nbWords >= self::MIN_NUMBER && $this->nbWords <= self::MAX_NUMBER;
     }
@@ -89,12 +89,12 @@ final class WordFaker implements FakerInterface
     /**
      * @return list<string>
      */
-    protected function getWords(): array
+    private function getWords(): array
     {
         return $this->getMultipleRandomElements($this->words, $this->nbWords);
     }
 
-    protected function shouldBeText(): bool
+    private function shouldBeText(): bool
     {
         return $this->nbWords === 1 || $this->asText;
     }

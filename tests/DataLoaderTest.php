@@ -12,7 +12,7 @@ use TypeError;
 
 final class DataLoaderTest extends TestCase
 {
-    protected string $dataDirectoryPath;
+    private string $dataDirectoryPath;
 
     protected function setUp(): void
     {

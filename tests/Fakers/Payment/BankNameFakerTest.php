@@ -11,9 +11,9 @@ use Tests\TestCase;
 
 final class BankNameFakerTest extends TestCase
 {
-    protected $loader;
+    private $loader;
 
-    protected array $banks = ['bank1', 'bank2', 'bank3', 'bank4'];
+    private array $banks = ['bank1', 'bank2', 'bank3', 'bank4'];
 
     protected function setUp(): void
     {

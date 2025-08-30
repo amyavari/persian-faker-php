@@ -19,7 +19,7 @@ final class PostCodeFaker implements FakerInterface
     /** @use Randomable<int> */
     use Randomable;
 
-    public function __construct(protected bool $withSeparator = false) {}
+    public function __construct(private bool $withSeparator = false) {}
 
     /**
      * This returns a fake postal code
@@ -31,7 +31,7 @@ final class PostCodeFaker implements FakerInterface
         return $this->withSeparator ? $this->addSeparator($postCode) : $postCode;
     }
 
-    protected function generateRandomPostCode(): string
+    private function generateRandomPostCode(): string
     {
         // Only for safety, valid digits are restricted to the range of 1-9.
         $validDigits = range(1, 9);
@@ -41,7 +41,7 @@ final class PostCodeFaker implements FakerInterface
         return implode('', $digits);
     }
 
-    protected function addSeparator(string $postCode): string
+    private function addSeparator(string $postCode): string
     {
         return sprintf('%s-%s', mb_substr($postCode, 0, 5), mb_substr($postCode, 5));
     }

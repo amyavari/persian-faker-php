@@ -11,9 +11,9 @@ use Tests\TestCase;
 
 final class AddressFakerTest extends TestCase
 {
-    protected $loader;
+    private $loader;
 
-    protected array $addresses = ['address 1', 'address 4', 'address 3', 'address 2'];
+    private array $addresses = ['address 1', 'address 4', 'address 3', 'address 2'];
 
     protected function setUp(): void
     {

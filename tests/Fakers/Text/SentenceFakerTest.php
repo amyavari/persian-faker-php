@@ -14,7 +14,7 @@ use Tests\TestCase;
 
 final class SentenceFakerTest extends TestCase
 {
-    protected $wordFaker;
+    private $wordFaker;
 
     protected function setUp(): void
     {

@@ -23,10 +23,10 @@ use AliYavari\PersianFaker\Exceptions\InvalidDataPathException;
  *
  * @implements DataLoaderInterface<TKey, TData>
  */
-final class DataLoader implements DataLoaderInterface
+final readonly class DataLoader implements DataLoaderInterface
 {
     public function __construct(
-        protected string $path
+        private string $path
     ) {}
 
     /**

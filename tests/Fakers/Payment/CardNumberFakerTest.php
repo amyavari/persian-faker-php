@@ -15,9 +15,9 @@ use TypeError;
 
 final class CardNumberFakerTest extends TestCase
 {
-    protected $loader;
+    private $loader;
 
-    protected array $banksBins = ['bank1' => '123456', 'bank2' => '234567', 'bank3' => '456789'];
+    private array $banksBins = ['bank1' => '123456', 'bank2' => '234567', 'bank3' => '456789'];
 
     protected function setUp(): void
     {

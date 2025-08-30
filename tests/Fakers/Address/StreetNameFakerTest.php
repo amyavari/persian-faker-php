@@ -11,9 +11,9 @@ use Tests\TestCase;
 
 final class StreetNameFakerTest extends TestCase
 {
-    protected $loader;
+    private $loader;
 
-    protected array $streetNames = ['name one', 'name two', 'name three', 'name 4'];
+    private array $streetNames = ['name one', 'name two', 'name three', 'name 4'];
 
     protected function setUp(): void
     {

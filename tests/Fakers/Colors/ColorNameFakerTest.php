@@ -15,9 +15,9 @@ final class ColorNameFakerTest extends TestCase
 {
     use Arrayable;
 
-    protected $loader;
+    private $loader;
 
-    protected array $colors = [
+    private array $colors = [
         'main' => ['color1', 'color2', 'color3', 'color4'],
         'all' => ['color5', 'color6', 'color7', 'color8'],
     ];

@@ -14,9 +14,9 @@ use Tests\TestCase;
 
 final class WordFakerTest extends TestCase
 {
-    protected $loader;
+    private $loader;
 
-    protected array $words = ['text', 'a', 'by', 'tree', 'did', 'polish', 'PHP', 'application', 'an'];
+    private array $words = ['text', 'a', 'by', 'tree', 'did', 'polish', 'PHP', 'application', 'an'];
 
     protected function setUp(): void
     {

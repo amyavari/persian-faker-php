@@ -16,9 +16,9 @@ final class CellPhoneFakerTest extends TestCase
 {
     use Arrayable;
 
-    protected $loader;
+    private $loader;
 
-    protected array $phonePrefixes = [
+    private array $phonePrefixes = [
         'provider_one' => ['0911', '0912', '0913'],
         'provider_two' => ['0921', '0922', '0933'],
         'provider three' => ['0941', '0942', '0943'],

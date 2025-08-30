@@ -13,7 +13,7 @@ use Tests\TestCase;
 
 final class TextFakerTest extends TestCase
 {
-    protected $loader;
+    private $loader;
 
     protected function setUp(): void
     {

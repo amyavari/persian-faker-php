@@ -28,13 +28,13 @@ final class FirstNameFaker implements FakerInterface
     /**
      * @var array<string, list<string>>
      */
-    protected array $names;
+    private array $names;
 
     /**
      * @param  DataLoaderInterface<string, list<string>>  $loader
      * @param  string|null  $gender  The gender can be either 'male' or 'female'.
      */
-    public function __construct(DataLoaderInterface $loader, protected ?string $gender = null)
+    public function __construct(DataLoaderInterface $loader, private ?string $gender = null)
     {
         $this->names = $loader->get();
     }
@@ -53,7 +53,7 @@ final class FirstNameFaker implements FakerInterface
         return $this->getOneRandomElement($this->getNames());
     }
 
-    protected function isGenderValid(): bool
+    private function isGenderValid(): bool
     {
         if (is_null($this->gender)) {
             return true;
@@ -65,7 +65,7 @@ final class FirstNameFaker implements FakerInterface
     /**
      * @return list<string>
      */
-    protected function getNames(): array
+    private function getNames(): array
     {
         return is_null($this->gender) ? $this->flatten($this->names) : $this->names[$this->gender];
     }

@@ -11,9 +11,9 @@ use Tests\TestCase;
 
 final class SecondaryAddressFakerTest extends TestCase
 {
-    protected $loader;
+    private $loader;
 
-    protected array $secondaryAddPrefixes = ['floor', 'unit', 'building'];
+    private array $secondaryAddPrefixes = ['floor', 'unit', 'building'];
 
     protected function setUp(): void
     {

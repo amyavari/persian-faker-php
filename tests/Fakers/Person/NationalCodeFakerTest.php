@@ -18,9 +18,9 @@ final class NationalCodeFakerTest extends TestCase
 {
     use Arrayable;
 
-    protected $loader;
+    private $loader;
 
-    protected array $statePrefixes = [
+    private array $statePrefixes = [
         'state_one' => ['111', '112', '113'],
         'state_two' => ['222', '223', '224'],
         'state_three' => ['333', '334', '335'],

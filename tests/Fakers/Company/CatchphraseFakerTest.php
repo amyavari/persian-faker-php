@@ -11,9 +11,9 @@ use Tests\TestCase;
 
 final class CatchPhraseFakerTest extends TestCase
 {
-    protected $loader;
+    private $loader;
 
-    protected array $catchphrases = ['first phrase', 'second wonderful phrase', 'third catchphrase for test'];
+    private array $catchphrases = ['first phrase', 'second wonderful phrase', 'third catchphrase for test'];
 
     protected function setUp(): void
     {

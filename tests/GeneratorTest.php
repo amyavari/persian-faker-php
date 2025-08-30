@@ -16,7 +16,7 @@ final class GeneratorTest extends TestCase
 {
     use Arrayable;
 
-    protected GeneratorInterface $generator;
+    private GeneratorInterface $generator;
 
     protected function setUp(): void
     {

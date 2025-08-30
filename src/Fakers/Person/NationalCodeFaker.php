@@ -30,13 +30,13 @@ final class NationalCodeFaker implements FakerInterface
     /**
      * @var array<string, list<string>>
      */
-    protected array $statePrefixes;
+    private array $statePrefixes;
 
     /**
      * @param  DataLoaderInterface<string, list<string>>  $loader
      * @param  string|null  $state  The name of the state in Iran. See ./src/data/person.php
      */
-    public function __construct(DataLoaderInterface $loader, protected ?string $state = null)
+    public function __construct(DataLoaderInterface $loader, private ?string $state = null)
     {
         $this->statePrefixes = $loader->get();
     }
@@ -61,7 +61,7 @@ final class NationalCodeFaker implements FakerInterface
         return sprintf('%s%s%s', $statePrefix, $nationalCode, $checkDigit);
     }
 
-    protected function isStateValid(): bool
+    private function isStateValid(): bool
     {
         if (is_null($this->state)) {
             return true;
@@ -70,14 +70,14 @@ final class NationalCodeFaker implements FakerInterface
         return array_key_exists($this->state, $this->statePrefixes);
     }
 
-    protected function getStatePrefix(): string
+    private function getStatePrefix(): string
     {
         $prefixes = is_null($this->state) ? $this->flatten($this->statePrefixes) : $this->statePrefixes[$this->state];
 
         return $this->getOneRandomElement($prefixes);
     }
 
-    protected function generateRandomNationalCode(): int
+    private function generateRandomNationalCode(): int
     {
         return random_int(100_000, 999_999);
     }
@@ -88,7 +88,7 @@ final class NationalCodeFaker implements FakerInterface
      * @throws RangeException
      * @throws TypeError
      */
-    protected function calculateCheckDigit(string $digits): int
+    private function calculateCheckDigit(string $digits): int
     {
         if (mb_strlen($digits) !== 9) {
             throw new RangeException(

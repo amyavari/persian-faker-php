@@ -11,9 +11,9 @@ use Tests\TestCase;
 
 final class SimplePickerTest extends TestCase
 {
-    protected $loader;
+    private $loader;
 
-    protected array $simpleArray = ['element 1', 'element 4', 'element 3', 'element 2'];
+    private array $simpleArray = ['element 1', 'element 4', 'element 3', 'element 2'];
 
     protected function setUp(): void
     {

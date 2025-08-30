@@ -11,9 +11,9 @@ use Tests\TestCase;
 
 final class CompanyNameFakerTest extends TestCase
 {
-    protected $loader;
+    private $loader;
 
-    protected array $names = ['company one', 'company two', 'company three'];
+    private array $names = ['company one', 'company two', 'company three'];
 
     protected function setUp(): void
     {

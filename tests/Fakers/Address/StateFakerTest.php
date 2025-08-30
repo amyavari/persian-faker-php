@@ -11,9 +11,9 @@ use Tests\TestCase;
 
 final class StateFakerTest extends TestCase
 {
-    protected $loader;
+    private $loader;
 
-    protected array $states = ['Yazd', 'Tehran', 'Qom', 'Shiraz'];
+    private array $states = ['Yazd', 'Tehran', 'Qom', 'Shiraz'];
 
     protected function setUp(): void
     {

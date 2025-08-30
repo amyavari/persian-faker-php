@@ -11,9 +11,9 @@ use Tests\TestCase;
 
 final class JobTitleFakerTest extends TestCase
 {
-    protected $loader;
+    private $loader;
 
-    protected array $jobTitles = ['CEO', 'Web Designer', 'backend developer', 'Project Manager', 'product owner'];
+    private array $jobTitles = ['CEO', 'Web Designer', 'backend developer', 'Project Manager', 'product owner'];
 
     protected function setUp(): void
     {

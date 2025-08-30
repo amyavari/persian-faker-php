@@ -17,13 +17,13 @@ use TypeError;
  *
  * Generates a random Iran's bank card number.
  *
- * @implements \AliYavari\PersianFaker\Contracts\FakerInterface<string>
+ * @implements FakerInterface<string>
  */
-class CardNumberFaker implements FakerInterface
+final class CardNumberFaker implements FakerInterface
 {
     /**
-     * @use \AliYavari\PersianFaker\Cores\Arrayable<string>
-     * @use \AliYavari\PersianFaker\Cores\Randomable<string>
+     * @use Arrayable<string>
+     * @use Randomable<string>
      */
     use Arrayable, Randomable;
 
@@ -33,7 +33,7 @@ class CardNumberFaker implements FakerInterface
     protected array $bankBins;
 
     /**
-     * @param  \AliYavari\PersianFaker\Contracts\DataLoaderInterface<string, string>  $loader
+     * @param  DataLoaderInterface<string, string>  $loader
      * @param  string  $separator  The separator between the each four digits.
      * @param  string|null  $bank  The name of the bank in Iran. See ./src/data/payment.php
      */
@@ -45,7 +45,7 @@ class CardNumberFaker implements FakerInterface
     /**
      * This returns a fake Iran's bank card number.
      *
-     * @throws \AliYavari\PersianFaker\Exceptions\InvalidBankNameException
+     * @throws InvalidBankNameException
      */
     public function generate(): string
     {
@@ -84,14 +84,14 @@ class CardNumberFaker implements FakerInterface
     /**
      * To see Iran's Bank Card Number Validation algorithm, please check \Tests\Fakers\Payment\CardNumberFakerTest.
      *
-     * @throws \RangeException
-     * @throws \TypeError
+     * @throws RangeException
+     * @throws TypeError
      */
     protected function calculateCheckDigit(string $digits): int
     {
-        if (strlen($digits) !== 15) {
+        if (mb_strlen($digits) !== 15) {
             throw new RangeException(
-                sprintf('The input number must have 15 digits, %s-digit number is given.', strlen($digits))
+                sprintf('The input number must have 15 digits, %s-digit number is given.', mb_strlen($digits))
             );
         }
 
@@ -102,7 +102,7 @@ class CardNumberFaker implements FakerInterface
         }
 
         $sum = 0;
-        foreach (str_split($digits) as $key => $value) {
+        foreach (mb_str_split($digits) as $key => $value) {
             $multipleBy = (($key + 1) % 2 === 0) ? 1 : 2;
 
             $product = (int) $value * $multipleBy;
@@ -127,7 +127,7 @@ class CardNumberFaker implements FakerInterface
     {
         $fullCardNumber = $bankBin.$cardNumber.$checkDigit;
 
-        $chunks = str_split($fullCardNumber, 4);
+        $chunks = mb_str_split($fullCardNumber, 4);
 
         return $this->convertToString($chunks, $this->separator);
     }

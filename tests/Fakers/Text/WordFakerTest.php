@@ -12,7 +12,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use ReflectionClass;
 use Tests\TestCase;
 
-class WordFakerTest extends TestCase
+final class WordFakerTest extends TestCase
 {
     protected $loader;
 
@@ -24,6 +24,22 @@ class WordFakerTest extends TestCase
 
         $this->loader = Mockery::mock(DataLoaderInterface::class);
         $this->loader->shouldReceive('get')->once()->andReturn($this->words)->byDefault();
+    }
+
+    // ---------------
+    // Data Providers
+    // ---------------
+
+    /**
+     * Provides datasets in the format: `dataset => [int $number]`
+     */
+    public static function wordNumberValidationRangeProvider(): iterable
+    {
+        yield 'greater_than_100' => [101];
+
+        yield 'zero' => [0];
+
+        yield 'negative' => [-1];
     }
 
     public function test_it_returns_specific_number_of_words(): void
@@ -128,21 +144,5 @@ class WordFakerTest extends TestCase
         $reflectedWordFaker = new ReflectionClass(WordFaker::class);
         $this->assertTrue($reflectedWordFaker->getProperty('asText')->getValue($newFaker));
         $this->assertSame(5, $reflectedWordFaker->getProperty('nbWords')->getValue($newFaker));
-    }
-
-    // ---------------
-    // Data Providers
-    // ---------------
-
-    /**
-     * Provides datasets in the format: `dataset => [int $number]`
-     */
-    public static function wordNumberValidationRangeProvider(): iterable
-    {
-        yield 'greater_than_100' => [101];
-
-        yield 'zero' => [0];
-
-        yield 'negative' => [-1];
     }
 }

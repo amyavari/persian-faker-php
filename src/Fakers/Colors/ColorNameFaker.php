@@ -17,13 +17,13 @@ use AliYavari\PersianFaker\Exceptions\InvalidDataKeyException;
  *
  * @phpstan-type Colors array{main: list<string>, all: list<string>}
  *
- * @implements \AliYavari\PersianFaker\Contracts\FakerInterface<string>
+ * @implements FakerInterface<string>
  */
-class ColorNameFaker implements FakerInterface
+final class ColorNameFaker implements FakerInterface
 {
     /**
-     * @use \AliYavari\PersianFaker\Cores\Randomable<string>
-     * @use \AliYavari\PersianFaker\Cores\Arrayable<string>
+     * @use Randomable<string>
+     * @use Arrayable<string>
      */
     use Arrayable, Randomable;
 
@@ -33,7 +33,7 @@ class ColorNameFaker implements FakerInterface
     protected array $colors;
 
     /**
-     * @param  \AliYavari\PersianFaker\Contracts\DataLoaderInterface<string, list<string>>  $loader
+     * @param  DataLoaderInterface<string, list<string>>  $loader
      * @param  bool  $onlyMain  Determines whether to return only the main (safe) color or any color.
      */
     public function __construct(protected DataLoaderInterface $loader, protected bool $onlyMain = false)

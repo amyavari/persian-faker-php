@@ -15,20 +15,15 @@ use AliYavari\PersianFaker\Exceptions\InvalidElementNumberException;
  *
  * Generates fake word(s)
  *
- * @implements \AliYavari\PersianFaker\Contracts\FakerInterface<string|list<string>>
+ * @implements FakerInterface<string|list<string>>
  */
-class WordFaker implements FakerInterface
+final class WordFaker implements FakerInterface
 {
     /**
-     * @use \AliYavari\PersianFaker\Cores\Arrayable<string>
-     * @use \AliYavari\PersianFaker\Cores\Randomable<string>
+     * @use Arrayable<string>
+     * @use Randomable<string>
      */
     use Arrayable, Randomable;
-
-    /**
-     * @var list<string>
-     */
-    protected array $words;
 
     protected const MAX_NUMBER = 100;
 
@@ -37,7 +32,12 @@ class WordFaker implements FakerInterface
     protected const SEPARATOR = ' ';
 
     /**
-     * @param  \AliYavari\PersianFaker\Contracts\DataLoaderInterface<int, string>  $loader
+     * @var list<string>
+     */
+    protected array $words;
+
+    /**
+     * @param  DataLoaderInterface<int, string>  $loader
      * @param  int  $nbWords  The number of words to be returned.
      * @param  bool  $asText  Whether the words should be returned as a string (true) or as an array (false).
      */
@@ -57,7 +57,7 @@ class WordFaker implements FakerInterface
      *
      * @return string|list<string>
      *
-     * @throws \AliYavari\PersianFaker\Exceptions\InvalidElementNumberException
+     * @throws InvalidElementNumberException
      */
     public function generate(): string|array
     {

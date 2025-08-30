@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace AliYavari\PersianFaker\Fakers\Phone;
 
+use AliYavari\PersianFaker\Contracts\FakerInterface;
 use AliYavari\PersianFaker\Fakers\SimplePicker;
 
 /**
@@ -11,9 +12,11 @@ use AliYavari\PersianFaker\Fakers\SimplePicker;
  *
  * Generates a random state phone prefix in Iran.
  *
- * @extends \AliYavari\PersianFaker\Fakers\SimplePicker<string, string>
+ * @extends SimplePicker<string, string>
+ *
+ * @implements FakerInterface<string>
  */
-class StatePhonePrefixFaker extends SimplePicker
+final class StatePhonePrefixFaker extends SimplePicker implements FakerInterface
 {
     /**
      * This returns a fake state phone prefix

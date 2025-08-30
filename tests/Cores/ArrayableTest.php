@@ -11,9 +11,29 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use stdClass;
 use Tests\TestCase;
 
-class ArrayableTest extends TestCase
+final class ArrayableTest extends TestCase
 {
     use Arrayable;
+
+    // ---------------
+    // Data Providers
+    // ---------------
+
+    /**
+     * Provides datasets in the format: `dataset => [mixed $element, string $type]`
+     */
+    public static function invalidToStringElementProvider(): iterable
+    {
+        yield 'bool' => [true, 'bool'];
+
+        yield 'int' => [23, 'int'];
+
+        yield 'float' => [2.3, 'float'];
+
+        yield 'object' => [new stdClass, 'stdClass'];
+
+        yield 'array' => [['arr'], 'array'];
+    }
 
     public function test_it_flattens_a_single_level_of_an_array(): void
     {
@@ -83,25 +103,5 @@ class ArrayableTest extends TestCase
         $this->expectExceptionMessage("The givin array should only contains string, {$type} is given at key 2");
 
         $this->convertToString($arr);
-    }
-
-    // ---------------
-    // Data Providers
-    // ---------------
-
-    /**
-     * Provides datasets in the format: `dataset => [mixed $element, string $type]`
-     */
-    public static function invalidToStringElementProvider(): iterable
-    {
-        yield 'bool' => [true, 'bool'];
-
-        yield 'int' => [23, 'int'];
-
-        yield 'float' => [2.3, 'float'];
-
-        yield 'object' => [new stdClass, 'stdClass'];
-
-        yield 'array' => [['arr'], 'array'];
     }
 }

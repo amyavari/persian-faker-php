@@ -11,7 +11,7 @@ use Mockery;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\TestCase;
 
-class TextFakerTest extends TestCase
+final class TextFakerTest extends TestCase
 {
     protected $loader;
 
@@ -21,6 +21,22 @@ class TextFakerTest extends TestCase
 
         $this->loader = Mockery::mock(DataLoaderInterface::class);
         $this->loader->shouldReceive('get')->once()->andReturn(['تست', 'تست', 'تست', 'تست']);
+    }
+
+    // ---------------
+    // Data Providers
+    // ---------------
+
+    /**
+     * Provides datasets in the format: `dataset => [int $number]`
+     */
+    public static function charNumberValidationRangeProvider(): iterable
+    {
+        yield 'greater_than_1000' => [1_001];
+
+        yield 'less_than_10' => [9];
+
+        yield 'negative' => [-1];
     }
 
     public function test_chars_number_validation_passes_when_the_number_is_in_valid_range(): void
@@ -96,21 +112,5 @@ class TextFakerTest extends TestCase
 
         $faker = new TextFaker($this->loader, maxNbChars: 9);
         $faker->generate();
-    }
-
-    // ---------------
-    // Data Providers
-    // ---------------
-
-    /**
-     * Provides datasets in the format: `dataset => [int $number]`
-     */
-    public static function charNumberValidationRangeProvider(): iterable
-    {
-        yield 'greater_than_1000' => [1_001];
-
-        yield 'less_than_10' => [9];
-
-        yield 'negative' => [-1];
     }
 }

@@ -14,11 +14,11 @@ use AliYavari\PersianFaker\Exceptions\InvalidStateNameException;
  *
  * Generates a random phone number in Iran.
  *
- * @implements \AliYavari\PersianFaker\Contracts\FakerInterface<string>
+ * @implements FakerInterface<string>
  */
-class PhoneNumberFaker implements FakerInterface
+final class PhoneNumberFaker implements FakerInterface
 {
-    /** @use \AliYavari\PersianFaker\Cores\Randomable<string> */
+    /** @use Randomable<string> */
     use Randomable;
 
     /**
@@ -27,7 +27,7 @@ class PhoneNumberFaker implements FakerInterface
     protected array $statePrefixes;
 
     /**
-     * @param  \AliYavari\PersianFaker\Contracts\DataLoaderInterface<string, string>  $loader
+     * @param  DataLoaderInterface<string, string>  $loader
      * @param  string  $separator  The separator between the mobile provider prefix, the first three digits, and the last four digits.
      * @param  string|null  $state  The name of the state in Iran. See ./src/Data/phone.php
      */
@@ -39,7 +39,7 @@ class PhoneNumberFaker implements FakerInterface
     /**
      * This returns a fake phone number
      *
-     * @throws \AliYavari\PersianFaker\Exceptions\InvalidStateNameException
+     * @throws InvalidStateNameException
      */
     public function generate(): string
     {

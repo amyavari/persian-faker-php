@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests;
 
-class HelpersTest extends TestCase
+final class HelpersTest extends TestCase
 {
     public function test_persian_faker_helper_returns_generator_instance_and_works(): void
     {

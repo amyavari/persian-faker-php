@@ -12,11 +12,11 @@ use AliYavari\PersianFaker\Cores\Randomable;
  *
  * Generates a fake postal code for Iran
  *
- * @implements \AliYavari\PersianFaker\Contracts\FakerInterface<string>
+ * @implements FakerInterface<string>
  */
-class PostCodeFaker implements FakerInterface
+final class PostCodeFaker implements FakerInterface
 {
-    /** @use \AliYavari\PersianFaker\Cores\Randomable<int> */
+    /** @use Randomable<int> */
     use Randomable;
 
     public function __construct(protected bool $withSeparator = false) {}
@@ -43,6 +43,6 @@ class PostCodeFaker implements FakerInterface
 
     protected function addSeparator(string $postCode): string
     {
-        return sprintf('%s-%s', substr($postCode, 0, 5), substr($postCode, 5));
+        return sprintf('%s-%s', mb_substr($postCode, 0, 5), mb_substr($postCode, 5));
     }
 }

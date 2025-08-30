@@ -8,7 +8,7 @@ use AliYavari\PersianFaker\Cores\Randomable;
 use AliYavari\PersianFaker\Exceptions\InvalidElementNumberException;
 use PHPUnit\Framework\TestCase;
 
-class RandomableTest extends TestCase
+final class RandomableTest extends TestCase
 {
     use Randomable;
 

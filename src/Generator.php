@@ -39,14 +39,14 @@ use AliYavari\PersianFaker\Fakers\Text\WordFaker;
  * such as testing and development. Each method is responsible for producing
  * a specific type of fake data.
  */
-class Generator implements GeneratorInterface
+final class Generator implements GeneratorInterface
 {
     /**
      * {@inheritdoc}
      */
     public function title(?string $gender = null): string
     {
-        /** @var \AliYavari\PersianFaker\Contracts\DataLoaderInterface<string, list<string>> */
+        /** @var DataLoaderInterface<string, list<string>> */
         $dataLoader = $this->getDataLoaderInstance('person.titles');
 
         return $this->exec(new TitleFaker($dataLoader, $gender));
@@ -57,7 +57,7 @@ class Generator implements GeneratorInterface
      */
     public function titleMale(): string
     {
-        /** @var \AliYavari\PersianFaker\Contracts\DataLoaderInterface<string, list<string>> */
+        /** @var DataLoaderInterface<string, list<string>> */
         $dataLoader = $this->getDataLoaderInstance('person.titles');
 
         return $this->exec(new TitleFaker($dataLoader, 'male'));
@@ -68,7 +68,7 @@ class Generator implements GeneratorInterface
      */
     public function titleFemale(): string
     {
-        /** @var \AliYavari\PersianFaker\Contracts\DataLoaderInterface<string, list<string>> */
+        /** @var DataLoaderInterface<string, list<string>> */
         $dataLoader = $this->getDataLoaderInstance('person.titles');
 
         return $this->exec(new TitleFaker($dataLoader, 'female'));
@@ -79,7 +79,7 @@ class Generator implements GeneratorInterface
      */
     public function firstName(?string $gender = null): string
     {
-        /** @var \AliYavari\PersianFaker\Contracts\DataLoaderInterface<string, list<string>> */
+        /** @var DataLoaderInterface<string, list<string>> */
         $dataLoader = $this->getDataLoaderInstance('person.first_names');
 
         return $this->exec(new FirstNameFaker($dataLoader, $gender));
@@ -90,7 +90,7 @@ class Generator implements GeneratorInterface
      */
     public function firstNameMale(): string
     {
-        /** @var \AliYavari\PersianFaker\Contracts\DataLoaderInterface<string, list<string>> */
+        /** @var DataLoaderInterface<string, list<string>> */
         $dataLoader = $this->getDataLoaderInstance('person.first_names');
 
         return $this->exec(new FirstNameFaker($dataLoader, 'male'));
@@ -101,7 +101,7 @@ class Generator implements GeneratorInterface
      */
     public function firstNameFemale(): string
     {
-        /** @var \AliYavari\PersianFaker\Contracts\DataLoaderInterface<string, list<string>> */
+        /** @var DataLoaderInterface<string, list<string>> */
         $dataLoader = $this->getDataLoaderInstance('person.first_names');
 
         return $this->exec(new FirstNameFaker($dataLoader, 'female'));
@@ -112,7 +112,7 @@ class Generator implements GeneratorInterface
      */
     public function lastName(): string
     {
-        /** @var \AliYavari\PersianFaker\Contracts\DataLoaderInterface<int, string> */
+        /** @var DataLoaderInterface<int, string> */
         $dataLoader = $this->getDataLoaderInstance('person.last_names');
 
         return $this->exec(new LastNameFaker($dataLoader));
@@ -131,7 +131,7 @@ class Generator implements GeneratorInterface
      */
     public function nationalCode(?string $state = null): string
     {
-        /** @var \AliYavari\PersianFaker\Contracts\DataLoaderInterface<string, list<string>> */
+        /** @var DataLoaderInterface<string, list<string>> */
         $dataLoader = $this->getDataLoaderInstance('person.national_code_state_prefixes');
 
         return $this->exec(new NationalCodeFaker($dataLoader, $state));
@@ -142,7 +142,7 @@ class Generator implements GeneratorInterface
      */
     public function secondaryAddress(): string
     {
-        /** @var \AliYavari\PersianFaker\Contracts\DataLoaderInterface<int, string> */
+        /** @var DataLoaderInterface<int, string> */
         $dataLoader = $this->getDataLoaderInstance('address.secondary_address_prefixes');
 
         return $this->exec(new SecondaryAddressFaker($dataLoader));
@@ -153,7 +153,7 @@ class Generator implements GeneratorInterface
      */
     public function state(): string
     {
-        /** @var \AliYavari\PersianFaker\Contracts\DataLoaderInterface<int, string> */
+        /** @var DataLoaderInterface<int, string> */
         $dataLoader = $this->getDataLoaderInstance('address.states');
 
         return $this->exec(new StateFaker($dataLoader));
@@ -164,7 +164,7 @@ class Generator implements GeneratorInterface
      */
     public function city(): string
     {
-        /** @var \AliYavari\PersianFaker\Contracts\DataLoaderInterface<int, string> */
+        /** @var DataLoaderInterface<int, string> */
         $dataLoader = $this->getDataLoaderInstance('address.cities');
 
         return $this->exec(new CityFaker($dataLoader));
@@ -175,7 +175,7 @@ class Generator implements GeneratorInterface
      */
     public function streetName(): string
     {
-        /** @var \AliYavari\PersianFaker\Contracts\DataLoaderInterface<int, string> */
+        /** @var DataLoaderInterface<int, string> */
         $dataLoader = $this->getDataLoaderInstance('address.street_names');
 
         return $this->exec(new StreetNameFaker($dataLoader));
@@ -186,7 +186,7 @@ class Generator implements GeneratorInterface
      */
     public function address(): string
     {
-        /** @var \AliYavari\PersianFaker\Contracts\DataLoaderInterface<int, string> */
+        /** @var DataLoaderInterface<int, string> */
         $dataLoader = $this->getDataLoaderInstance('address.addresses');
 
         return $this->exec(new AddressFaker($dataLoader));
@@ -205,7 +205,7 @@ class Generator implements GeneratorInterface
      */
     public function statePhonePrefix(): string
     {
-        /** @var \AliYavari\PersianFaker\Contracts\DataLoaderInterface<string, string> */
+        /** @var DataLoaderInterface<string, string> */
         $dataLoader = $this->getDataLoaderInstance('phone.state_prefixes');
 
         return $this->exec(new StatePhonePrefixFaker($dataLoader));
@@ -216,7 +216,7 @@ class Generator implements GeneratorInterface
      */
     public function phoneNumber(string $separator = '', ?string $state = null): string
     {
-        /** @var \AliYavari\PersianFaker\Contracts\DataLoaderInterface<string, string> */
+        /** @var DataLoaderInterface<string, string> */
         $dataLoader = $this->getDataLoaderInstance('phone.state_prefixes');
 
         return $this->exec(new PhoneNumberFaker($dataLoader, $separator, $state));
@@ -227,7 +227,7 @@ class Generator implements GeneratorInterface
      */
     public function cellPhone(string $separator = '', ?string $provider = null): string
     {
-        /** @var \AliYavari\PersianFaker\Contracts\DataLoaderInterface<string, list<string>> */
+        /** @var DataLoaderInterface<string, list<string>> */
         $dataLoader = $this->getDataLoaderInstance('phone.mobile_prefixes');
 
         return $this->exec(new CellPhoneFaker($dataLoader, $separator, $provider));
@@ -238,7 +238,7 @@ class Generator implements GeneratorInterface
      */
     public function company(): string
     {
-        /** @var \AliYavari\PersianFaker\Contracts\DataLoaderInterface<int, string> */
+        /** @var DataLoaderInterface<int, string> */
         $dataLoader = $this->getDataLoaderInstance('company.companies');
 
         return $this->exec(new CompanyNameFaker($dataLoader));
@@ -249,7 +249,7 @@ class Generator implements GeneratorInterface
      */
     public function catchphrase(): string
     {
-        /** @var \AliYavari\PersianFaker\Contracts\DataLoaderInterface<int, string> */
+        /** @var DataLoaderInterface<int, string> */
         $dataLoader = $this->getDataLoaderInstance('company.catchphrases');
 
         return $this->exec(new CatchphraseFaker($dataLoader));
@@ -260,7 +260,7 @@ class Generator implements GeneratorInterface
      */
     public function jobTitle(): string
     {
-        /** @var \AliYavari\PersianFaker\Contracts\DataLoaderInterface<int, string> */
+        /** @var DataLoaderInterface<int, string> */
         $dataLoader = $this->getDataLoaderInstance('company.job_titles');
 
         return $this->exec(new JobTitleFaker($dataLoader));
@@ -271,7 +271,7 @@ class Generator implements GeneratorInterface
      */
     public function word(): string
     {
-        /** @var \AliYavari\PersianFaker\Contracts\DataLoaderInterface<int, string> */
+        /** @var DataLoaderInterface<int, string> */
         $dataLoader = $this->getDataLoaderInstance('text.words');
 
         /** @var string */
@@ -283,7 +283,7 @@ class Generator implements GeneratorInterface
      */
     public function words(int $nb = 3, bool $asText = false): string|array
     {
-        /** @var \AliYavari\PersianFaker\Contracts\DataLoaderInterface<int, string> */
+        /** @var DataLoaderInterface<int, string> */
         $dataLoader = $this->getDataLoaderInstance('text.words');
 
         return $this->exec(new WordFaker($dataLoader, $nb, $asText));
@@ -294,7 +294,7 @@ class Generator implements GeneratorInterface
      */
     public function sentence(int $nbWords = 6, bool $variableNbWords = true): string
     {
-        /** @var \AliYavari\PersianFaker\Contracts\DataLoaderInterface<int, string> */
+        /** @var DataLoaderInterface<int, string> */
         $dataLoader = $this->getDataLoaderInstance('text.words');
 
         $wordFaker = new WordFaker($dataLoader);
@@ -308,7 +308,7 @@ class Generator implements GeneratorInterface
      */
     public function sentences(int $nb = 3, bool $asText = false): string|array
     {
-        /** @var \AliYavari\PersianFaker\Contracts\DataLoaderInterface<int, string> */
+        /** @var DataLoaderInterface<int, string> */
         $dataLoader = $this->getDataLoaderInstance('text.words');
 
         $wordFaker = new WordFaker($dataLoader);
@@ -321,7 +321,7 @@ class Generator implements GeneratorInterface
      */
     public function paragraph(int $nbSentences = 3, bool $variableNbSentences = true): string
     {
-        /** @var \AliYavari\PersianFaker\Contracts\DataLoaderInterface<int, string> */
+        /** @var DataLoaderInterface<int, string> */
         $dataLoader = $this->getDataLoaderInstance('text.words');
 
         $sentenceFaker = new SentenceFaker(new WordFaker($dataLoader));
@@ -335,7 +335,7 @@ class Generator implements GeneratorInterface
      */
     public function paragraphs(int $nb = 3, bool $asText = false): string|array
     {
-        /** @var \AliYavari\PersianFaker\Contracts\DataLoaderInterface<int, string> */
+        /** @var DataLoaderInterface<int, string> */
         $dataLoader = $this->getDataLoaderInstance('text.words');
 
         $sentenceFaker = new SentenceFaker(new WordFaker($dataLoader));
@@ -348,7 +348,7 @@ class Generator implements GeneratorInterface
      */
     public function text(int $maxNbChars = 200): string
     {
-        /** @var \AliYavari\PersianFaker\Contracts\DataLoaderInterface<int, string> */
+        /** @var DataLoaderInterface<int, string> */
         $dataLoader = $this->getDataLoaderInstance('text.words');
 
         return $this->exec(new TextFaker($dataLoader, maxNbChars: $maxNbChars));
@@ -359,7 +359,7 @@ class Generator implements GeneratorInterface
      */
     public function bank(): string
     {
-        /** @var \AliYavari\PersianFaker\Contracts\DataLoaderInterface<int, string> */
+        /** @var DataLoaderInterface<int, string> */
         $dataLoader = $this->getDataLoaderInstance('payment.bank_names');
 
         return $this->exec(new BankNameFaker($dataLoader));
@@ -370,7 +370,7 @@ class Generator implements GeneratorInterface
      */
     public function cardNumber(string $separator = '', ?string $bank = null): string
     {
-        /** @var \AliYavari\PersianFaker\Contracts\DataLoaderInterface<string, string> */
+        /** @var DataLoaderInterface<string, string> */
         $dataLoader = $this->getDataLoaderInstance('payment.bank_bins');
 
         return $this->exec(new CardNumberFaker($dataLoader, separator: $separator, bank: $bank));
@@ -381,7 +381,7 @@ class Generator implements GeneratorInterface
      */
     public function shebaNumber(bool $withIR = true, string $separator = '', ?string $bank = null): string
     {
-        /** @var \AliYavari\PersianFaker\Contracts\DataLoaderInterface<string, string> */
+        /** @var DataLoaderInterface<string, string> */
         $dataLoader = $this->getDataLoaderInstance('payment.bank_sheba_codes');
 
         return $this->exec(new ShebaFaker($dataLoader, withIR: $withIR, separator: $separator, bank: $bank));
@@ -392,7 +392,7 @@ class Generator implements GeneratorInterface
      */
     public function safeColorName(): string
     {
-        /** @var \AliYavari\PersianFaker\Contracts\DataLoaderInterface<string, list<string>> */
+        /** @var DataLoaderInterface<string, list<string>> */
         $dataLoader = $this->getDataLoaderInstance('color.colors');
 
         return $this->exec(new ColorNameFaker($dataLoader, onlyMain: true));
@@ -403,7 +403,7 @@ class Generator implements GeneratorInterface
      */
     public function colorName(): string
     {
-        /** @var \AliYavari\PersianFaker\Contracts\DataLoaderInterface<string, list<string>> */
+        /** @var DataLoaderInterface<string, list<string>> */
         $dataLoader = $this->getDataLoaderInstance('color.colors');
 
         return $this->exec(new ColorNameFaker($dataLoader, onlyMain: false));
@@ -416,23 +416,23 @@ class Generator implements GeneratorInterface
     /**
      * @template TValue
      *
-     * @return \AliYavari\PersianFaker\Contracts\DataLoaderInterface<string, list<TValue>>
+     * @return DataLoaderInterface<string, list<TValue>>
      *
      * @phpstan-ignore-next-line
      */
-    protected function getDataLoaderInstance(string $dataPath): DataLoaderInterface
+    private function getDataLoaderInstance(string $dataPath): DataLoaderInterface
     {
-        /** @var \AliYavari\PersianFaker\DataLoader<string, list<TValue>> */
+        /** @var DataLoader<string, list<TValue>> */
         return new DataLoader($dataPath);
     }
 
     /**
      * @template TValue
      *
-     * @param  \AliYavari\PersianFaker\Contracts\FakerInterface<TValue>  $faker
+     * @param  FakerInterface<TValue>  $faker
      * @return TValue
      */
-    protected function exec(FakerInterface $faker)
+    private function exec(FakerInterface $faker)
     {
         return $faker->generate();
     }

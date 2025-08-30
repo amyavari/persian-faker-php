@@ -11,7 +11,7 @@ use AliYavari\PersianFaker\Contracts\GeneratorInterface;
  *
  * @method static \AliYavari\PersianFaker\Generator create() Initiates and returns an instance of Persian Faker package.
  */
-class Factory
+final class Factory
 {
     private function __construct() {}
 

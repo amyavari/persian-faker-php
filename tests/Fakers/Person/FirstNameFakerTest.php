@@ -11,7 +11,7 @@ use AliYavari\PersianFaker\Fakers\Person\FirstNameFaker;
 use Mockery;
 use Tests\TestCase;
 
-class FirstNameFakerTest extends TestCase
+final class FirstNameFakerTest extends TestCase
 {
     use Arrayable;
 

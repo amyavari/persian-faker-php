@@ -12,7 +12,7 @@ use AliYavari\PersianFaker\Generator;
 /**
  * This includes integration tests
  */
-class GeneratorTest extends TestCase
+final class GeneratorTest extends TestCase
 {
     use Arrayable;
 
@@ -140,13 +140,13 @@ class GeneratorTest extends TestCase
         $nationalCode = $this->generator->nationalCode();
 
         $this->assertIsString($nationalCode);
-        $this->assertContains(substr($nationalCode, 0, 3), $this->flatten($statePrefixes));
+        $this->assertContains(mb_substr($nationalCode, 0, 3), $this->flatten($statePrefixes));
 
         // For specific state
         $nationalCode = $this->generator->nationalCode('yazd');
 
         $this->assertIsString($nationalCode);
-        $this->assertContains(substr($nationalCode, 0, 3), $statePrefixes['yazd']);
+        $this->assertContains(mb_substr($nationalCode, 0, 3), $statePrefixes['yazd']);
     }
 
     public function test_it_returns_secondary_address(): void
@@ -213,13 +213,13 @@ class GeneratorTest extends TestCase
         $postCode = $this->generator->postCode();
 
         $this->assertIsString($postCode);
-        $this->assertSame(10, strlen($postCode));
+        $this->assertSame(10, mb_strlen($postCode));
 
         // With separator
         $postCode = $this->generator->postCode(true);
 
         $this->assertIsString($postCode);
-        $this->assertSame(11, strlen($postCode));
+        $this->assertSame(11, mb_strlen($postCode));
     }
 
     public function test_it_returns_state_phone_prefix(): void
@@ -242,16 +242,16 @@ class GeneratorTest extends TestCase
         $phoneNumber = $this->generator->phoneNumber();
 
         $this->assertIsString($phoneNumber);
-        $this->assertContains(substr($phoneNumber, 0, 3), $statePrefixes);
-        $this->assertSame(11, strlen($phoneNumber));
+        $this->assertContains(mb_substr($phoneNumber, 0, 3), $statePrefixes);
+        $this->assertSame(11, mb_strlen($phoneNumber));
 
         // With separator, for specific state
         $phoneNumber = $this->generator->phoneNumber('-', 'yazd');
 
         $this->assertIsString($phoneNumber);
-        $this->assertSame($statePrefixes['yazd'], substr($phoneNumber, 0, 3));
-        $this->assertSame(12, strlen($phoneNumber));
-        $this->assertSame(11, strlen(str_replace('-', '', $phoneNumber)));
+        $this->assertSame($statePrefixes['yazd'], mb_substr($phoneNumber, 0, 3));
+        $this->assertSame(12, mb_strlen($phoneNumber));
+        $this->assertSame(11, mb_strlen(str_replace('-', '', $phoneNumber)));
     }
 
     public function test_it_returns_cell_phone_number(): void
@@ -263,16 +263,16 @@ class GeneratorTest extends TestCase
         $cellPhoneNumber = $this->generator->cellPhone();
 
         $this->assertIsString($cellPhoneNumber);
-        $this->assertContains(substr($cellPhoneNumber, 0, 4), $this->flatten($mobilePrefixes));
-        $this->assertSame(11, strlen($cellPhoneNumber));
+        $this->assertContains(mb_substr($cellPhoneNumber, 0, 4), $this->flatten($mobilePrefixes));
+        $this->assertSame(11, mb_strlen($cellPhoneNumber));
 
         // With separator, for specific state
         $cellPhoneNumber = $this->generator->cellPhone('-', 'mtn');
 
         $this->assertIsString($cellPhoneNumber);
-        $this->assertContains(substr($cellPhoneNumber, 0, 4), $mobilePrefixes['mtn']);
-        $this->assertSame(13, strlen($cellPhoneNumber));
-        $this->assertSame(11, strlen(str_replace('-', '', $cellPhoneNumber)));
+        $this->assertContains(mb_substr($cellPhoneNumber, 0, 4), $mobilePrefixes['mtn']);
+        $this->assertSame(13, mb_strlen($cellPhoneNumber));
+        $this->assertSame(11, mb_strlen(str_replace('-', '', $cellPhoneNumber)));
     }
 
     public function test_it_returns_company_name(): void
@@ -443,18 +443,18 @@ class GeneratorTest extends TestCase
         $cardNumber = $this->generator->cardNumber();
 
         $this->assertIsString($cardNumber);
-        $this->assertSame(16, strlen($cardNumber));
-        $this->assertContains(substr($cardNumber, 0, 6), $bankBins);
+        $this->assertSame(16, mb_strlen($cardNumber));
+        $this->assertContains(mb_substr($cardNumber, 0, 6), $bankBins);
 
         // With separator, for specific bank
         $cardNumber = $this->generator->cardNumber('-', 'mellat');
 
         $this->assertIsString($cardNumber);
-        $this->assertSame(19, strlen($cardNumber));
+        $this->assertSame(19, mb_strlen($cardNumber));
 
         $rawCardNumber = str_replace('-', '', $cardNumber);
-        $this->assertSame(16, strlen($rawCardNumber));
-        $this->assertSame($bankBins['mellat'], substr($rawCardNumber, 0, 6));
+        $this->assertSame(16, mb_strlen($rawCardNumber));
+        $this->assertSame($bankBins['mellat'], mb_substr($rawCardNumber, 0, 6));
     }
 
     public function test_it_returns_fake_bank_sheba_number(): void
@@ -466,20 +466,20 @@ class GeneratorTest extends TestCase
         $shebaNumber = $this->generator->shebaNumber();
 
         $this->assertIsString($shebaNumber);
-        $this->assertSame(26, strlen($shebaNumber));
-        $this->assertSame('IR', substr($shebaNumber, 0, 2));
-        $this->assertContains(substr($shebaNumber, 4, 3), $bankCodes);
+        $this->assertSame(26, mb_strlen($shebaNumber));
+        $this->assertSame('IR', mb_substr($shebaNumber, 0, 2));
+        $this->assertContains(mb_substr($shebaNumber, 4, 3), $bankCodes);
 
         // Without IR, with separator, for specific bank
         $shebaNumber = $this->generator->shebaNumber(false, '-', 'mellat');
 
         $this->assertIsString($shebaNumber);
-        $this->assertSame(30, strlen($shebaNumber));
-        $this->assertNotEquals('IR', substr($shebaNumber, 0, 2));
+        $this->assertSame(30, mb_strlen($shebaNumber));
+        $this->assertNotEquals('IR', mb_substr($shebaNumber, 0, 2));
 
         $rawShebaNumber = str_replace('-', '', $shebaNumber);
-        $this->assertSame(24, strlen($rawShebaNumber));
-        $this->assertSame($bankCodes['mellat'], substr($rawShebaNumber, 2, 3));
+        $this->assertSame(24, mb_strlen($rawShebaNumber));
+        $this->assertSame($bankCodes['mellat'], mb_substr($rawShebaNumber, 2, 3));
     }
 
     public function test_it_returns_safe_color_name(): void

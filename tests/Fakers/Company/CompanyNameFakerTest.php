@@ -9,7 +9,7 @@ use AliYavari\PersianFaker\Fakers\Company\CompanyNameFaker;
 use Mockery;
 use Tests\TestCase;
 
-class CompanyNameFakerTest extends TestCase
+final class CompanyNameFakerTest extends TestCase
 {
     protected $loader;
 

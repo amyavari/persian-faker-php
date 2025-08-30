@@ -10,7 +10,7 @@ use AliYavari\PersianFaker\Exceptions\InvalidDataKeyException;
 use AliYavari\PersianFaker\Exceptions\InvalidDataPathException;
 use TypeError;
 
-class DataLoaderTest extends TestCase
+final class DataLoaderTest extends TestCase
 {
     protected string $dataDirectoryPath;
 

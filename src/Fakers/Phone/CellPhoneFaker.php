@@ -15,13 +15,13 @@ use AliYavari\PersianFaker\Exceptions\InvalidMobileProviderException;
  *
  * Generates a random cell phone (mobile) number in Iran.
  *
- * @implements \AliYavari\PersianFaker\Contracts\FakerInterface<string>
+ * @implements FakerInterface<string>
  */
-class CellPhoneFaker implements FakerInterface
+final class CellPhoneFaker implements FakerInterface
 {
     /**
-     * @use \AliYavari\PersianFaker\Cores\Randomable<string>
-     * @use \AliYavari\PersianFaker\Cores\Arrayable<string>
+     * @use Randomable<string>
+     * @use Arrayable<string>
      */
     use Arrayable, Randomable;
 
@@ -31,7 +31,7 @@ class CellPhoneFaker implements FakerInterface
     protected array $phonePrefixes;
 
     /**
-     * @param  \AliYavari\PersianFaker\Contracts\DataLoaderInterface<string, list<string>>  $loader
+     * @param  DataLoaderInterface<string, list<string>>  $loader
      * @param  string  $separator  The separator between the state prefix and the phone number.
      * @param  string|null  $provider  The name of the mobile provider in Iran. See ./src/Data/phone.php
      */
@@ -43,7 +43,7 @@ class CellPhoneFaker implements FakerInterface
     /**
      * This returns a fake cell phone number
      *
-     * @throws \AliYavari\PersianFaker\Exceptions\InvalidMobileProviderException
+     * @throws InvalidMobileProviderException
      */
     public function generate(): string
     {
@@ -80,8 +80,8 @@ class CellPhoneFaker implements FakerInterface
 
     protected function formatPhone(string $providerPrefix, string $phoneNumber): string
     {
-        $firstPart = substr($phoneNumber, 0, 3);
-        $secondPart = substr($phoneNumber, 3);
+        $firstPart = mb_substr($phoneNumber, 0, 3);
+        $secondPart = mb_substr($phoneNumber, 3);
 
         return sprintf('%s%s%s%s%s', $providerPrefix, $this->separator, $firstPart, $this->separator, $secondPart);
     }

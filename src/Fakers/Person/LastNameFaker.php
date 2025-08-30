@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace AliYavari\PersianFaker\Fakers\Person;
 
+use AliYavari\PersianFaker\Contracts\FakerInterface;
 use AliYavari\PersianFaker\Fakers\SimplePicker;
 
 /**
@@ -11,9 +12,11 @@ use AliYavari\PersianFaker\Fakers\SimplePicker;
  *
  * Generates a random last name in Persian for Iranian individuals.
  *
- * @extends \AliYavari\PersianFaker\Fakers\SimplePicker<int, string>
+ * @extends SimplePicker<int, string>
+ *
+ * @implements FakerInterface<string>
  */
-class LastNameFaker extends SimplePicker
+final class LastNameFaker extends SimplePicker implements FakerInterface
 {
     /**
      * This returns a fake last name

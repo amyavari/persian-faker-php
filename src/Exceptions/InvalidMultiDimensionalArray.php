@@ -11,4 +11,4 @@ use Exception;
  *
  * This exception will be thrown if the array is one dimensional.
  */
-class InvalidMultiDimensionalArray extends Exception {}
+final class InvalidMultiDimensionalArray extends Exception {}

@@ -11,7 +11,7 @@ use Mockery;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\TestCase;
 
-class PhoneNumberFakerTest extends TestCase
+final class PhoneNumberFakerTest extends TestCase
 {
     protected $loader;
 
@@ -23,6 +23,24 @@ class PhoneNumberFakerTest extends TestCase
 
         $this->loader = Mockery::mock(DataLoaderInterface::class);
         $this->loader->shouldReceive('get')->once()->andReturn($this->statePrefixes);
+    }
+
+    // ---------------
+    // Data Providers
+    // ---------------
+
+    /**
+     * Provides datasets in the format: `dataset => [string $separator, string $expectedFormat]`
+     *
+     * Base number is `02112345678`
+     */
+    public static function formatPhoneNumberSeparatorProvider(): iterable
+    {
+        yield 'space' => [' ', '021 12345678'];
+
+        yield 'dash' => ['-', '021-12345678'];
+
+        yield 'nothing' => ['', '02112345678'];
     }
 
     public function test_state_validation_passes_with_null_state(): void
@@ -70,7 +88,7 @@ class PhoneNumberFakerTest extends TestCase
         $faker = new PhoneNumberFaker($this->loader);
         $number = $this->callProtectedMethod($faker, 'generateRandomPhoneNumber');
 
-        $this->assertSame(8, strlen((string) $number));
+        $this->assertSame(8, mb_strlen((string) $number));
         $this->assertIsNumeric($number);
     }
 
@@ -89,7 +107,7 @@ class PhoneNumberFakerTest extends TestCase
         $phoneNumber = $faker->generate(); // Expected format: 02112345678
 
         $this->assertIsString($phoneNumber);
-        $this->assertSame(11, strlen($phoneNumber));
+        $this->assertSame(11, mb_strlen($phoneNumber));
         $this->assertMatchesRegularExpression('/^0\d{10}$/', $phoneNumber);
     }
 
@@ -99,7 +117,7 @@ class PhoneNumberFakerTest extends TestCase
         $phoneNumber = $faker->generate(); // Expected format: 021-12345678
 
         $this->assertIsString($phoneNumber);
-        $this->assertSame(12, strlen($phoneNumber));
+        $this->assertSame(12, mb_strlen($phoneNumber));
         $this->assertMatchesRegularExpression('/^0\d{2}\-\d{8}$/', $phoneNumber);
     }
 
@@ -109,8 +127,8 @@ class PhoneNumberFakerTest extends TestCase
         $phoneNumber = $faker->generate(); // Expected format: 02112345678
 
         $this->assertIsString($phoneNumber);
-        $this->assertSame(11, strlen($phoneNumber));
-        $this->assertSame($this->statePrefixes['teh'], substr($phoneNumber, 0, 3));
+        $this->assertSame(11, mb_strlen($phoneNumber));
+        $this->assertSame($this->statePrefixes['teh'], mb_substr($phoneNumber, 0, 3));
     }
 
     public function test_it_throws_an_exception_with_invalid_state_name(): void
@@ -120,23 +138,5 @@ class PhoneNumberFakerTest extends TestCase
 
         $faker = new PhoneNumberFaker($this->loader, state: 'anonymous');
         $faker->generate();
-    }
-
-    // ---------------
-    // Data Providers
-    // ---------------
-
-    /**
-     * Provides datasets in the format: `dataset => [string $separator, string $expectedFormat]`
-     *
-     * Base number is `02112345678`
-     */
-    public static function formatPhoneNumberSeparatorProvider(): iterable
-    {
-        yield 'space' => [' ', '021 12345678'];
-
-        yield 'dash' => ['-', '021-12345678'];
-
-        yield 'nothing' => ['', '02112345678'];
     }
 }

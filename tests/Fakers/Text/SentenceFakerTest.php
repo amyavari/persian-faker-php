@@ -12,7 +12,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use ReflectionClass;
 use Tests\TestCase;
 
-class SentenceFakerTest extends TestCase
+final class SentenceFakerTest extends TestCase
 {
     protected $wordFaker;
 
@@ -21,6 +21,34 @@ class SentenceFakerTest extends TestCase
         parent::setUp();
 
         $this->wordFaker = Mockery::mock(WordFaker::class);
+    }
+
+    // ---------------
+    // Data Providers
+    // ---------------
+
+    /**
+     * Provides datasets in the format: `dataset => [int $number]`
+     */
+    public static function wordNumberValidationRangeProvider(): iterable
+    {
+        yield 'greater_than_100' => [101];
+
+        yield 'zero' => [0];
+
+        yield 'negative' => [-1];
+    }
+
+    /**
+     * Provides datasets in the format: `dataset => [int $number]`
+     */
+    public static function sentenceNumberValidationRangeProvider(): iterable
+    {
+        yield 'greater_than_100' => [101];
+
+        yield 'zero' => [0];
+
+        yield 'negative' => [-1];
     }
 
     public function test_word_number_validation_passes_when_number_is_in_valid_range(): void
@@ -248,33 +276,5 @@ class SentenceFakerTest extends TestCase
         $this->assertTrue($reflectedSentenceFaker->getProperty('asText')->getValue($newFaker));
         $this->assertSame(10, $reflectedSentenceFaker->getProperty('nbWords')->getValue($newFaker));
         $this->assertSame(2, $reflectedSentenceFaker->getProperty('nbSentences')->getValue($newFaker));
-    }
-
-    // ---------------
-    // Data Providers
-    // ---------------
-
-    /**
-     * Provides datasets in the format: `dataset => [int $number]`
-     */
-    public static function wordNumberValidationRangeProvider(): iterable
-    {
-        yield 'greater_than_100' => [101];
-
-        yield 'zero' => [0];
-
-        yield 'negative' => [-1];
-    }
-
-    /**
-     * Provides datasets in the format: `dataset => [int $number]`
-     */
-    public static function sentenceNumberValidationRangeProvider(): iterable
-    {
-        yield 'greater_than_100' => [101];
-
-        yield 'zero' => [0];
-
-        yield 'negative' => [-1];
     }
 }

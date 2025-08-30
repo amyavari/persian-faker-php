@@ -13,11 +13,11 @@ use AliYavari\PersianFaker\Exceptions\InvalidElementNumberException;
  *
  * Generates fake sentence(s)
  *
- * @implements \AliYavari\PersianFaker\Contracts\FakerInterface<string|list<string>>
+ * @implements FakerInterface<string|list<string>>
  */
-class SentenceFaker implements FakerInterface
+final class SentenceFaker implements FakerInterface
 {
-    /** @use \AliYavari\PersianFaker\Cores\Arrayable<string> */
+    /** @use Arrayable<string> */
     use Arrayable;
 
     protected const VARIABLE_PERCENTAGE = 0.4;
@@ -50,7 +50,7 @@ class SentenceFaker implements FakerInterface
      *
      * @return string|list<string>
      *
-     * @throws \AliYavari\PersianFaker\Exceptions\InvalidElementNumberException
+     * @throws InvalidElementNumberException
      */
     public function generate(): string|array
     {

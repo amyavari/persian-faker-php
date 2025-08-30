@@ -15,13 +15,13 @@ use AliYavari\PersianFaker\Exceptions\InvalidGenderException;
  *
  * Generates a random first name in Persian for Iranian individuals.
  *
- * @implements \AliYavari\PersianFaker\Contracts\FakerInterface<string>
+ * @implements FakerInterface<string>
  */
-class FirstNameFaker implements FakerInterface
+final class FirstNameFaker implements FakerInterface
 {
     /**
-     * @use \AliYavari\PersianFaker\Cores\Randomable<string>
-     * @use \AliYavari\PersianFaker\Cores\Arrayable<string>
+     * @use Randomable<string>
+     * @use Arrayable<string>
      */
     use Arrayable, Randomable;
 
@@ -31,7 +31,7 @@ class FirstNameFaker implements FakerInterface
     protected array $names;
 
     /**
-     * @param  \AliYavari\PersianFaker\Contracts\DataLoaderInterface<string, list<string>>  $loader
+     * @param  DataLoaderInterface<string, list<string>>  $loader
      * @param  string|null  $gender  The gender can be either 'male' or 'female'.
      */
     public function __construct(DataLoaderInterface $loader, protected ?string $gender = null)
@@ -42,7 +42,7 @@ class FirstNameFaker implements FakerInterface
     /**
      * This returns a fake first name
      *
-     * @throws \AliYavari\PersianFaker\Exceptions\InvalidGenderException
+     * @throws InvalidGenderException
      */
     public function generate(): string
     {

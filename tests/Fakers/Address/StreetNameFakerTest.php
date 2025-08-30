@@ -9,7 +9,7 @@ use AliYavari\PersianFaker\Fakers\Address\StreetNameFaker;
 use Mockery;
 use Tests\TestCase;
 
-class StreetNameFakerTest extends TestCase
+final class StreetNameFakerTest extends TestCase
 {
     protected $loader;
 

@@ -21,9 +21,9 @@ use AliYavari\PersianFaker\Exceptions\InvalidDataPathException;
  * @template TKey of array-key
  * @template TData
  *
- * @implements \AliYavari\PersianFaker\Contracts\DataLoaderInterface<TKey, TData>
+ * @implements DataLoaderInterface<TKey, TData>
  */
-class DataLoader implements DataLoaderInterface
+final class DataLoader implements DataLoaderInterface
 {
     public function __construct(
         protected string $path
@@ -47,9 +47,9 @@ class DataLoader implements DataLoaderInterface
     /**
      * @return array{file_name: string, keys: list<string>}
      *
-     * @throws \AliYavari\PersianFaker\Exceptions\InvalidDataPathException
+     * @throws InvalidDataPathException
      */
-    protected function getFileNameAndKeys(): array
+    private function getFileNameAndKeys(): array
     {
         $fileKeys = explode('.', $this->path);
 
@@ -68,9 +68,9 @@ class DataLoader implements DataLoaderInterface
     /**
      * @return array<string, mixed>
      *
-     * @throws \AliYavari\PersianFaker\Exceptions\FileNotFoundException
+     * @throws FileNotFoundException
      */
-    protected function loadFile(string $fileName)
+    private function loadFile(string $fileName)
     {
         $filePath = __DIR__.DIRECTORY_SEPARATOR.'data'.DIRECTORY_SEPARATOR.$fileName.'.php';
 
@@ -84,11 +84,11 @@ class DataLoader implements DataLoaderInterface
     /**
      * TODO fix generic types for this method.
      *
-     * @throws \AliYavari\PersianFaker\Exceptions\FileNotFoundException
+     * @throws FileNotFoundException
      *
      * @phpstan-ignore-next-line
      */
-    protected function getArrayDataByNestedKeys(array $array, array $keys)
+    private function getArrayDataByNestedKeys(array $array, array $keys)
     {
         $currentKey = (string) array_shift($keys);
 

@@ -11,4 +11,4 @@ use Exception;
  *
  * This exception will be thrown if the array elements are not of string type.
  */
-class InvalidStringArrayException extends Exception {}
+final class InvalidStringArrayException extends Exception {}

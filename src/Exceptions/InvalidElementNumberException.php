@@ -11,4 +11,4 @@ use Exception;
  *
  * This exception will be thrown if the number of requested elements is not in the valid range.
  */
-class InvalidElementNumberException extends Exception {}
+final class InvalidElementNumberException extends Exception {}

@@ -7,7 +7,7 @@ namespace Tests\Fakers\Address;
 use AliYavari\PersianFaker\Fakers\Address\PostCodeFaker;
 use Tests\TestCase;
 
-class PostCodeFakerTest extends TestCase
+final class PostCodeFakerTest extends TestCase
 {
     public function test_it_returns_random_post_code_number(): void
     {
@@ -15,7 +15,7 @@ class PostCodeFakerTest extends TestCase
         $postCode = $this->callProtectedMethod($faker, 'generateRandomPostCode');
 
         $this->assertIsString($postCode);
-        $this->assertSame(10, strlen($postCode));
+        $this->assertSame(10, mb_strlen($postCode));
         $this->assertMatchesRegularExpression('/^[1-9]{10}$/', $postCode);
     }
 
@@ -33,7 +33,7 @@ class PostCodeFakerTest extends TestCase
         $postCode = $faker->generate(); // Expected format: 1234567890
 
         $this->assertIsString($postCode);
-        $this->assertSame(10, strlen($postCode));
+        $this->assertSame(10, mb_strlen($postCode));
         $this->assertMatchesRegularExpression('/^[1-9]{10}$/', $postCode);
     }
 
@@ -43,7 +43,7 @@ class PostCodeFakerTest extends TestCase
         $postCode = $faker->generate(); // Expected format: 12345-67890
 
         $this->assertIsString($postCode);
-        $this->assertSame(11, strlen($postCode));
+        $this->assertSame(11, mb_strlen($postCode));
         $this->assertMatchesRegularExpression('/^[1-9]{5}\-[1-9]{5}$/', $postCode);
     }
 }

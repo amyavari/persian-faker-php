@@ -14,7 +14,7 @@ use RangeException;
 use Tests\TestCase;
 use TypeError;
 
-class NationalCodeFakerTest extends TestCase
+final class NationalCodeFakerTest extends TestCase
 {
     use Arrayable;
 
@@ -32,6 +32,22 @@ class NationalCodeFakerTest extends TestCase
 
         $this->loader = Mockery::mock(DataLoaderInterface::class);
         $this->loader->shouldReceive('get')->once()->andReturn($this->statePrefixes);
+    }
+
+    // ---------------
+    // Data Providers
+    // ---------------
+
+    /**
+     * Provides datasets in the format: `dataset => [int $checkDigit, string $nationalCode]`
+     */
+    public static function checkDigitsProvider(): iterable
+    {
+        yield 'reminder_greater_than_2' => [6, '773168995'];
+
+        yield 'reminder_equal_to_2' => [9, '773168985'];
+
+        yield 'reminder_less_than_2' => [1, '773168993'];
     }
 
     public function test_state_validation_passes_with_null_state(): void
@@ -79,7 +95,7 @@ class NationalCodeFakerTest extends TestCase
         $faker = new NationalCodeFaker($this->loader);
         $number = $this->callProtectedMethod($faker, 'generateRandomNationalCode');
 
-        $this->assertSame(6, strlen((string) $number));
+        $this->assertSame(6, mb_strlen((string) $number));
         $this->assertIsNumeric($number);
     }
 
@@ -126,9 +142,9 @@ class NationalCodeFakerTest extends TestCase
         $nationalCode = $faker->generate();
 
         $this->assertIsString($nationalCode);
-        $this->assertSame(10, strlen($nationalCode));
+        $this->assertSame(10, mb_strlen($nationalCode));
         $this->assertIsNumeric($nationalCode);
-        $this->assertCheckDigit(substr($nationalCode, 0, 9), substr($nationalCode, -1));
+        $this->assertCheckDigit(mb_substr($nationalCode, 0, 9), mb_substr($nationalCode, -1));
     }
 
     public function test_it_returns_fake_national_code_for_specific_state(): void
@@ -137,10 +153,10 @@ class NationalCodeFakerTest extends TestCase
         $nationalCode = $faker->generate();
 
         $this->assertIsString($nationalCode);
-        $this->assertSame(10, strlen($nationalCode));
+        $this->assertSame(10, mb_strlen($nationalCode));
         $this->assertIsNumeric($nationalCode);
-        $this->assertContains(substr($nationalCode, 0, 3), $this->statePrefixes['state_two']);
-        $this->assertCheckDigit(substr($nationalCode, 0, 9), substr($nationalCode, -1));
+        $this->assertContains(mb_substr($nationalCode, 0, 3), $this->statePrefixes['state_two']);
+        $this->assertCheckDigit(mb_substr($nationalCode, 0, 9), mb_substr($nationalCode, -1));
     }
 
     public function test_it_throws_an_exception_with_invalid_state_name(): void
@@ -175,7 +191,7 @@ class NationalCodeFakerTest extends TestCase
         */
 
         $sum = 0;
-        foreach (str_split($digits) as $key => $value) {
+        foreach (mb_str_split($digits) as $key => $value) {
             $sum += $value * (10 - $key);
         }
 
@@ -188,21 +204,5 @@ class NationalCodeFakerTest extends TestCase
         }
 
         $this->assertEquals(11 - $remainder, $checkDigit);
-    }
-
-    // ---------------
-    // Data Providers
-    // ---------------
-
-    /**
-     * Provides datasets in the format: `dataset => [int $checkDigit, string $nationalCode]`
-     */
-    public static function checkDigitsProvider(): iterable
-    {
-        yield 'reminder_greater_than_2' => [6, '773168995'];
-
-        yield 'reminder_equal_to_2' => [9, '773168985'];
-
-        yield 'reminder_less_than_2' => [1, '773168993'];
     }
 }

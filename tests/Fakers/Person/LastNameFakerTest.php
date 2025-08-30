@@ -8,7 +8,7 @@ use AliYavari\PersianFaker\Contracts\DataLoaderInterface;
 use Mockery;
 use Tests\TestCase;
 
-class LastNameFakerTest extends TestCase
+final class LastNameFakerTest extends TestCase
 {
     protected $loader;
 

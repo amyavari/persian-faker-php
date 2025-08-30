@@ -11,7 +11,7 @@ use Mockery;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\TestCase;
 
-class ParagraphFakerTest extends TestCase
+final class ParagraphFakerTest extends TestCase
 {
     protected $sentenceFaker;
 
@@ -20,6 +20,34 @@ class ParagraphFakerTest extends TestCase
         parent::setUp();
 
         $this->sentenceFaker = Mockery::mock(SentenceFaker::class);
+    }
+
+    // ---------------
+    // Data Providers
+    // ---------------
+
+    /**
+     * Provides datasets in the format: `dataset => [int $number]`
+     */
+    public static function sentenceNumberValidationRangeProvider(): iterable
+    {
+        yield 'greater_than_100' => [101];
+
+        yield 'zero' => [0];
+
+        yield 'negative' => [-1];
+    }
+
+    /**
+     * Provides datasets in the format: `dataset => [int $number]`
+     */
+    public static function paragraphNumberValidationRangeProvider(): iterable
+    {
+        yield 'greater_than_100' => [101];
+
+        yield 'zero' => [0];
+
+        yield 'negative' => [-1];
     }
 
     public function test_sentence_number_validation_passes_when_number_is_in_valid_range(): void
@@ -228,33 +256,5 @@ class ParagraphFakerTest extends TestCase
 
         $faker = new ParagraphFaker($this->sentenceFaker, nbParagraphs: 0);
         $faker->generate();
-    }
-
-    // ---------------
-    // Data Providers
-    // ---------------
-
-    /**
-     * Provides datasets in the format: `dataset => [int $number]`
-     */
-    public static function sentenceNumberValidationRangeProvider(): iterable
-    {
-        yield 'greater_than_100' => [101];
-
-        yield 'zero' => [0];
-
-        yield 'negative' => [-1];
-    }
-
-    /**
-     * Provides datasets in the format: `dataset => [int $number]`
-     */
-    public static function paragraphNumberValidationRangeProvider(): iterable
-    {
-        yield 'greater_than_100' => [101];
-
-        yield 'zero' => [0];
-
-        yield 'negative' => [-1];
     }
 }

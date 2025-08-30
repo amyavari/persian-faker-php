@@ -9,7 +9,7 @@ use AliYavari\PersianFaker\Fakers\Company\CatchphraseFaker;
 use Mockery;
 use Tests\TestCase;
 
-class CatchPhraseFakerTest extends TestCase
+final class CatchPhraseFakerTest extends TestCase
 {
     protected $loader;
 

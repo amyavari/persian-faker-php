@@ -11,7 +11,7 @@ use AliYavari\PersianFaker\Fakers\Colors\ColorNameFaker;
 use Mockery;
 use Tests\TestCase;
 
-class ColorNameFakerTest extends TestCase
+final class ColorNameFakerTest extends TestCase
 {
     use Arrayable;
 

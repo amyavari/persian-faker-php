@@ -15,13 +15,13 @@ use AliYavari\PersianFaker\Exceptions\InvalidElementNumberException;
  *
  * Generates fake text
  *
- * @implements \AliYavari\PersianFaker\Contracts\FakerInterface<string>
+ * @implements FakerInterface<string>
  */
-class TextFaker implements FakerInterface
+final class TextFaker implements FakerInterface
 {
     /**
-     * @use \AliYavari\PersianFaker\Cores\Arrayable<string>
-     * @use \AliYavari\PersianFaker\Cores\Randomable<string>
+     * @use Arrayable<string>
+     * @use Randomable<string>
      */
     use Arrayable, Randomable;
 
@@ -39,7 +39,7 @@ class TextFaker implements FakerInterface
     protected array $words;
 
     /**
-     * @param  \AliYavari\PersianFaker\Contracts\DataLoaderInterface<int, string>  $loader
+     * @param  DataLoaderInterface<int, string>  $loader
      * @param  int  $maxNbChars  The maximum number of characters to which the returned text should be limited.
      */
     public function __construct(DataLoaderInterface $loader, protected int $maxNbChars = 10)
@@ -50,7 +50,7 @@ class TextFaker implements FakerInterface
     /**
      * This returns random text.
      *
-     * @throws \AliYavari\PersianFaker\Exceptions\InvalidElementNumberException
+     * @throws InvalidElementNumberException
      */
     public function generate(): string
     {

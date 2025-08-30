@@ -13,7 +13,7 @@ use RangeException;
 use Tests\TestCase;
 use TypeError;
 
-class CardNumberFakerTest extends TestCase
+final class CardNumberFakerTest extends TestCase
 {
     protected $loader;
 
@@ -25,6 +25,36 @@ class CardNumberFakerTest extends TestCase
 
         $this->loader = Mockery::mock(DataLoaderInterface::class);
         $this->loader->shouldReceive('get')->once()->andReturn($this->banksBins);
+    }
+
+    // ---------------
+    // Data Providers
+    // ---------------
+
+    /**
+     * Provides datasets in the format: `dataset => [int $checkDigit, string $cardNumber]`
+     */
+    public static function checkDigitsProvider(): iterable
+    {
+        yield 'products_only_one_digit' => [8, '123412341234123'];
+
+        yield 'products_have_two_digits' => [2, '473745009214726'];
+
+        yield 'sum_is_multiple_of_10' => [0, '456789777221862'];
+    }
+
+    /**
+     * Provides datasets in the format: `dataset => [string $separator, string $expectedFormat]`
+     *
+     * Base number is `1234567890123456`
+     */
+    public static function formatCardNumberSeparatorProvider(): iterable
+    {
+        yield 'space' => [' ', '1234 5678 9012 3456'];
+
+        yield 'dash' => ['-', '1234-5678-9012-3456'];
+
+        yield 'nothing' => ['', '1234567890123456'];
     }
 
     public function test_bank_validation_passes_with_null_bank_name(): void
@@ -73,7 +103,7 @@ class CardNumberFakerTest extends TestCase
         $number = $this->callProtectedMethod($faker, 'generateRandomCardNumber');
 
         $this->assertIsNumeric($number);
-        $this->assertSame(9, strlen((string) $number));
+        $this->assertSame(9, mb_strlen((string) $number));
     }
 
     #[DataProvider('checkDigitsProvider')]
@@ -129,9 +159,9 @@ class CardNumberFakerTest extends TestCase
 
         $this->assertIsString($cardNumber);
         $this->assertIsNumeric($cardNumber);
-        $this->assertSame(16, strlen($cardNumber));
-        $this->assertContains(substr($cardNumber, 0, 6), $this->banksBins);
-        $this->assertCheckDigit(substr($cardNumber, 0, 15), substr($cardNumber, -1));
+        $this->assertSame(16, mb_strlen($cardNumber));
+        $this->assertContains(mb_substr($cardNumber, 0, 6), $this->banksBins);
+        $this->assertCheckDigit(mb_substr($cardNumber, 0, 15), mb_substr($cardNumber, -1));
     }
 
     public function test_it_returns_fake_card_number_for_specific_bank(): void
@@ -141,9 +171,9 @@ class CardNumberFakerTest extends TestCase
 
         $this->assertIsString($cardNumber);
         $this->assertIsNumeric($cardNumber);
-        $this->assertSame(16, strlen($cardNumber));
-        $this->assertSame($this->banksBins['bank2'], substr($cardNumber, 0, 6));
-        $this->assertCheckDigit(substr($cardNumber, 0, 15), substr($cardNumber, -1));
+        $this->assertSame(16, mb_strlen($cardNumber));
+        $this->assertSame($this->banksBins['bank2'], mb_substr($cardNumber, 0, 6));
+        $this->assertCheckDigit(mb_substr($cardNumber, 0, 15), mb_substr($cardNumber, -1));
     }
 
     public function test_it_returns_fake_card_number_with_specific_separator(): void
@@ -155,8 +185,8 @@ class CardNumberFakerTest extends TestCase
         $this->assertMatchesRegularExpression('/^\d{4}\-\d{4}\-\d{4}\-\d{4}$/', $cardNumber);
 
         $cardNumberDigits = str_replace('-', '', $cardNumber);
-        $this->assertContains(substr($cardNumberDigits, 0, 6), $this->banksBins);
-        $this->assertCheckDigit(substr($cardNumberDigits, 0, 15), substr($cardNumberDigits, -1));
+        $this->assertContains(mb_substr($cardNumberDigits, 0, 6), $this->banksBins);
+        $this->assertCheckDigit(mb_substr($cardNumberDigits, 0, 15), mb_substr($cardNumberDigits, -1));
     }
 
     public function test_it_throws_an_exception_if_bank_name_is_not_valid(): void
@@ -196,7 +226,7 @@ class CardNumberFakerTest extends TestCase
         */
 
         $sum = 0;
-        foreach (str_split($digits) as $key => $value) {
+        foreach (mb_str_split($digits) as $key => $value) {
             $multipleBy = (($key + 1) % 2 === 0) ? 1 : 2;
 
             $product = $value * $multipleBy;
@@ -217,35 +247,5 @@ class CardNumberFakerTest extends TestCase
         $multipleOf10 = (intdiv($sum, 10) + 1) * 10;
 
         $this->assertEquals($multipleOf10 - $sum, $checkDigit);
-    }
-
-    // ---------------
-    // Data Providers
-    // ---------------
-
-    /**
-     * Provides datasets in the format: `dataset => [int $checkDigit, string $cardNumber]`
-     */
-    public static function checkDigitsProvider(): iterable
-    {
-        yield 'products_only_one_digit' => [8, '123412341234123'];
-
-        yield 'products_have_two_digits' => [2, '473745009214726'];
-
-        yield 'sum_is_multiple_of_10' => [0, '456789777221862'];
-    }
-
-    /**
-     * Provides datasets in the format: `dataset => [string $separator, string $expectedFormat]`
-     *
-     * Base number is `1234567890123456`
-     */
-    public static function formatCardNumberSeparatorProvider(): iterable
-    {
-        yield 'space' => [' ', '1234 5678 9012 3456'];
-
-        yield 'dash' => ['-', '1234-5678-9012-3456'];
-
-        yield 'nothing' => ['', '1234567890123456'];
     }
 }

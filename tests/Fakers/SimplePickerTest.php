@@ -9,7 +9,7 @@ use AliYavari\PersianFaker\Fakers\SimplePicker;
 use Mockery;
 use Tests\TestCase;
 
-class SimplePickerTest extends TestCase
+final class SimplePickerTest extends TestCase
 {
     protected $loader;
 
@@ -26,7 +26,7 @@ class SimplePickerTest extends TestCase
     public function test_it_returns_random_element_from_loaded_data(): void
     {
         $faker = new class($this->loader) extends SimplePicker {};
-        $element = $faker->generate();
+        $element = $this->callProtectedMethod($faker, 'generate');
 
         $this->assertContains($element, $this->simpleArray);
     }

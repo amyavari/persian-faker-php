@@ -12,7 +12,7 @@ use Mockery;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\TestCase;
 
-class CellPhoneFakerTest extends TestCase
+final class CellPhoneFakerTest extends TestCase
 {
     use Arrayable;
 
@@ -30,6 +30,24 @@ class CellPhoneFakerTest extends TestCase
 
         $this->loader = Mockery::mock(DataLoaderInterface::class);
         $this->loader->shouldReceive('get')->once()->andReturn($this->phonePrefixes);
+    }
+
+    // ---------------
+    // Data Providers
+    // ---------------
+
+    /**
+     * Provides datasets in the format: `dataset => [string $separator, string $expectedFormat]`
+     *
+     * Base number is `09121234567`
+     */
+    public static function formatPhoneNumberSeparatorProvider(): iterable
+    {
+        yield 'space' => [' ', '0912 123 4567'];
+
+        yield 'dash' => ['-', '0912-123-4567'];
+
+        yield 'nothing' => ['', '09121234567'];
     }
 
     public function test_provider_validation_passes_with_null_provider(): void
@@ -77,7 +95,7 @@ class CellPhoneFakerTest extends TestCase
         $faker = new CellPhoneFaker($this->loader);
         $number = $this->callProtectedMethod($faker, 'generateRandomCellPhone');
 
-        $this->assertSame(7, strlen((string) $number));
+        $this->assertSame(7, mb_strlen((string) $number));
         $this->assertIsNumeric($number);
     }
 
@@ -96,7 +114,7 @@ class CellPhoneFakerTest extends TestCase
         $phone = $faker->generate(); // Expected format: 09121234567
 
         $this->assertIsString($phone);
-        $this->assertSame(11, strlen($phone));
+        $this->assertSame(11, mb_strlen($phone));
         $this->assertMatchesRegularExpression('/^09\d{9}$/', $phone);
     }
 
@@ -106,7 +124,7 @@ class CellPhoneFakerTest extends TestCase
         $phone = $faker->generate(); // Expected format: 0912-123-4567
 
         $this->assertIsString($phone);
-        $this->assertSame(13, strlen($phone));
+        $this->assertSame(13, mb_strlen($phone));
         $this->assertMatchesRegularExpression('/^09\d{2}\-\d{3}\-\d{4}$/', $phone);
     }
 
@@ -116,8 +134,8 @@ class CellPhoneFakerTest extends TestCase
         $phone = $faker->generate(); // Expected format: 09121234567
 
         $this->assertIsString($phone);
-        $this->assertSame(11, strlen($phone));
-        $this->assertContains(substr($phone, 0, 4), $this->phonePrefixes['provider_two']);
+        $this->assertSame(11, mb_strlen($phone));
+        $this->assertContains(mb_substr($phone, 0, 4), $this->phonePrefixes['provider_two']);
     }
 
     public function test_it_throws_an_exception_with_invalid_mobile_provider_name(): void
@@ -127,23 +145,5 @@ class CellPhoneFakerTest extends TestCase
 
         $faker = new CellPhoneFaker($this->loader, provider: 'anonymous');
         $faker->generate();
-    }
-
-    // ---------------
-    // Data Providers
-    // ---------------
-
-    /**
-     * Provides datasets in the format: `dataset => [string $separator, string $expectedFormat]`
-     *
-     * Base number is `09121234567`
-     */
-    public static function formatPhoneNumberSeparatorProvider(): iterable
-    {
-        yield 'space' => [' ', '0912 123 4567'];
-
-        yield 'dash' => ['-', '0912-123-4567'];
-
-        yield 'nothing' => ['', '09121234567'];
     }
 }

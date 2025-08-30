@@ -7,6 +7,8 @@ namespace AliYavari\PersianFaker\Exceptions;
 use Exception;
 
 /**
+ * @internal
+ *
  * This exception will be thrown if the bank name is not valid in Iran.
  */
 class InvalidBankNameException extends Exception {}

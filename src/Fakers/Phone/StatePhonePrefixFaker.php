@@ -7,6 +7,8 @@ namespace AliYavari\PersianFaker\Fakers\Phone;
 use AliYavari\PersianFaker\Fakers\SimplePicker;
 
 /**
+ * @internal
+ *
  * Generates a random state phone prefix in Iran.
  *
  * @extends \AliYavari\PersianFaker\Fakers\SimplePicker<string, string>

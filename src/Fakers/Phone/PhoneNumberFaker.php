@@ -10,6 +10,8 @@ use AliYavari\PersianFaker\Cores\Randomable;
 use AliYavari\PersianFaker\Exceptions\InvalidStateNameException;
 
 /**
+ * @internal
+ *
  * Generates a random phone number in Iran.
  *
  * @implements \AliYavari\PersianFaker\Contracts\FakerInterface<string>

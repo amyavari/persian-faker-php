@@ -10,6 +10,8 @@ use AliYavari\PersianFaker\Exceptions\InvalidDataKeyException;
 use AliYavari\PersianFaker\Exceptions\InvalidDataPathException;
 
 /**
+ * @internal
+ *
  * This class loads data from a path and retrieves it
  *
  * @property string $path Follows the format: "filename.key_one.key_two.key_three...",

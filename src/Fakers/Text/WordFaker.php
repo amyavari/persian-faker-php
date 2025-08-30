@@ -11,6 +11,8 @@ use AliYavari\PersianFaker\Cores\Randomable;
 use AliYavari\PersianFaker\Exceptions\InvalidElementNumberException;
 
 /**
+ * @internal
+ *
  * Generates fake word(s)
  *
  * @implements \AliYavari\PersianFaker\Contracts\FakerInterface<string|list<string>>

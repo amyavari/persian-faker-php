@@ -9,6 +9,8 @@ use AliYavari\PersianFaker\Contracts\FakerInterface;
 use AliYavari\PersianFaker\Cores\Randomable;
 
 /**
+ * @internal
+ *
  * Returns a randomly selected element from the loaded one-dimensional data array.
  * It ensures consistent and reusable logic for random selection across all child classes.
  *

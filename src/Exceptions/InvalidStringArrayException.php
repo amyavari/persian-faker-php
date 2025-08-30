@@ -7,6 +7,8 @@ namespace AliYavari\PersianFaker\Exceptions;
 use Exception;
 
 /**
+ * @internal
+ *
  * This exception will be thrown if the array elements are not of string type.
  */
 class InvalidStringArrayException extends Exception {}

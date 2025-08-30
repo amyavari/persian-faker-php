@@ -13,6 +13,8 @@ use RangeException;
 use TypeError;
 
 /**
+ * @internal
+ *
  * Generates a random Iran's bank card number.
  *
  * @implements \AliYavari\PersianFaker\Contracts\FakerInterface<string>

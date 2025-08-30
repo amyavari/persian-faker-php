@@ -7,6 +7,8 @@ namespace AliYavari\PersianFaker\Fakers\Payment;
 use AliYavari\PersianFaker\Fakers\SimplePicker;
 
 /**
+ * @internal
+ *
  * Generates a random bank name in Iran.
  *
  * @extends \AliYavari\PersianFaker\Fakers\SimplePicker<int, string>

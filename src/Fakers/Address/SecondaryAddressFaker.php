@@ -9,6 +9,8 @@ use AliYavari\PersianFaker\Contracts\FakerInterface;
 use AliYavari\PersianFaker\Cores\Randomable;
 
 /**
+ * @internal
+ *
  * Generates a fake secondary address
  *
  * @implements \AliYavari\PersianFaker\Contracts\FakerInterface<string>

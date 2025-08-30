@@ -13,6 +13,8 @@ use RangeException;
 use TypeError;
 
 /**
+ * @internal
+ *
  * Generates a random Iran's account Sheba numbe.
  *
  * @implements \AliYavari\PersianFaker\Contracts\FakerInterface<string>

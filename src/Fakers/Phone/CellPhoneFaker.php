@@ -11,6 +11,8 @@ use AliYavari\PersianFaker\Cores\Randomable;
 use AliYavari\PersianFaker\Exceptions\InvalidMobileProviderException;
 
 /**
+ * @internal
+ *
  * Generates a random cell phone (mobile) number in Iran.
  *
  * @implements \AliYavari\PersianFaker\Contracts\FakerInterface<string>

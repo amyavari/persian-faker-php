@@ -7,6 +7,8 @@ namespace AliYavari\PersianFaker\Exceptions;
 use Exception;
 
 /**
+ * @internal
+ *
  * This exception will be thrown if the person's gender is not valid.
  */
 class InvalidGenderException extends Exception {}

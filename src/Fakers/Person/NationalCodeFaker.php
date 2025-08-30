@@ -13,6 +13,8 @@ use RangeException;
 use TypeError;
 
 /**
+ * @internal
+ *
  * Generates a random Iranian national code.
  *
  * @implements \AliYavari\PersianFaker\Contracts\FakerInterface<string>

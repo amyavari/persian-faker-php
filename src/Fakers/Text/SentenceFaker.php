@@ -9,6 +9,8 @@ use AliYavari\PersianFaker\Cores\Arrayable;
 use AliYavari\PersianFaker\Exceptions\InvalidElementNumberException;
 
 /**
+ * @internal
+ *
  * Generates fake sentence(s)
  *
  * @implements \AliYavari\PersianFaker\Contracts\FakerInterface<string|list<string>>

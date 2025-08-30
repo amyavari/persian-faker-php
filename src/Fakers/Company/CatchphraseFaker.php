@@ -7,6 +7,8 @@ namespace AliYavari\PersianFaker\Fakers\Company;
 use AliYavari\PersianFaker\Fakers\SimplePicker;
 
 /**
+ * @internal
+ *
  * Generates a random company catchphrase in Persian Language.
  *
  * @extends \AliYavari\PersianFaker\Fakers\SimplePicker<int, string>

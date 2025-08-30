@@ -7,6 +7,8 @@ namespace AliYavari\PersianFaker\Fakers\Address;
 use AliYavari\PersianFaker\Fakers\SimplePicker;
 
 /**
+ * @internal
+ *
  * Generates a random state name in Iran
  *
  * @extends \AliYavari\PersianFaker\Fakers\SimplePicker<int, string>

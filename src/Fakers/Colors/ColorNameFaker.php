@@ -11,6 +11,8 @@ use AliYavari\PersianFaker\Cores\Randomable;
 use AliYavari\PersianFaker\Exceptions\InvalidDataKeyException;
 
 /**
+ * @internal
+ *
  * Generates a random color name.
  *
  * @phpstan-type Colors array{main: list<string>, all: list<string>}

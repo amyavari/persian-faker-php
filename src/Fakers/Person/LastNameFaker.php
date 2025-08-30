@@ -7,6 +7,8 @@ namespace AliYavari\PersianFaker\Fakers\Person;
 use AliYavari\PersianFaker\Fakers\SimplePicker;
 
 /**
+ * @internal
+ *
  * Generates a random last name in Persian for Iranian individuals.
  *
  * @extends \AliYavari\PersianFaker\Fakers\SimplePicker<int, string>

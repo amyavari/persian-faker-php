@@ -7,6 +7,8 @@ namespace AliYavari\PersianFaker\Exceptions;
 use Exception;
 
 /**
+ * @internal
+ *
  * This exception will be thrown if the specified key is not found in the array data.
  */
 class InvalidDataKeyException extends Exception {}

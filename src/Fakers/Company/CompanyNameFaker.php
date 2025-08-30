@@ -7,6 +7,8 @@ namespace AliYavari\PersianFaker\Fakers\Company;
 use AliYavari\PersianFaker\Fakers\SimplePicker;
 
 /**
+ * @internal
+ *
  * Generates a random company name of Iranian companies.
  *
  * @extends \AliYavari\PersianFaker\Fakers\SimplePicker<int, string>

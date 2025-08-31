@@ -34,13 +34,12 @@ final readonly class DataLoader implements DataLoaderInterface
      *
      * @return array<TKey, TData>
      */
-    public function get()
+    public function get(): array
     {
         ['file_name' => $fileName, 'keys' => $keys] = $this->getFileNameAndKeys();
 
         $array = $this->loadFile($fileName);
 
-        /** @var array<TKey, TData> */
         return $this->getArrayDataByNestedKeys($array, $keys);
     }
 
@@ -70,7 +69,7 @@ final readonly class DataLoader implements DataLoaderInterface
      *
      * @throws FileNotFoundException
      */
-    private function loadFile(string $fileName)
+    private function loadFile(string $fileName): array
     {
         $filePath = __DIR__.DIRECTORY_SEPARATOR.'data'.DIRECTORY_SEPARATOR.$fileName.'.php';
 
@@ -82,15 +81,14 @@ final readonly class DataLoader implements DataLoaderInterface
     }
 
     /**
-     * TODO fix generic types for this method.
+     * @param  array<mixed>  $array
+     * @param  list<string>  $keys
      *
      * @throws FileNotFoundException
-     *
-     * @phpstan-ignore-next-line
      */
-    private function getArrayDataByNestedKeys(array $array, array $keys)
+    private function getArrayDataByNestedKeys(array $array, array $keys): mixed
     {
-        $currentKey = (string) array_shift($keys);
+        $currentKey = array_shift($keys);
 
         if (! array_key_exists($currentKey, $array)) {
             throw new InvalidDataKeyException(sprintf('The key %s is not a valid key inside the file.', $currentKey));

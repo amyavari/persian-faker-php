@@ -36,7 +36,7 @@ final class ColorNameFaker implements FakerInterface
      * @param  DataLoaderInterface<string, list<string>>  $loader
      * @param  bool  $onlyMain  Determines whether to return only the main (safe) color or any color.
      */
-    public function __construct(private DataLoaderInterface $loader, private bool $onlyMain = false)
+    public function __construct(DataLoaderInterface $loader, private bool $onlyMain = false)
     {
         $colors = $loader->get();
 
@@ -44,9 +44,6 @@ final class ColorNameFaker implements FakerInterface
             throw new InvalidDataKeyException('The colors array must have "main" and "all" keys.');
         }
 
-        /**
-         * @var Colors $colors
-         */
         $this->colors = $colors;
     }
 

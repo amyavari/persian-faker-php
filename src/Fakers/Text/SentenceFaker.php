@@ -132,7 +132,6 @@ final class SentenceFaker implements FakerInterface
 
     private function getSentence(int $wordsNumber): string
     {
-        /** @var string */
         $sentence = $this->wordFaker->shouldReturnString($wordsNumber)->generate();
 
         return $this->addDotAtTheEnd($sentence);

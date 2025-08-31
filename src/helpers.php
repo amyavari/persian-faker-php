@@ -17,10 +17,10 @@ if (! function_exists('persian_faker') && class_exists(Factory::class)) {
 
         $abstract = 'persianFaker';
 
-        if (! app()->bound($abstract)) { // @phpstan-ignore-line
-            app()->singleton($abstract, fn () => Factory::create()); // @phpstan-ignore-line
+        if (! app()->bound($abstract)) { // @phpstan-ignore function.notFound
+            app()->singleton($abstract, fn () => Factory::create()); // @phpstan-ignore function.notFound
         }
 
-        return app()->make($abstract); // @phpstan-ignore-line
+        return app()->make($abstract); // @phpstan-ignore function.notFound
     }
 }

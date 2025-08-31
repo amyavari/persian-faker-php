@@ -104,7 +104,7 @@ final class NationalCodeFaker implements FakerInterface
 
         $sum = 0;
         foreach (mb_str_split($digits) as $key => $value) {
-            $sum += $value * (10 - $key); /** @phpstan-ignore binaryOp.invalid */
+            $sum += (int) $value * (10 - $key);
         }
 
         $remainder = $sum % 11;

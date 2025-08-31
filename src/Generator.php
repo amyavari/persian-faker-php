@@ -414,15 +414,10 @@ final class Generator implements GeneratorInterface
     // *******************************
 
     /**
-     * @template TValue
-     *
-     * @return DataLoaderInterface<string, list<TValue>>
-     *
-     * @phpstan-ignore-next-line
+     * @return DataLoaderInterface<array-key, mixed>
      */
     private function getDataLoaderInstance(string $dataPath): DataLoaderInterface
     {
-        /** @var DataLoader<string, list<TValue>> */
         return new DataLoader($dataPath);
     }
 

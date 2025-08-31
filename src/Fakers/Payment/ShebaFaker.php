@@ -88,7 +88,7 @@ final class ShebaFaker implements FakerInterface
 
     private function fillEmptyPlaces(string $number): string
     {
-        return mb_str_pad($number, 18, '0', STR_PAD_LEFT);
+        return str_pad($number, 18, '0', STR_PAD_LEFT);
     }
 
     /**
@@ -126,7 +126,7 @@ final class ShebaFaker implements FakerInterface
 
         $checkNumberValue = 98 - $reminder;
 
-        return mb_str_pad((string) $checkNumberValue, 2, '0', STR_PAD_LEFT);
+        return str_pad((string) $checkNumberValue, 2, '0', STR_PAD_LEFT);
     }
 
     private function formatShebaNumber(string $bankCode, string $accountType, string $shebaNumber, string $checkNumber): string

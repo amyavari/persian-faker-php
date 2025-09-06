@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## [Unreleased]
+## [1.3.1] - 2025-09-06
 
 ### Changed
 
@@ -44,6 +44,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 -   The first release of this package.
 -   Includes fake data generation methods for Address, Company, Person, phone details, and text/paragraphs.
 
+[1.3.1]: https://github.com/amyavari/persian-faker-php/compare/v1.3.0...v1.3.1
 [1.3.0]: https://github.com/amyavari/persian-faker-php/compare/v1.2.0...v1.3.0
 [1.2.0]: https://github.com/amyavari/persian-faker-php/compare/v1.1.0...v1.2.0
 [1.1.0]: https://github.com/amyavari/persian-faker-php/compare/v1.0.1...v1.1.0

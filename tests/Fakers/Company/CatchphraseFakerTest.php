@@ -7,13 +7,14 @@ namespace Tests\Fakers\Company;
 use AliYavari\PersianFaker\Contracts\DataLoaderInterface;
 use AliYavari\PersianFaker\Fakers\Company\CatchphraseFaker;
 use Mockery;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
-class CatchPhraseFakerTest extends TestCase
+final class CatchPhraseFakerTest extends TestCase
 {
-    protected $loader;
+    private $loader;
 
-    protected array $catchphrases = ['first phrase', 'second wonderful phrase', 'third catchphrase for test'];
+    private array $catchphrases = ['first phrase', 'second wonderful phrase', 'third catchphrase for test'];
 
     protected function setUp(): void
     {
@@ -23,7 +24,8 @@ class CatchPhraseFakerTest extends TestCase
         $this->loader->shouldReceive('get')->once()->andReturn($this->catchphrases);
     }
 
-    public function test_it_returns_fake_catchphrase(): void
+    #[Test]
+    public function it_returns_fake_catchphrase(): void
     {
         $faker = new CatchphraseFaker($this->loader);
         $catchphrase = $faker->generate();

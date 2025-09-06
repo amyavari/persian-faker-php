@@ -9,13 +9,15 @@ use AliYavari\PersianFaker\Contracts\FakerInterface;
 use AliYavari\PersianFaker\Cores\Randomable;
 
 /**
+ * @internal
+ *
  * Generates a fake secondary address
  *
- * @implements \AliYavari\PersianFaker\Contracts\FakerInterface<string>
+ * @implements FakerInterface<string>
  */
-class SecondaryAddressFaker implements FakerInterface
+final class SecondaryAddressFaker implements FakerInterface
 {
-    /** @use \AliYavari\PersianFaker\Cores\Randomable<string>*/
+    /** @use Randomable<string>*/
     use Randomable;
 
     /**
@@ -24,7 +26,7 @@ class SecondaryAddressFaker implements FakerInterface
     public array $prefixes;
 
     /**
-     * @param  \AliYavari\PersianFaker\Contracts\DataLoaderInterface<int, string>  $loader
+     * @param  DataLoaderInterface<int, string>  $loader
      */
     public function __construct(DataLoaderInterface $loader)
     {
@@ -41,7 +43,7 @@ class SecondaryAddressFaker implements FakerInterface
         return sprintf('%s %s', $this->getRandomPrefix(), $randomNumber);
     }
 
-    protected function getRandomPrefix(): string
+    private function getRandomPrefix(): string
     {
         return $this->getOneRandomElement($this->prefixes);
     }

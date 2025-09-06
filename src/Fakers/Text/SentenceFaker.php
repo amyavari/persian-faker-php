@@ -9,13 +9,15 @@ use AliYavari\PersianFaker\Cores\Arrayable;
 use AliYavari\PersianFaker\Exceptions\InvalidElementNumberException;
 
 /**
+ * @internal
+ *
  * Generates fake sentence(s)
  *
- * @implements \AliYavari\PersianFaker\Contracts\FakerInterface<string|list<string>>
+ * @implements FakerInterface<string|list<string>>
  */
-class SentenceFaker implements FakerInterface
+final class SentenceFaker implements FakerInterface
 {
-    /** @use \AliYavari\PersianFaker\Cores\Arrayable<string> */
+    /** @use Arrayable<string> */
     use Arrayable;
 
     protected const VARIABLE_PERCENTAGE = 0.4;
@@ -33,11 +35,11 @@ class SentenceFaker implements FakerInterface
      * @param  bool  $variableNbWords  Whether to allow variability in the number of words per sentence (true) or use a fixed count (false).
      */
     public function __construct(
-        protected WordFaker $wordFaker,
-        protected int $nbWords = 6,
-        protected int $nbSentences = 1,
-        protected bool $asText = false,
-        protected bool $variableNbWords = true,
+        private WordFaker $wordFaker,
+        private int $nbWords = 6,
+        private int $nbSentences = 1,
+        private bool $asText = false,
+        private bool $variableNbWords = true,
     ) {}
 
     /**
@@ -48,7 +50,7 @@ class SentenceFaker implements FakerInterface
      *
      * @return string|list<string>
      *
-     * @throws \AliYavari\PersianFaker\Exceptions\InvalidElementNumberException
+     * @throws InvalidElementNumberException
      */
     public function generate(): string|array
     {
@@ -79,17 +81,17 @@ class SentenceFaker implements FakerInterface
         return new self($this->wordFaker, nbWords: $nbWords, nbSentences: $nbSentences, variableNbWords: true, asText: true);
     }
 
-    protected function isWordsNumberValid(): bool
+    private function isWordsNumberValid(): bool
     {
         return $this->nbWords >= self::MIN_NUMBER && $this->nbWords <= self::MAX_NUMBER;
     }
 
-    protected function isSentencesNumberValid(): bool
+    private function isSentencesNumberValid(): bool
     {
         return $this->nbSentences >= self::MIN_NUMBER && $this->nbSentences <= self::MAX_NUMBER;
     }
 
-    protected function getVariableWordsNumber(): int
+    private function getVariableWordsNumber(): int
     {
         $min = (int) ($this->nbWords * (1 - self::VARIABLE_PERCENTAGE));
         $max = (int) ($this->nbWords * (1 + self::VARIABLE_PERCENTAGE));
@@ -107,7 +109,7 @@ class SentenceFaker implements FakerInterface
         return $wordsNumber;
     }
 
-    protected function shouldBeText(): bool
+    private function shouldBeText(): bool
     {
         return $this->nbSentences === 1 || $this->asText;
     }
@@ -115,7 +117,7 @@ class SentenceFaker implements FakerInterface
     /**
      * @return list<string>
      */
-    protected function getRandomSentences(): array
+    private function getRandomSentences(): array
     {
         $sentences = [];
 
@@ -128,15 +130,14 @@ class SentenceFaker implements FakerInterface
         return $sentences;
     }
 
-    protected function getSentence(int $wordsNumber): string
+    private function getSentence(int $wordsNumber): string
     {
-        /** @var string */
         $sentence = $this->wordFaker->shouldReturnString($wordsNumber)->generate();
 
         return $this->addDotAtTheEnd($sentence);
     }
 
-    protected function addDotAtTheEnd(string $sentence): string
+    private function addDotAtTheEnd(string $sentence): string
     {
         return sprintf('%s.', $sentence);
     }

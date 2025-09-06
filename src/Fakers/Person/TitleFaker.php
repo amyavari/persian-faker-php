@@ -11,28 +11,30 @@ use AliYavari\PersianFaker\Cores\Randomable;
 use AliYavari\PersianFaker\Exceptions\InvalidGenderException;
 
 /**
+ * @internal
+ *
  * Generates a random title in Persian language.
  *
- * @implements \AliYavari\PersianFaker\Contracts\FakerInterface<string>
+ * @implements FakerInterface<string>
  */
-class TitleFaker implements FakerInterface
+final class TitleFaker implements FakerInterface
 {
     /**
-     * @use \AliYavari\PersianFaker\Cores\Randomable<string>
-     * @use \AliYavari\PersianFaker\Cores\Arrayable<string>
+     * @use Randomable<string>
+     * @use Arrayable<string>
      */
     use Arrayable, Randomable;
 
     /**
      * @var array<string, list<string>>
      */
-    protected array $titles;
+    private array $titles;
 
     /**
-     * @param  \AliYavari\PersianFaker\Contracts\DataLoaderInterface<string, list<string>>  $loader
+     * @param  DataLoaderInterface<string, list<string>>  $loader
      * @param  string|null  $gender  The gender can be either 'male' or 'female'.
      */
-    public function __construct(DataLoaderInterface $loader, protected ?string $gender = null)
+    public function __construct(DataLoaderInterface $loader, private ?string $gender = null)
     {
         $this->titles = $loader->get();
     }
@@ -40,7 +42,7 @@ class TitleFaker implements FakerInterface
     /**
      * This returns a fake person's title
      *
-     * @throws \AliYavari\PersianFaker\Exceptions\InvalidGenderException
+     * @throws InvalidGenderException
      */
     public function generate(): string
     {
@@ -51,7 +53,7 @@ class TitleFaker implements FakerInterface
         return $this->getOneRandomElement($this->getTitles());
     }
 
-    protected function isGenderValid(): bool
+    private function isGenderValid(): bool
     {
         if (is_null($this->gender)) {
             return true;
@@ -63,7 +65,7 @@ class TitleFaker implements FakerInterface
     /**
      * @return list<string>
      */
-    protected function getTitles(): array
+    private function getTitles(): array
     {
         return is_null($this->gender) ? $this->flatten($this->titles) : $this->titles[$this->gender];
     }

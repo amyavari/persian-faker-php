@@ -11,15 +11,17 @@ use AliYavari\PersianFaker\Cores\Randomable;
 use AliYavari\PersianFaker\Exceptions\InvalidElementNumberException;
 
 /**
+ * @internal
+ *
  * Generates fake text
  *
- * @implements \AliYavari\PersianFaker\Contracts\FakerInterface<string>
+ * @implements FakerInterface<string>
  */
-class TextFaker implements FakerInterface
+final class TextFaker implements FakerInterface
 {
     /**
-     * @use \AliYavari\PersianFaker\Cores\Arrayable<string>
-     * @use \AliYavari\PersianFaker\Cores\Randomable<string>
+     * @use Arrayable<string>
+     * @use Randomable<string>
      */
     use Arrayable, Randomable;
 
@@ -34,13 +36,13 @@ class TextFaker implements FakerInterface
     /**
      * @var list<string>
      */
-    protected array $words;
+    private array $words;
 
     /**
-     * @param  \AliYavari\PersianFaker\Contracts\DataLoaderInterface<int, string>  $loader
+     * @param  DataLoaderInterface<int, string>  $loader
      * @param  int  $maxNbChars  The maximum number of characters to which the returned text should be limited.
      */
-    public function __construct(DataLoaderInterface $loader, protected int $maxNbChars = 10)
+    public function __construct(DataLoaderInterface $loader, private int $maxNbChars = 10)
     {
         $this->words = $loader->get();
     }
@@ -48,7 +50,7 @@ class TextFaker implements FakerInterface
     /**
      * This returns random text.
      *
-     * @throws \AliYavari\PersianFaker\Exceptions\InvalidElementNumberException
+     * @throws InvalidElementNumberException
      */
     public function generate(): string
     {
@@ -73,12 +75,12 @@ class TextFaker implements FakerInterface
         return $this->convertToString($words, self::SEPARATOR);
     }
 
-    protected function isCharsNumberValid(): bool
+    private function isCharsNumberValid(): bool
     {
         return $this->maxNbChars >= self::MIN_NUMBER && $this->maxNbChars <= self::MAX_NUMBER;
     }
 
-    protected function getMinNumberOfWords(): int
+    private function getMinNumberOfWords(): int
     {
         return (int) ($this->maxNbChars / self::WORD_LEN_FOR_MIN_CALC);
     }
@@ -86,7 +88,7 @@ class TextFaker implements FakerInterface
     /**
      * @param  list<string>  $words
      */
-    protected function isWithinCharLimit(array $words): bool
+    private function isWithinCharLimit(array $words): bool
     {
         return mb_strlen($this->convertToString($words, self::SEPARATOR)) <= $this->maxNbChars;
     }
@@ -95,7 +97,7 @@ class TextFaker implements FakerInterface
      * @param  list<string>  $words
      * @return list<string>
      */
-    protected function removeExtraWords(array $words): array
+    private function removeExtraWords(array $words): array
     {
         while (true) {
             if (! $this->isWithinCharLimit($words)) {

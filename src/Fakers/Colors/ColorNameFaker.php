@@ -11,30 +11,32 @@ use AliYavari\PersianFaker\Cores\Randomable;
 use AliYavari\PersianFaker\Exceptions\InvalidDataKeyException;
 
 /**
+ * @internal
+ *
  * Generates a random color name.
  *
  * @phpstan-type Colors array{main: list<string>, all: list<string>}
  *
- * @implements \AliYavari\PersianFaker\Contracts\FakerInterface<string>
+ * @implements FakerInterface<string>
  */
-class ColorNameFaker implements FakerInterface
+final class ColorNameFaker implements FakerInterface
 {
     /**
-     * @use \AliYavari\PersianFaker\Cores\Randomable<string>
-     * @use \AliYavari\PersianFaker\Cores\Arrayable<string>
+     * @use Randomable<string>
+     * @use Arrayable<string>
      */
     use Arrayable, Randomable;
 
     /**
      * @var Colors
      */
-    protected array $colors;
+    private array $colors;
 
     /**
-     * @param  \AliYavari\PersianFaker\Contracts\DataLoaderInterface<string, list<string>>  $loader
+     * @param  DataLoaderInterface<string, list<string>>  $loader
      * @param  bool  $onlyMain  Determines whether to return only the main (safe) color or any color.
      */
-    public function __construct(protected DataLoaderInterface $loader, protected bool $onlyMain = false)
+    public function __construct(DataLoaderInterface $loader, private bool $onlyMain = false)
     {
         $colors = $loader->get();
 
@@ -42,9 +44,6 @@ class ColorNameFaker implements FakerInterface
             throw new InvalidDataKeyException('The colors array must have "main" and "all" keys.');
         }
 
-        /**
-         * @var Colors $colors
-         */
         $this->colors = $colors;
     }
 
@@ -59,7 +58,7 @@ class ColorNameFaker implements FakerInterface
     /**
      * @param  array<mixed>  $data
      */
-    protected function hasNecessaryKeys(array $data): bool
+    private function hasNecessaryKeys(array $data): bool
     {
         return array_key_exists('main', $data) && array_key_exists('all', $data);
     }
@@ -67,7 +66,7 @@ class ColorNameFaker implements FakerInterface
     /**
      * @return list<string>
      */
-    protected function getColors(): array
+    private function getColors(): array
     {
         return $this->onlyMain ? $this->colors['main'] : $this->flatten($this->colors);
     }

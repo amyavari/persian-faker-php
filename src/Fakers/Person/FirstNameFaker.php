@@ -11,28 +11,30 @@ use AliYavari\PersianFaker\Cores\Randomable;
 use AliYavari\PersianFaker\Exceptions\InvalidGenderException;
 
 /**
+ * @internal
+ *
  * Generates a random first name in Persian for Iranian individuals.
  *
- * @implements \AliYavari\PersianFaker\Contracts\FakerInterface<string>
+ * @implements FakerInterface<string>
  */
-class FirstNameFaker implements FakerInterface
+final class FirstNameFaker implements FakerInterface
 {
     /**
-     * @use \AliYavari\PersianFaker\Cores\Randomable<string>
-     * @use \AliYavari\PersianFaker\Cores\Arrayable<string>
+     * @use Randomable<string>
+     * @use Arrayable<string>
      */
     use Arrayable, Randomable;
 
     /**
      * @var array<string, list<string>>
      */
-    protected array $names;
+    private array $names;
 
     /**
-     * @param  \AliYavari\PersianFaker\Contracts\DataLoaderInterface<string, list<string>>  $loader
+     * @param  DataLoaderInterface<string, list<string>>  $loader
      * @param  string|null  $gender  The gender can be either 'male' or 'female'.
      */
-    public function __construct(DataLoaderInterface $loader, protected ?string $gender = null)
+    public function __construct(DataLoaderInterface $loader, private ?string $gender = null)
     {
         $this->names = $loader->get();
     }
@@ -40,7 +42,7 @@ class FirstNameFaker implements FakerInterface
     /**
      * This returns a fake first name
      *
-     * @throws \AliYavari\PersianFaker\Exceptions\InvalidGenderException
+     * @throws InvalidGenderException
      */
     public function generate(): string
     {
@@ -51,7 +53,7 @@ class FirstNameFaker implements FakerInterface
         return $this->getOneRandomElement($this->getNames());
     }
 
-    protected function isGenderValid(): bool
+    private function isGenderValid(): bool
     {
         if (is_null($this->gender)) {
             return true;
@@ -63,7 +65,7 @@ class FirstNameFaker implements FakerInterface
     /**
      * @return list<string>
      */
-    protected function getNames(): array
+    private function getNames(): array
     {
         return is_null($this->gender) ? $this->flatten($this->names) : $this->names[$this->gender];
     }

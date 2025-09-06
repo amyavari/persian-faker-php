@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace AliYavari\PersianFaker\Contracts;
 
 /**
+ * @internal
+ *
  * Interface for all Fakers to generate fake data.
  *
  * @template TValue

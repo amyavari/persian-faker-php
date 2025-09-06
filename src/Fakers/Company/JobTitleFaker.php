@@ -4,14 +4,19 @@ declare(strict_types=1);
 
 namespace AliYavari\PersianFaker\Fakers\Company;
 
+use AliYavari\PersianFaker\Contracts\FakerInterface;
 use AliYavari\PersianFaker\Fakers\SimplePicker;
 
 /**
+ * @internal
+ *
  * Generates a random job title in Persian Language.
  *
- * @extends \AliYavari\PersianFaker\Fakers\SimplePicker<int, string>
+ * @extends SimplePicker<int, string>
+ *
+ * @implements FakerInterface<string>
  */
-class JobTitleFaker extends SimplePicker
+final class JobTitleFaker extends SimplePicker implements FakerInterface
 {
     /**
      * This returns a fake company job title

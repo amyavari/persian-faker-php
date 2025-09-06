@@ -7,13 +7,14 @@ namespace Tests\Fakers\Address;
 use AliYavari\PersianFaker\Contracts\DataLoaderInterface;
 use AliYavari\PersianFaker\Fakers\Address\StateFaker;
 use Mockery;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
-class StateFakerTest extends TestCase
+final class StateFakerTest extends TestCase
 {
-    protected $loader;
+    private $loader;
 
-    protected array $states = ['Yazd', 'Tehran', 'Qom', 'Shiraz'];
+    private array $states = ['Yazd', 'Tehran', 'Qom', 'Shiraz'];
 
     protected function setUp(): void
     {
@@ -23,7 +24,8 @@ class StateFakerTest extends TestCase
         $this->loader->shouldReceive('get')->once()->andReturn($this->states);
     }
 
-    public function test_it_returns_fake_state(): void
+    #[Test]
+    public function it_returns_fake_state(): void
     {
         $faker = new StateFaker($this->loader);
         $state = $faker->generate();

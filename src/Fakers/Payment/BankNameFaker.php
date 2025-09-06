@@ -4,14 +4,19 @@ declare(strict_types=1);
 
 namespace AliYavari\PersianFaker\Fakers\Payment;
 
+use AliYavari\PersianFaker\Contracts\FakerInterface;
 use AliYavari\PersianFaker\Fakers\SimplePicker;
 
 /**
+ * @internal
+ *
  * Generates a random bank name in Iran.
  *
- * @extends \AliYavari\PersianFaker\Fakers\SimplePicker<int, string>
+ * @extends SimplePicker<int, string>
+ *
+ * @implements FakerInterface<string>
  */
-class BankNameFaker extends SimplePicker
+final class BankNameFaker extends SimplePicker implements FakerInterface
 {
     /**
      * This returns a fake company name

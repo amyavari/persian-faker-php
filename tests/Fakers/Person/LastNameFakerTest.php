@@ -6,13 +6,14 @@ namespace AliYavari\PersianFaker\Fakers\Person;
 
 use AliYavari\PersianFaker\Contracts\DataLoaderInterface;
 use Mockery;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
-class LastNameFakerTest extends TestCase
+final class LastNameFakerTest extends TestCase
 {
-    protected $loader;
+    private $loader;
 
-    protected array $lastNames = ['name one', 'name two', 'name three', 'name four'];
+    private array $lastNames = ['name one', 'name two', 'name three', 'name four'];
 
     protected function setUp(): void
     {
@@ -22,7 +23,8 @@ class LastNameFakerTest extends TestCase
         $this->loader->shouldReceive('get')->once()->andReturn($this->lastNames);
     }
 
-    public function test_it_returns_fake_last_name(): void
+    #[Test]
+    public function it_returns_fake_last_name(): void
     {
         $faker = new LastNameFaker($this->loader);
         $name = $faker->generate();

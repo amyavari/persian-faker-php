@@ -8,6 +8,8 @@ use AliYavari\PersianFaker\Exceptions\InvalidMultiDimensionalArray;
 use AliYavari\PersianFaker\Exceptions\InvalidStringArrayException;
 
 /**
+ * @internal
+ *
  * This trait has methods for managing and working on arrays.
  *
  * @template TValue

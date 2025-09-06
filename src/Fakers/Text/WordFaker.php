@@ -11,22 +11,19 @@ use AliYavari\PersianFaker\Cores\Randomable;
 use AliYavari\PersianFaker\Exceptions\InvalidElementNumberException;
 
 /**
+ * @internal
+ *
  * Generates fake word(s)
  *
- * @implements \AliYavari\PersianFaker\Contracts\FakerInterface<string|list<string>>
+ * @implements FakerInterface<string|list<string>>
  */
-class WordFaker implements FakerInterface
+final class WordFaker implements FakerInterface
 {
     /**
-     * @use \AliYavari\PersianFaker\Cores\Arrayable<string>
-     * @use \AliYavari\PersianFaker\Cores\Randomable<string>
+     * @use Arrayable<string>
+     * @use Randomable<string>
      */
     use Arrayable, Randomable;
-
-    /**
-     * @var list<string>
-     */
-    protected array $words;
 
     protected const MAX_NUMBER = 100;
 
@@ -35,14 +32,19 @@ class WordFaker implements FakerInterface
     protected const SEPARATOR = ' ';
 
     /**
-     * @param  \AliYavari\PersianFaker\Contracts\DataLoaderInterface<int, string>  $loader
+     * @var list<string>
+     */
+    private array $words;
+
+    /**
+     * @param  DataLoaderInterface<int, string>  $loader
      * @param  int  $nbWords  The number of words to be returned.
      * @param  bool  $asText  Whether the words should be returned as a string (true) or as an array (false).
      */
     public function __construct(
-        protected DataLoaderInterface $loader,
-        protected int $nbWords = 1,
-        protected bool $asText = false,
+        private DataLoaderInterface $loader,
+        private int $nbWords = 1,
+        private bool $asText = false,
     ) {
         $this->words = $loader->get();
     }
@@ -55,7 +57,7 @@ class WordFaker implements FakerInterface
      *
      * @return string|list<string>
      *
-     * @throws \AliYavari\PersianFaker\Exceptions\InvalidElementNumberException
+     * @throws InvalidElementNumberException
      */
     public function generate(): string|array
     {
@@ -79,7 +81,7 @@ class WordFaker implements FakerInterface
         return new self($this->loader, nbWords: $nbWords, asText: true);
     }
 
-    protected function isNumberValid(): bool
+    private function isNumberValid(): bool
     {
         return $this->nbWords >= self::MIN_NUMBER && $this->nbWords <= self::MAX_NUMBER;
     }
@@ -87,12 +89,12 @@ class WordFaker implements FakerInterface
     /**
      * @return list<string>
      */
-    protected function getWords(): array
+    private function getWords(): array
     {
         return $this->getMultipleRandomElements($this->words, $this->nbWords);
     }
 
-    protected function shouldBeText(): bool
+    private function shouldBeText(): bool
     {
         return $this->nbWords === 1 || $this->asText;
     }

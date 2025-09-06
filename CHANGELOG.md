@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [Unreleased]
+
+### Changed
+
+-   updated DocBlocks to make code usage clearer and simpler
+
 ## [1.3.0] - 2025-04-28
 
 ### Added

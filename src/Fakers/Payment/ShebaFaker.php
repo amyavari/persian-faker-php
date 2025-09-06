@@ -13,30 +13,32 @@ use RangeException;
 use TypeError;
 
 /**
+ * @internal
+ *
  * Generates a random Iran's account Sheba numbe.
  *
- * @implements \AliYavari\PersianFaker\Contracts\FakerInterface<string>
+ * @implements FakerInterface<string>
  */
-class ShebaFaker implements FakerInterface
+final class ShebaFaker implements FakerInterface
 {
     /**
-     * @use \AliYavari\PersianFaker\Cores\Arrayable<string>
-     * @use \AliYavari\PersianFaker\Cores\Randomable<string>
+     * @use Arrayable<string>
+     * @use Randomable<string>
      */
     use Arrayable, Randomable;
 
     /**
      * @var array<string, string>>
      */
-    protected array $bankCodes;
+    private array $bankCodes;
 
     /**
-     * @param  \AliYavari\PersianFaker\Contracts\DataLoaderInterface<string, string>  $loader
+     * @param  DataLoaderInterface<string, string>  $loader
      * @param  bool  $withIR  Determines whether the output should include 'IR' (true) or not (false)
      * @param  string  $separator  The separator used to format the Sheba number in its standard representation.
      * @param  string|null  $bank  The name of the bank in Iran. See ./src/data/payment.php
      */
-    public function __construct(DataLoaderInterface $loader, protected bool $withIR = true, protected string $separator = '', protected ?string $bank = null)
+    public function __construct(DataLoaderInterface $loader, private bool $withIR = true, private string $separator = '', private ?string $bank = null)
     {
         $this->bankCodes = $loader->get();
     }
@@ -44,7 +46,7 @@ class ShebaFaker implements FakerInterface
     /**
      * This returns a fake Iran's account Sheba number.
      *
-     * @throws \AliYavari\PersianFaker\Exceptions\InvalidBankNameException
+     * @throws InvalidBankNameException
      */
     public function generate(): string
     {
@@ -65,7 +67,7 @@ class ShebaFaker implements FakerInterface
         return $this->formatShebaNumber($bankCode, $accountType, $formattedAccountNum, $checkNumber);
     }
 
-    protected function isBankValid(): bool
+    private function isBankValid(): bool
     {
         if (is_null($this->bank)) {
             return true;
@@ -74,17 +76,17 @@ class ShebaFaker implements FakerInterface
         return array_key_exists($this->bank, $this->bankCodes);
     }
 
-    protected function getBankCode(): string
+    private function getBankCode(): string
     {
         return is_null($this->bank) ? $this->getOneRandomElement($this->bankCodes) : $this->bankCodes[$this->bank];
     }
 
-    protected function generateRandomAccountNumber(): string
+    private function generateRandomAccountNumber(): string
     {
         return random_int(100_000_000, 999_999_999).random_int(0, 999_999);
     }
 
-    protected function fillEmptyPlaces(string $number): string
+    private function fillEmptyPlaces(string $number): string
     {
         return str_pad($number, 18, '0', STR_PAD_LEFT);
     }
@@ -92,14 +94,14 @@ class ShebaFaker implements FakerInterface
     /**
      * To see Iran's Bank Card Number Validation algorithm, please check \Tests\Fakers\Payment\ShebaFakerTest.
      *
-     * @throws \RangeException
-     * @throws \TypeError
+     * @throws RangeException
+     * @throws TypeError
      */
-    protected function calculateCheckNumber(string $digits): string
+    private function calculateCheckNumber(string $digits): string
     {
-        if (strlen($digits) !== 22) {
+        if (mb_strlen($digits) !== 22) {
             throw new RangeException(
-                sprintf('The input number must have 22 digits, %s-digit number is given.', strlen($digits))
+                sprintf('The input number must have 22 digits, %s-digit number is given.', mb_strlen($digits))
             );
         }
 
@@ -127,14 +129,14 @@ class ShebaFaker implements FakerInterface
         return str_pad((string) $checkNumberValue, 2, '0', STR_PAD_LEFT);
     }
 
-    protected function formatShebaNumber(string $bankCode, string $accountType, string $shebaNumber, string $checkNumber): string
+    private function formatShebaNumber(string $bankCode, string $accountType, string $shebaNumber, string $checkNumber): string
     {
         $fullShebaNumber = 'IR'.$checkNumber.$bankCode.$accountType.$shebaNumber;
 
-        $chunks = str_split($fullShebaNumber, 4);
+        $chunks = mb_str_split($fullShebaNumber, 4);
 
         $fullFormatted = $this->convertToString($chunks, $this->separator);
 
-        return $this->withIR ? $fullFormatted : substr($fullFormatted, 2);
+        return $this->withIR ? $fullFormatted : mb_substr($fullFormatted, 2);
     }
 }

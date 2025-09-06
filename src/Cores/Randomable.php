@@ -7,6 +7,8 @@ namespace AliYavari\PersianFaker\Cores;
 use AliYavari\PersianFaker\Exceptions\InvalidElementNumberException;
 
 /**
+ * @internal
+ *
  * This trait has methods for retrieving random element(s) from an array.
  *
  * @template TValue

@@ -11,29 +11,31 @@ use AliYavari\PersianFaker\Cores\Randomable;
 use AliYavari\PersianFaker\Exceptions\InvalidMobileProviderException;
 
 /**
+ * @internal
+ *
  * Generates a random cell phone (mobile) number in Iran.
  *
- * @implements \AliYavari\PersianFaker\Contracts\FakerInterface<string>
+ * @implements FakerInterface<string>
  */
-class CellPhoneFaker implements FakerInterface
+final class CellPhoneFaker implements FakerInterface
 {
     /**
-     * @use \AliYavari\PersianFaker\Cores\Randomable<string>
-     * @use \AliYavari\PersianFaker\Cores\Arrayable<string>
+     * @use Randomable<string>
+     * @use Arrayable<string>
      */
     use Arrayable, Randomable;
 
     /**
      * @var array<string, list<string>>
      */
-    protected array $phonePrefixes;
+    private array $phonePrefixes;
 
     /**
-     * @param  \AliYavari\PersianFaker\Contracts\DataLoaderInterface<string, list<string>>  $loader
+     * @param  DataLoaderInterface<string, list<string>>  $loader
      * @param  string  $separator  The separator between the state prefix and the phone number.
      * @param  string|null  $provider  The name of the mobile provider in Iran. See ./src/Data/phone.php
      */
-    public function __construct(DataLoaderInterface $loader, protected string $separator = '', protected ?string $provider = null)
+    public function __construct(DataLoaderInterface $loader, private string $separator = '', private ?string $provider = null)
     {
         $this->phonePrefixes = $loader->get();
     }
@@ -41,7 +43,7 @@ class CellPhoneFaker implements FakerInterface
     /**
      * This returns a fake cell phone number
      *
-     * @throws \AliYavari\PersianFaker\Exceptions\InvalidMobileProviderException
+     * @throws InvalidMobileProviderException
      */
     public function generate(): string
     {
@@ -54,7 +56,7 @@ class CellPhoneFaker implements FakerInterface
         return $this->formatPhone($randomPrefix, $this->generateRandomCellPhone());
     }
 
-    protected function isProviderValid(): bool
+    private function isProviderValid(): bool
     {
         if (is_null($this->provider)) {
             return true;
@@ -66,20 +68,20 @@ class CellPhoneFaker implements FakerInterface
     /**
      * @return list<string>
      */
-    protected function getPrefixes(): array
+    private function getPrefixes(): array
     {
         return is_null($this->provider) ? $this->flatten($this->phonePrefixes) : $this->phonePrefixes[$this->provider];
     }
 
-    protected function generateRandomCellPhone(): string
+    private function generateRandomCellPhone(): string
     {
         return (string) random_int(1_000_000, 9_999_999);
     }
 
-    protected function formatPhone(string $providerPrefix, string $phoneNumber): string
+    private function formatPhone(string $providerPrefix, string $phoneNumber): string
     {
-        $firstPart = substr($phoneNumber, 0, 3);
-        $secondPart = substr($phoneNumber, 3);
+        $firstPart = mb_substr($phoneNumber, 0, 3);
+        $secondPart = mb_substr($phoneNumber, 3);
 
         return sprintf('%s%s%s%s%s', $providerPrefix, $this->separator, $firstPart, $this->separator, $secondPart);
     }

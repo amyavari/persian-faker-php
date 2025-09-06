@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
+use AliYavari\PersianFaker\Contracts\GeneratorInterface;
 use AliYavari\PersianFaker\Factory;
-use AliYavari\PersianFaker\Generator;
 
 if (! function_exists('persian_faker') && class_exists(Factory::class)) {
     /**
      * Get a persian faker instance.
      */
-    function persian_faker(): Generator
+    function persian_faker(): GeneratorInterface
     {
         if (! class_exists('Illuminate\Foundation\Application') && ! function_exists('app')) {
             return Factory::create();

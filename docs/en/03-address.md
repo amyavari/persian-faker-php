@@ -1,5 +1,14 @@
 # 03 Address
 
+## Table of Contents
+
+-   [secondaryAddress](#secondaryaddress)
+-   [state](#state)
+-   [city](#city)
+-   [streetName](#streetname)
+-   [address](#address)
+-   [postcode](#postcode)
+
 ## secondaryAddress
 
 Generates a random secondary address.

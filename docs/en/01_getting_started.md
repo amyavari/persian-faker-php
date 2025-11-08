@@ -6,6 +6,19 @@
 
 -   PHP version `8.2.0` or higher
 
+## Table of Contents
+
+-   [Installation](#instantiation)
+-   [Usage](#usage)
+-   [Available Methods](#available-methods)
+    -   [Person Details](#person-details)
+    -   [Address](#address)
+    -   [Phone](#phone)
+    -   [Company](#company)
+    -   [Text](#text)
+    -   [Payment](#payment)
+    -   [Color](#color)
+
 ## Installation
 
 To install the package, use Composer.

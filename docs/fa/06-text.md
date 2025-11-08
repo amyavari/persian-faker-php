@@ -1,5 +1,15 @@
 # 06 متن و پاراگراف
 
+## فهرست مطالب
+
+-   [word](#word)
+-   [words](#words)
+-   [sentence](#sentence)
+-   [sentences](#sentences)
+-   [paragraph](#paragraph)
+-   [paragraphs](#paragraphs)
+-   [text](#text)
+
 ## word
 
 یک کلمه تصادفی تولید می کند.

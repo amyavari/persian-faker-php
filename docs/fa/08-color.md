@@ -1,5 +1,10 @@
 # 08 رنگ
 
+## فهرست مطالب
+
+-   [safeColorName](#safecolorname)
+-   [colorName](#colorname)
+
 ## safeColorName
 
 از بین 16 رنگ اصلی، یک نام رنگ رندم ایجاد می کند.

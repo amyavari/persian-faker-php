@@ -1,5 +1,11 @@
 # 04 Phone
 
+## Table of Contents
+
+-   [statePhonePrefix](#statephoneprefix)
+-   [phoneNumber](#phonenumber)
+-   [cellPhone](#cellphone)
+
 ## statePhonePrefix
 
 Generates a random state phone prefix in Iran.

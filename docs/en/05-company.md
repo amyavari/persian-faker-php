@@ -1,5 +1,11 @@
 # 05 Company
 
+## Table of Contents
+
+-   [company](#company)
+-   [catchphrase](#catchphrase)
+-   [jobTitle](#jobtitle)
+
 ## company
 
 Generates a random company name.

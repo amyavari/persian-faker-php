@@ -1,5 +1,15 @@
 # 06 Text and Paragraphs
 
+## Table of Contents
+
+-   [word](#word)
+-   [words](#words)
+-   [sentence](#sentence)
+-   [sentences](#sentences)
+-   [paragraph](#paragraph)
+-   [paragraphs](#paragraphs)
+-   [text](#text)
+
 ## word
 
 Generates a random word.

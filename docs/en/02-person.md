@@ -1,5 +1,17 @@
 # 02 Person
 
+## Table of Contents
+
+-   [title](#title)
+-   [titleMale](#titlemale)
+-   [titleFemale](#titlefemale)
+-   [name](#name)
+-   [firstName](#firstname)
+-   [firstNameMale](#firstnamemale)
+-   [firstNameFemale](#firstnamefemale)
+-   [lastName](#lastname)
+-   [nationalCode](#nationalcode)
+
 ## title
 
 Generates a random title. Optionally it's possible to specify the `$gender` parameter to limit only `'male'` titles or `'female'` titles.

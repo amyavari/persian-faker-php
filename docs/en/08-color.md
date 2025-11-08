@@ -1,5 +1,10 @@
 # 08 Color
 
+## Table of Contents
+
+-   [safeColorName](#safecolorname)
+-   [colorName](#colorname)
+
 ## safeColorName
 
 Generates a random color name from a set of 16 primary color names.

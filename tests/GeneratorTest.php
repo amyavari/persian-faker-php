@@ -542,4 +542,30 @@ final class GeneratorTest extends TestCase
         $this->assertIsString($color);
         $this->assertContains($color, $this->flatten($colors));
     }
+
+    #[Test]
+    public function it_returns_slug_with_strict_number_of_words(): void
+    {
+        $slug = $this->generator->slug(50, false);
+
+        $this->assertIsString($slug);
+        $this->assertCount(50, explode('-', $slug));
+    }
+
+    #[Test]
+    public function it_returns_slug_with_variable_number_of_words(): void
+    {
+        $runs = 10;
+        $wordNumbers = [];
+
+        for ($i = 1; $i <= $runs; $i++) {
+            $slug = $this->generator->slug(50, true);
+
+            $this->assertIsString($slug);
+
+            $wordNumbers[] = count(explode('-', $slug));
+        }
+
+        $this->assertGreaterThan(1, count(array_unique($wordNumbers)));
+    }
 }

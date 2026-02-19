@@ -279,4 +279,14 @@ interface GeneratorInterface
      * @example 'سبز زمردی', 'زغالی'
      */
     public function colorName(): string;
+
+    /**
+     * Get a random slug
+     *
+     * @param  int  $nbWords  The number of words to include in the slug.
+     * @param  bool  $variableNbWords  Whether to allow variability in the number of words per slug (true) or use a fixed count (false).
+     *
+     * @example 'نویس-اتوبوس-برنامه-دار'
+     */
+    public function slug(int $nbWords = 6, bool $variableNbWords = true): string;
 }

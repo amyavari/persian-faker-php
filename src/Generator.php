@@ -17,6 +17,7 @@ use AliYavari\PersianFaker\Fakers\Colors\ColorNameFaker;
 use AliYavari\PersianFaker\Fakers\Company\CatchphraseFaker;
 use AliYavari\PersianFaker\Fakers\Company\CompanyNameFaker;
 use AliYavari\PersianFaker\Fakers\Company\JobTitleFaker;
+use AliYavari\PersianFaker\Fakers\Internet\SlugFaker;
 use AliYavari\PersianFaker\Fakers\Payment\BankNameFaker;
 use AliYavari\PersianFaker\Fakers\Payment\CardNumberFaker;
 use AliYavari\PersianFaker\Fakers\Payment\ShebaFaker;
@@ -407,6 +408,20 @@ final class Generator implements GeneratorInterface
         $dataLoader = $this->getDataLoaderInstance('color.colors');
 
         return $this->exec(new ColorNameFaker($dataLoader, onlyMain: false));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function slug(int $nbWords = 6, bool $variableNbWords = true): string
+    {
+        /** @var DataLoaderInterface<int, string> */
+        $dataLoader = $this->getDataLoaderInstance('text.words');
+
+        $wordFaker = new WordFaker($dataLoader);
+
+        /** @var string */
+        return $this->exec(new SlugFaker($wordFaker, nbWords: $nbWords, variableNbWords: $variableNbWords));
     }
 
     // *******************************

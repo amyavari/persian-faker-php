@@ -18,21 +18,22 @@ To view the Persian documentation, please refer to [docs/fa/01_getting_started.m
 
 ## Requirements
 
--   PHP version `8.2.0` or higher
+- PHP version `8.2.0` or higher
 
 ## Table of Contents
 
--   [Installation](#instantiation)
--   [Usage](#usage)
--   [Available Methods](#available-methods)
-    -   [Person Details](#person-details)
-    -   [Address](#address)
-    -   [Phone](#phone)
-    -   [Company](#company)
-    -   [Text](#text)
-    -   [Payment](#payment)
-    -   [Color](#color)
--   [Contributing](#contributing)
+- [Installation](#instantiation)
+- [Usage](#usage)
+- [Available Methods](#available-methods)
+    - [Person Details](#person-details)
+    - [Address](#address)
+    - [Phone](#phone)
+    - [Company](#company)
+    - [Text](#text)
+    - [Payment](#payment)
+    - [Color](#color)
+    - [Internet](#internet)
+- [Contributing](#contributing)
 
 ## Installation
 
@@ -160,6 +161,14 @@ To view the complete documentation for the color methods, please refer to [docs/
 ```php
 safeColorName()                       // 'سیاه', 'آبی'
 colorName()                           // 'سبز زمردی', 'زغالی', 'زرد'
+```
+
+### Internet
+
+To view the complete documentation for the internet methods, please refer to [docs/en/09-internet.md](./docs/en/09-internet.md)
+
+```php
+slug($nbWords = 6, $variableNbWords = true|false)           // 'نویس-اتوبوس-برنامه-دار', 'دیجیتال-دنیا-و-بی-یخ'
 ```
 
 ## Contributing

@@ -49,7 +49,7 @@ return [
         'keshavarzi' => '016',
         'maskan' => '014',
         'saderat' => '019',
-        'post' => '021',
+        'post_bank' => '021',
         'mellat' => '012',
         'tejarat' => '018',
         'refah' => '013',

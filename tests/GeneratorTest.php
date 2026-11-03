@@ -151,68 +151,6 @@ final class GeneratorTest extends TestCase
     }
 
     #[Test]
-    public function it_returns_bank_name(): void
-    {
-        $loader = new DataLoader('payment.bank_names');
-        $banks = $loader->get(); // [...]
-
-        $bank = $this->generator->bank();
-
-        $this->assertIsString($bank);
-        $this->assertContains($bank, $banks);
-    }
-
-    #[Test]
-    public function it_returns_fake_bank_card_number(): void
-    {
-        $loader = new DataLoader('payment.bank_bins');
-        $bankBins = $loader->get(); // ['BANK_NAME' => 'BIN']
-
-        // Default (without separator, random bank)
-        $cardNumber = $this->generator->cardNumber();
-
-        $this->assertIsString($cardNumber);
-        $this->assertSame(16, mb_strlen($cardNumber));
-        $this->assertContains(mb_substr($cardNumber, 0, 6), $bankBins);
-
-        // With separator, for specific bank
-        $cardNumber = $this->generator->cardNumber('-', 'mellat');
-
-        $this->assertIsString($cardNumber);
-        $this->assertSame(19, mb_strlen($cardNumber));
-
-        $rawCardNumber = str_replace('-', '', $cardNumber);
-        $this->assertSame(16, mb_strlen($rawCardNumber));
-        $this->assertSame($bankBins['mellat'], mb_substr($rawCardNumber, 0, 6));
-    }
-
-    #[Test]
-    public function it_returns_fake_bank_sheba_number(): void
-    {
-        $loader = new DataLoader('payment.bank_sheba_codes');
-        $bankCodes = $loader->get(); // ['BANK_NAME' => 'CODE']
-
-        // Default (with IR, without separator, random bank)
-        $shebaNumber = $this->generator->shebaNumber();
-
-        $this->assertIsString($shebaNumber);
-        $this->assertSame(26, mb_strlen($shebaNumber));
-        $this->assertSame('IR', mb_substr($shebaNumber, 0, 2));
-        $this->assertContains(mb_substr($shebaNumber, 4, 3), $bankCodes);
-
-        // Without IR, with separator, for specific bank
-        $shebaNumber = $this->generator->shebaNumber(false, '-', 'mellat');
-
-        $this->assertIsString($shebaNumber);
-        $this->assertSame(30, mb_strlen($shebaNumber));
-        $this->assertNotEquals('IR', mb_substr($shebaNumber, 0, 2));
-
-        $rawShebaNumber = str_replace('-', '', $shebaNumber);
-        $this->assertSame(24, mb_strlen($rawShebaNumber));
-        $this->assertSame($bankCodes['mellat'], mb_substr($rawShebaNumber, 2, 3));
-    }
-
-    #[Test]
     public function it_returns_slug_with_strict_number_of_words(): void
     {
         $slug = $this->generator->slug(50, false);

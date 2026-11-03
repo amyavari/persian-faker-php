@@ -92,7 +92,7 @@ final class ShebaFaker implements FakerInterface
     }
 
     /**
-     * To see Iran's Bank Card Number Validation algorithm, please check \Tests\Fakers\Payment\ShebaFakerTest.
+     * To see Iran's Sheba Number Validation algorithm, please check shebaNumberRemainder() in tests/Feature/PaymentTest.php.
      *
      * @throws RangeException
      * @throws TypeError

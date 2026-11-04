@@ -23,10 +23,17 @@ use AliYavari\PersianFaker\Exceptions\InvalidDataPathException;
  *
  * @implements DataLoaderInterface<TKey, TData>
  */
-final readonly class DataLoader implements DataLoaderInterface
+final class DataLoader implements DataLoaderInterface
 {
+    /**
+     * The data files that are already loaded, by file name. Each file is loaded only once.
+     *
+     * @var array<string, array<string, mixed>>
+     */
+    private static array $loadedFiles = [];
+
     public function __construct(
-        private string $path
+        private readonly string $path
     ) {}
 
     /**
@@ -71,13 +78,19 @@ final readonly class DataLoader implements DataLoaderInterface
      */
     private function loadFile(string $fileName): array
     {
+        if (array_key_exists($fileName, self::$loadedFiles)) {
+            return self::$loadedFiles[$fileName];
+        }
+
         $filePath = __DIR__.DIRECTORY_SEPARATOR.'data'.DIRECTORY_SEPARATOR.$fileName.'.php';
 
         if (! file_exists($filePath)) {
             throw new FileNotFoundException(sprintf('The file %s is not found.', $filePath));
         }
 
-        return require $filePath;
+        self::$loadedFiles[$fileName] = require $filePath;
+
+        return self::$loadedFiles[$fileName];
     }
 
     /**

@@ -13,11 +13,11 @@ use AliYavari\PersianFaker\Exceptions\InvalidGenderException;
 /**
  * @internal
  *
- * Generates a random title in Persian language.
+ * Returns a random element from a data list grouped by gender.
  *
  * @implements FakerInterface<string>
  */
-final class TitleFaker implements FakerInterface
+final class GenderPicker implements FakerInterface
 {
     /**
      * @use Randomable<string>
@@ -28,7 +28,7 @@ final class TitleFaker implements FakerInterface
     /**
      * @var array<string, list<string>>
      */
-    private array $titles;
+    private array $data;
 
     /**
      * @param  DataLoaderInterface<string, list<string>>  $loader
@@ -36,11 +36,11 @@ final class TitleFaker implements FakerInterface
      */
     public function __construct(DataLoaderInterface $loader, private ?string $gender = null)
     {
-        $this->titles = $loader->get();
+        $this->data = $loader->get();
     }
 
     /**
-     * This returns a fake person's title
+     * This returns a random element of the gender, or of all genders when no gender is given
      *
      * @throws InvalidGenderException
      */
@@ -50,7 +50,7 @@ final class TitleFaker implements FakerInterface
             throw new InvalidGenderException(sprintf('The gender %s is not valid.', $this->gender));
         }
 
-        return $this->getOneRandomElement($this->getTitles());
+        return $this->getOneRandomElement($this->getData());
     }
 
     private function isGenderValid(): bool
@@ -59,14 +59,14 @@ final class TitleFaker implements FakerInterface
             return true;
         }
 
-        return array_key_exists($this->gender, $this->titles);
+        return array_key_exists($this->gender, $this->data);
     }
 
     /**
      * @return list<string>
      */
-    private function getTitles(): array
+    private function getData(): array
     {
-        return is_null($this->gender) ? $this->flatten($this->titles) : $this->titles[$this->gender];
+        return is_null($this->gender) ? $this->flatten($this->data) : $this->data[$this->gender];
     }
 }

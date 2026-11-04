@@ -7,27 +7,17 @@ namespace AliYavari\PersianFaker;
 use AliYavari\PersianFaker\Contracts\DataLoaderInterface;
 use AliYavari\PersianFaker\Contracts\FakerInterface;
 use AliYavari\PersianFaker\Contracts\GeneratorInterface;
-use AliYavari\PersianFaker\Fakers\Address\AddressFaker;
-use AliYavari\PersianFaker\Fakers\Address\CityFaker;
 use AliYavari\PersianFaker\Fakers\Address\PostCodeFaker;
 use AliYavari\PersianFaker\Fakers\Address\SecondaryAddressFaker;
-use AliYavari\PersianFaker\Fakers\Address\StateFaker;
-use AliYavari\PersianFaker\Fakers\Address\StreetNameFaker;
 use AliYavari\PersianFaker\Fakers\Colors\ColorNameFaker;
-use AliYavari\PersianFaker\Fakers\Company\CatchphraseFaker;
-use AliYavari\PersianFaker\Fakers\Company\CompanyNameFaker;
-use AliYavari\PersianFaker\Fakers\Company\JobTitleFaker;
 use AliYavari\PersianFaker\Fakers\Internet\SlugFaker;
-use AliYavari\PersianFaker\Fakers\Payment\BankNameFaker;
 use AliYavari\PersianFaker\Fakers\Payment\CardNumberFaker;
 use AliYavari\PersianFaker\Fakers\Payment\ShebaFaker;
-use AliYavari\PersianFaker\Fakers\Person\FirstNameFaker;
-use AliYavari\PersianFaker\Fakers\Person\LastNameFaker;
+use AliYavari\PersianFaker\Fakers\Person\GenderPicker;
 use AliYavari\PersianFaker\Fakers\Person\NationalCodeFaker;
-use AliYavari\PersianFaker\Fakers\Person\TitleFaker;
 use AliYavari\PersianFaker\Fakers\Phone\CellPhoneFaker;
 use AliYavari\PersianFaker\Fakers\Phone\PhoneNumberFaker;
-use AliYavari\PersianFaker\Fakers\Phone\StatePhonePrefixFaker;
+use AliYavari\PersianFaker\Fakers\SimplePicker;
 use AliYavari\PersianFaker\Fakers\Text\ParagraphFaker;
 use AliYavari\PersianFaker\Fakers\Text\SentenceFaker;
 use AliYavari\PersianFaker\Fakers\Text\TextFaker;
@@ -49,7 +39,7 @@ final class Generator implements GeneratorInterface
     {
         $dataLoader = $this->getDataLoaderInstance('person.titles');
 
-        return $this->exec(new TitleFaker($dataLoader, $gender));
+        return $this->exec(new GenderPicker($dataLoader, $gender));
     }
 
     /**
@@ -59,7 +49,7 @@ final class Generator implements GeneratorInterface
     {
         $dataLoader = $this->getDataLoaderInstance('person.titles');
 
-        return $this->exec(new TitleFaker($dataLoader, 'male'));
+        return $this->exec(new GenderPicker($dataLoader, 'male'));
     }
 
     /**
@@ -69,7 +59,7 @@ final class Generator implements GeneratorInterface
     {
         $dataLoader = $this->getDataLoaderInstance('person.titles');
 
-        return $this->exec(new TitleFaker($dataLoader, 'female'));
+        return $this->exec(new GenderPicker($dataLoader, 'female'));
     }
 
     /**
@@ -79,7 +69,7 @@ final class Generator implements GeneratorInterface
     {
         $dataLoader = $this->getDataLoaderInstance('person.first_names');
 
-        return $this->exec(new FirstNameFaker($dataLoader, $gender));
+        return $this->exec(new GenderPicker($dataLoader, $gender));
     }
 
     /**
@@ -89,7 +79,7 @@ final class Generator implements GeneratorInterface
     {
         $dataLoader = $this->getDataLoaderInstance('person.first_names');
 
-        return $this->exec(new FirstNameFaker($dataLoader, 'male'));
+        return $this->exec(new GenderPicker($dataLoader, 'male'));
     }
 
     /**
@@ -99,7 +89,7 @@ final class Generator implements GeneratorInterface
     {
         $dataLoader = $this->getDataLoaderInstance('person.first_names');
 
-        return $this->exec(new FirstNameFaker($dataLoader, 'female'));
+        return $this->exec(new GenderPicker($dataLoader, 'female'));
     }
 
     /**
@@ -109,7 +99,7 @@ final class Generator implements GeneratorInterface
     {
         $dataLoader = $this->getDataLoaderInstance('person.last_names');
 
-        return $this->exec(new LastNameFaker($dataLoader));
+        return $this->exec(new SimplePicker($dataLoader));
     }
 
     /**
@@ -147,7 +137,7 @@ final class Generator implements GeneratorInterface
     {
         $dataLoader = $this->getDataLoaderInstance('address.states');
 
-        return $this->exec(new StateFaker($dataLoader));
+        return $this->exec(new SimplePicker($dataLoader));
     }
 
     /**
@@ -157,7 +147,7 @@ final class Generator implements GeneratorInterface
     {
         $dataLoader = $this->getDataLoaderInstance('address.cities');
 
-        return $this->exec(new CityFaker($dataLoader));
+        return $this->exec(new SimplePicker($dataLoader));
     }
 
     /**
@@ -167,7 +157,7 @@ final class Generator implements GeneratorInterface
     {
         $dataLoader = $this->getDataLoaderInstance('address.street_names');
 
-        return $this->exec(new StreetNameFaker($dataLoader));
+        return $this->exec(new SimplePicker($dataLoader));
     }
 
     /**
@@ -177,7 +167,7 @@ final class Generator implements GeneratorInterface
     {
         $dataLoader = $this->getDataLoaderInstance('address.addresses');
 
-        return $this->exec(new AddressFaker($dataLoader));
+        return $this->exec(new SimplePicker($dataLoader));
     }
 
     /**
@@ -195,7 +185,7 @@ final class Generator implements GeneratorInterface
     {
         $dataLoader = $this->getDataLoaderInstance('phone.state_prefixes');
 
-        return $this->exec(new StatePhonePrefixFaker($dataLoader));
+        return $this->exec(new SimplePicker($dataLoader));
     }
 
     /**
@@ -225,7 +215,7 @@ final class Generator implements GeneratorInterface
     {
         $dataLoader = $this->getDataLoaderInstance('company.companies');
 
-        return $this->exec(new CompanyNameFaker($dataLoader));
+        return $this->exec(new SimplePicker($dataLoader));
     }
 
     /**
@@ -235,7 +225,7 @@ final class Generator implements GeneratorInterface
     {
         $dataLoader = $this->getDataLoaderInstance('company.catchphrases');
 
-        return $this->exec(new CatchphraseFaker($dataLoader));
+        return $this->exec(new SimplePicker($dataLoader));
     }
 
     /**
@@ -245,7 +235,7 @@ final class Generator implements GeneratorInterface
     {
         $dataLoader = $this->getDataLoaderInstance('company.job_titles');
 
-        return $this->exec(new JobTitleFaker($dataLoader));
+        return $this->exec(new SimplePicker($dataLoader));
     }
 
     /**
@@ -333,7 +323,7 @@ final class Generator implements GeneratorInterface
     {
         $dataLoader = $this->getDataLoaderInstance('payment.bank_names');
 
-        return $this->exec(new BankNameFaker($dataLoader));
+        return $this->exec(new SimplePicker($dataLoader));
     }
 
     /**

@@ -28,7 +28,7 @@ final class ShebaFaker implements FakerInterface
     use Arrayable, Randomable;
 
     /**
-     * @var array<string, string>>
+     * @var array<string, string>
      */
     private array $bankCodes;
 

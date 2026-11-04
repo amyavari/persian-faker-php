@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 namespace AliYavari\PersianFaker\Cores;
 
-use AliYavari\PersianFaker\Exceptions\InvalidMultiDimensionalArray;
-use AliYavari\PersianFaker\Exceptions\InvalidStringArrayException;
-
 /**
  * @internal
  *
@@ -26,11 +23,7 @@ trait Arrayable
     {
         $flattenedArray = [];
 
-        foreach ($array as $key => $innerArray) {
-            if (! is_array($innerArray)) {
-                throw new InvalidMultiDimensionalArray(sprintf('The key %s does not refer to an array.', $key));
-            }
-
+        foreach ($array as $innerArray) {
             $flattenedArray = array_merge($flattenedArray, $innerArray);
         }
 
@@ -45,14 +38,6 @@ trait Arrayable
      */
     protected function convertToString(array $arr, string $separator = ' '): string
     {
-        foreach ($arr as $key => $value) {
-            if (! is_string($value)) {
-                throw new InvalidStringArrayException(
-                    sprintf('The givin array should only contains string, %s is given at key %s', get_debug_type($value), $key)
-                );
-            }
-        }
-
         return implode($separator, $arr);
     }
 }

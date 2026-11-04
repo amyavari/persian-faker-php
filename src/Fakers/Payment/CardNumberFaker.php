@@ -9,8 +9,6 @@ use AliYavari\PersianFaker\Contracts\FakerInterface;
 use AliYavari\PersianFaker\Cores\Arrayable;
 use AliYavari\PersianFaker\Cores\Randomable;
 use AliYavari\PersianFaker\Exceptions\InvalidBankNameException;
-use RangeException;
-use TypeError;
 
 /**
  * @internal
@@ -83,24 +81,9 @@ final class CardNumberFaker implements FakerInterface
 
     /**
      * To see Iran's Bank Card Number Validation algorithm, please check cardNumberCheckDigit() in tests/Feature/PaymentTest.php.
-     *
-     * @throws RangeException
-     * @throws TypeError
      */
     private function calculateCheckDigit(string $digits): int
     {
-        if (mb_strlen($digits) !== 15) {
-            throw new RangeException(
-                sprintf('The input number must have 15 digits, %s-digit number is given.', mb_strlen($digits))
-            );
-        }
-
-        if (! is_numeric($digits)) {
-            throw new TypeError(
-                sprintf('The input must be numeric. %s is given.', get_debug_type($digits))
-            );
-        }
-
         $sum = 0;
         foreach (mb_str_split($digits) as $key => $value) {
             $multipleBy = (($key + 1) % 2 === 0) ? 1 : 2;

@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace AliYavari\PersianFaker\Cores;
 
-use AliYavari\PersianFaker\Exceptions\InvalidElementNumberException;
-
 /**
  * @internal
  *
@@ -35,11 +33,6 @@ trait Randomable
      */
     protected function getMultipleRandomElements(array $data, int $number): array
     {
-        if ($number <= 0) {
-            throw new InvalidElementNumberException(
-                sprintf('The number of returned elements must be 1 or more, %s is given.', $number)
-            );
-        }
         $elements = [];
 
         for ($i = 1; $i <= $number; $i++) {

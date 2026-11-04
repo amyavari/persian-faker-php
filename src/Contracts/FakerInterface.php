@@ -18,5 +18,5 @@ interface FakerInterface
      *
      * @return TValue
      */
-    public function generate();
+    public function generate(): mixed;
 }

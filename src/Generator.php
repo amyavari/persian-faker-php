@@ -406,7 +406,7 @@ final class Generator implements GeneratorInterface
      * @param  FakerInterface<TValue>  $faker
      * @return TValue
      */
-    private function exec(FakerInterface $faker)
+    private function exec(FakerInterface $faker): mixed
     {
         return $faker->generate();
     }

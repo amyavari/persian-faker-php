@@ -39,7 +39,7 @@ abstract class SimplePicker
      *
      * @return TValue
      */
-    protected function generate()
+    protected function generate(): mixed
     {
         return $this->getOneRandomElement($this->data);
     }

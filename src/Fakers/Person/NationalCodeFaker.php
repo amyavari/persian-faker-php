@@ -83,7 +83,7 @@ final class NationalCodeFaker implements FakerInterface
     }
 
     /**
-     * To see Iranian National Code algorithm, please check \Tests\Fakers\Person\NationalCodeFakerTest.
+     * To see Iranian National Code algorithm, please check nationalCodeCheckDigit() in tests/Feature/PersonTest.php.
      *
      * @throws RangeException
      * @throws TypeError

@@ -18,7 +18,7 @@ To view the Persian documentation, please refer to [docs/fa/01_getting_started.m
 
 ## Requirements
 
-- PHP version `8.2.0` or higher
+- PHP version `8.3.0` or higher
 
 ## Table of Contents
 

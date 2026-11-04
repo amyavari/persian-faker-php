@@ -4,7 +4,7 @@
 
 ## Requirements
 
-- PHP version `8.2.0` or higher
+- PHP version `8.3.0` or higher
 
 ## Table of Contents
 

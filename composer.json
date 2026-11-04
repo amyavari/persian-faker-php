@@ -16,15 +16,13 @@
         }
     ],
     "require": {
-        "php": "^8.2.0"
+        "php": "^8.3.0"
     },
     "require-dev": {
-        "dg/bypass-finals": "^1.9",
+        "laravel/pao": "^1.1",
         "laravel/pint": "^1.18.1",
-        "mockery/mockery": "^1.6",
-        "nunomaduro/mock-final-classes": "^1.2",
+        "pestphp/pest": "^4.7",
         "phpstan/phpstan": "^1.12.7",
-        "phpunit/phpunit": "^11.5",
         "rector/rector": "^1.2.8",
         "symfony/var-dumper": "^7.1.6"
     },
@@ -53,13 +51,11 @@
     "scripts": {
         "lint": "pint -v",
         "refactor": "rector process --ansi",
-        "test:coverage": "phpunit --coverage-text",
         "test:lint": "pint --test -v",
         "test:refactor": "rector process --dry-run --ansi",
         "test:types": "phpstan analyse --configuration=phpstan.neon.dist --ansi --memory-limit=1G",
-        "test:unit": "phpunit",
+        "test:unit": "pest --colors=always --coverage --parallel",
         "test": [
-            "@test:coverage",
             "@test:lint",
             "@test:refactor",
             "@test:types",
@@ -69,10 +65,9 @@
     "scripts-descriptions": {
         "lint": "Run Laravel Pint to automatically fix code style issues.",
         "refactor": "Run Rector to automatically refactor code.",
-        "test:coverage": "Run unit tests with code coverage report.",
         "test:lint": "Run Laravel Pint to check code style without fixing issues.",
         "test:refactor": "Run Rector to check refactor needs without fixing issues.",
         "test:types": "Run static analysis to check for type errors in the codebase.",
-        "test:unit": "Run unit tests using PHPUnit."
+        "test:unit": "Run unit tests with code coverage report using Pest."
     }
 }

@@ -18,7 +18,7 @@ jobs:
       fail-fast: true
       matrix:
         os: [ubuntu-latest]
-        php: [8.2, 8.3, 8.4, 8.5]
+        php: [8.3, 8.4, 8.5]
 
     name: PHP${{ matrix.php }} - ${{ matrix.os }}
 
@@ -44,6 +44,9 @@ jobs:
           path: ${{ steps.composer-cache.outputs.dir }}
           key: dependencies-php-${{ matrix.php }}-os-${{ matrix.os }}-composer-${{ hashFiles('composer.json') }}
           restore-keys: dependencies-php-${{ matrix.php }}-os-${{ matrix.os }}-composer-
+
+      - name: Remove Laravel Pao (only needed for local dev)
+        run: composer remove laravel/pao --dev --no-update --no-interaction
 
       - name: Install Composer dependencies
         run: composer update --no-interaction --prefer-dist

@@ -82,7 +82,7 @@ final class CardNumberFaker implements FakerInterface
     }
 
     /**
-     * To see Iran's Bank Card Number Validation algorithm, please check \Tests\Fakers\Payment\CardNumberFakerTest.
+     * To see Iran's Bank Card Number Validation algorithm, please check cardNumberCheckDigit() in tests/Feature/PaymentTest.php.
      *
      * @throws RangeException
      * @throws TypeError

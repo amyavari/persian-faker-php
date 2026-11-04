@@ -25,11 +25,11 @@ final class WordFaker implements FakerInterface
      */
     use Arrayable, Randomable;
 
-    protected const MAX_NUMBER = 100;
+    private const int MAX_NUMBER = 100;
 
-    protected const MIN_NUMBER = 1;
+    private const int MIN_NUMBER = 1;
 
-    protected const SEPARATOR = ' ';
+    private const string SEPARATOR = ' ';
 
     /**
      * @var list<string>

@@ -20,15 +20,15 @@ final class ParagraphFaker implements FakerInterface
     /** @use Arrayable<string> */
     use Arrayable;
 
-    protected const VARIABLE_PERCENTAGE = 0.4;
+    private const float VARIABLE_PERCENTAGE = 0.4;
 
-    protected const MAX_NUMBER = 100;
+    private const int MAX_NUMBER = 100;
 
-    protected const MIN_NUMBER = 1;
+    private const int MIN_NUMBER = 1;
 
-    protected const SEPARATOR = "\n";
+    private const string SEPARATOR = "\n";
 
-    protected const NB_WORDS = 6;
+    private const int NB_WORDS = 6;
 
     /**
      * @param  int  $nbSentences  The number of sentences to include in each paragraph.

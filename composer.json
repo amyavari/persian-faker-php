@@ -22,8 +22,8 @@
         "laravel/pao": "^1.1",
         "laravel/pint": "^1.18.1",
         "pestphp/pest": "^4.7",
-        "phpstan/phpstan": "^1.12.7",
-        "rector/rector": "^1.2.8",
+        "phpstan/phpstan": "^2.3",
+        "rector/rector": "^2.8",
         "symfony/var-dumper": "^7.1.6"
     },
     "autoload": {

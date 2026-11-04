@@ -6,6 +6,7 @@ namespace AliYavari\PersianFaker\Fakers\Text;
 
 use AliYavari\PersianFaker\Contracts\FakerInterface;
 use AliYavari\PersianFaker\Cores\Arrayable;
+use AliYavari\PersianFaker\Cores\HasVariableCount;
 use AliYavari\PersianFaker\Exceptions\InvalidElementNumberException;
 
 /**
@@ -18,13 +19,7 @@ use AliYavari\PersianFaker\Exceptions\InvalidElementNumberException;
 final class SentenceFaker implements FakerInterface
 {
     /** @use Arrayable<string> */
-    use Arrayable;
-
-    private const float VARIABLE_PERCENTAGE = 0.4;
-
-    private const int MAX_NUMBER = 100;
-
-    private const int MIN_NUMBER = 1;
+    use Arrayable, HasVariableCount;
 
     private const string SEPARATOR = ' ';
 
@@ -54,13 +49,13 @@ final class SentenceFaker implements FakerInterface
      */
     public function generate(): string|array
     {
-        if (! $this->isWordsNumberValid()) {
+        if (! $this->isNumberInRange($this->nbWords)) {
             throw new InvalidElementNumberException(
                 sprintf('The number of words should be in range %s-%s, %s is given.', self::MIN_NUMBER, self::MAX_NUMBER, $this->nbWords)
             );
         }
 
-        if (! $this->isSentencesNumberValid()) {
+        if (! $this->isNumberInRange($this->nbSentences)) {
             throw new InvalidElementNumberException(
                 sprintf('The number of sentences should be in range %s-%s, %s is given.', self::MIN_NUMBER, self::MAX_NUMBER, $this->nbSentences)
             );
@@ -81,34 +76,6 @@ final class SentenceFaker implements FakerInterface
         return new self($this->wordFaker, nbWords: $nbWords, nbSentences: $nbSentences, asText: true, variableNbWords: true);
     }
 
-    private function isWordsNumberValid(): bool
-    {
-        return $this->nbWords >= self::MIN_NUMBER && $this->nbWords <= self::MAX_NUMBER;
-    }
-
-    private function isSentencesNumberValid(): bool
-    {
-        return $this->nbSentences >= self::MIN_NUMBER && $this->nbSentences <= self::MAX_NUMBER;
-    }
-
-    private function getVariableWordsNumber(): int
-    {
-        $min = (int) ($this->nbWords * (1 - self::VARIABLE_PERCENTAGE));
-        $max = (int) ($this->nbWords * (1 + self::VARIABLE_PERCENTAGE));
-
-        $wordsNumber = random_int($min, $max);
-
-        if ($wordsNumber < self::MIN_NUMBER) {
-            return self::MIN_NUMBER;
-        }
-
-        if ($wordsNumber > self::MAX_NUMBER) {
-            return self::MAX_NUMBER;
-        }
-
-        return $wordsNumber;
-    }
-
     private function shouldBeText(): bool
     {
         return $this->nbSentences === 1 || $this->asText;
@@ -122,7 +89,7 @@ final class SentenceFaker implements FakerInterface
         $sentences = [];
 
         for ($i = 1; $i <= $this->nbSentences; $i++) {
-            $wordsNumber = $this->variableNbWords ? $this->getVariableWordsNumber() : $this->nbWords;
+            $wordsNumber = $this->variableNbWords ? $this->getVariableNumber($this->nbWords) : $this->nbWords;
 
             $sentences[] = $this->getSentence($wordsNumber);
         }

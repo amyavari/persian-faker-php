@@ -7,6 +7,7 @@ namespace AliYavari\PersianFaker\Fakers\Text;
 use AliYavari\PersianFaker\Contracts\DataLoaderInterface;
 use AliYavari\PersianFaker\Contracts\FakerInterface;
 use AliYavari\PersianFaker\Cores\Arrayable;
+use AliYavari\PersianFaker\Cores\HasVariableCount;
 use AliYavari\PersianFaker\Cores\Randomable;
 use AliYavari\PersianFaker\Exceptions\InvalidElementNumberException;
 
@@ -23,11 +24,7 @@ final class WordFaker implements FakerInterface
      * @use Arrayable<string>
      * @use Randomable<string>
      */
-    use Arrayable, Randomable;
-
-    private const int MAX_NUMBER = 100;
-
-    private const int MIN_NUMBER = 1;
+    use Arrayable, HasVariableCount, Randomable;
 
     private const string SEPARATOR = ' ';
 
@@ -61,7 +58,7 @@ final class WordFaker implements FakerInterface
      */
     public function generate(): string|array
     {
-        if (! $this->isNumberValid()) {
+        if (! $this->isNumberInRange($this->nbWords)) {
             throw new InvalidElementNumberException(
                 sprintf('The number should be in range %s-%s, %s is given.', self::MIN_NUMBER, self::MAX_NUMBER, $this->nbWords)
             );
@@ -79,11 +76,6 @@ final class WordFaker implements FakerInterface
     public function shouldReturnString(int $nbWords): self
     {
         return new self($this->loader, nbWords: $nbWords, asText: true);
-    }
-
-    private function isNumberValid(): bool
-    {
-        return $this->nbWords >= self::MIN_NUMBER && $this->nbWords <= self::MAX_NUMBER;
     }
 
     /**

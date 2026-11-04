@@ -7,7 +7,7 @@
 -   [city](#city)
 -   [streetName](#streetname)
 -   [address](#address)
--   [postcode](#postcode)
+-   [postCode](#postcode)
 
 ## secondaryAddress
 
@@ -54,16 +54,16 @@ echo $persianFaker->streetName();
 //  'بلوار خلیج فارس، خیابان لاله زار، خیابان پیروزی، کوچه چشمه نور، پلاک 425'
 ```
 
-## postcode
+## postCode
 
 یک کد پستی معتبر برای ایران ایجاد می کند.
 
 **توجه:** این تابع ویرایش شده است و یک آرگومان اختیاری `$withSeparator` دریافت می کند. شما می توانید مقدار آن را برابر `true` قرار دهید تا کد پستی با دش (-) جدا شود.
 
 ```php
-echo $persianFaker->postcode();
+echo $persianFaker->postCode();
 //  '1234567890'
 
-echo $persianFaker->postcode(withSeparator: true);
+echo $persianFaker->postCode(withSeparator: true);
 //  '12345-67890'
 ```

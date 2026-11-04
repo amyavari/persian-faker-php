@@ -22,7 +22,7 @@ To view the Persian documentation, please refer to [docs/fa/01_getting_started.m
 
 ## Table of Contents
 
-- [Installation](#instantiation)
+- [Installation](#installation)
 - [Usage](#usage)
 - [Available Methods](#available-methods)
     - [Person Details](#person-details)
@@ -94,10 +94,10 @@ secondaryAddress()                      // 'طبقه 2'
 state()                                 // 'یزد'
 city()                                  // 'یزد'
 streetName()                            // 'پاسداران شمالی'
-address()                               // 'خیابان کارگر، کوچه گلستان، پلاک 35
+address()                               // 'خیابان کارگر، کوچه گلستان، پلاک 35'
 
 // Modified: accept optional argument
-postcode($withSeparator = false|true)   // '1234567890' , '12345-67890'
+postCode($withSeparator = false|true)   // '1234567890' , '12345-67890'
 ```
 
 ### Phone

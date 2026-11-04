@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+### Changed
+
+- The package now requires the `mbstring` extension, which it already used.
+
 ### Removed
 
 - Support for PHP `8.2`.
@@ -15,6 +19,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 
 - The `shebaNumber()` method now accepts the documented `post_bank` bank name.
+- The `shebaNumber()` method no longer needs the `bcmath` extension.
+- The `persian_faker()` helper no longer uses the container in non-Laravel projects that have their own `app()` function.
+- Two female first names no longer end with a tab or a space.
+- The data lists no longer have duplicate values, so no value comes up more often than the others.
+- The `0903` prefix now belongs only to the `mtn` mobile provider, not to `mci`.
 
 ## [1.4.0] - 2026-02-19
 

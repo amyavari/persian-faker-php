@@ -15,7 +15,7 @@ jobs:
     runs-on: ${{ matrix.os }}
 
     strategy:
-      fail-fast: true
+      fail-fast: false
       matrix:
         os: [ubuntu-latest]
         php: [8.3, 8.4, 8.5]
@@ -31,7 +31,7 @@ jobs:
         with:
           php-version: ${{ matrix.php }}
           extensions: dom, mbstring, zip
-          coverage: pcov
+          coverage: none
 
       - name: Get Composer cache directory
         id: composer-cache
@@ -54,5 +54,11 @@ jobs:
       - name: Coding Style Checks
         run: composer test:lint
 
+      - name: Refactor Checks
+        run: composer test:refactor
+
       - name: Type Checks
         run: composer test:types
+
+      - name: Type Coverage Checks
+        run: composer test:type-coverage

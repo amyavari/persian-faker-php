@@ -19,5 +19,5 @@ interface DataLoaderInterface
      *
      * @return array<TKey, TData>
      */
-    public function get();
+    public function get(): array;
 }

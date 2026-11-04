@@ -25,13 +25,13 @@ final class TextFaker implements FakerInterface
      */
     use Arrayable, Randomable;
 
-    protected const MAX_NUMBER = 1000;
+    private const int MAX_NUMBER = 1000;
 
-    protected const MIN_NUMBER = 10;
+    private const int MIN_NUMBER = 10;
 
-    protected const SEPARATOR = ' ';
+    private const string SEPARATOR = ' ';
 
-    protected const WORD_LEN_FOR_MIN_CALC = 10;
+    private const int WORD_LEN_FOR_MIN_CALC = 10;
 
     /**
      * @var list<string>

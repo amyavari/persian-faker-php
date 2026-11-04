@@ -20,13 +20,13 @@ final class SentenceFaker implements FakerInterface
     /** @use Arrayable<string> */
     use Arrayable;
 
-    protected const VARIABLE_PERCENTAGE = 0.4;
+    private const float VARIABLE_PERCENTAGE = 0.4;
 
-    protected const MAX_NUMBER = 100;
+    private const int MAX_NUMBER = 100;
 
-    protected const MIN_NUMBER = 1;
+    private const int MIN_NUMBER = 1;
 
-    protected const SEPARATOR = ' ';
+    private const string SEPARATOR = ' ';
 
     /**
      * @param  int  $nbWords  The number of words to include in each sentence.
@@ -78,7 +78,7 @@ final class SentenceFaker implements FakerInterface
      */
     public function shouldReturnString(int $nbWords, int $nbSentences): self
     {
-        return new self($this->wordFaker, nbWords: $nbWords, nbSentences: $nbSentences, variableNbWords: true, asText: true);
+        return new self($this->wordFaker, nbWords: $nbWords, nbSentences: $nbSentences, asText: true, variableNbWords: true);
     }
 
     private function isWordsNumberValid(): bool

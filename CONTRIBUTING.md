@@ -20,28 +20,25 @@ Please review these guidelines before submitting any pull requests.
 ## Setup
 
 Clone your fork, then install the dev dependencies:
+
 ```bash
 composer install
 ```
-## Lint
 
-Lint your code:
-```bash
-composer lint
-```
 ## Tests
 
 Run all tests:
+
 ```bash
 composer test
 ```
 
-Check types:
-```bash
-composer test:types
-```
+This runs the checks below, in this order. You can also run each one on its own:
 
-Unit tests:
 ```bash
-composer test:unit
+composer test:lint           # Code style (Laravel Pint)
+composer test:refactor       # Refactors (Rector)
+composer test:types          # Types (PHPStan)
+composer test:type-coverage  # Type coverage (Pest)
+composer test:unit           # Unit tests (Pest)
 ```

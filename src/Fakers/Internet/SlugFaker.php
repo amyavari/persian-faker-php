@@ -17,13 +17,13 @@ use AliYavari\PersianFaker\Fakers\Text\WordFaker;
  */
 final readonly class SlugFaker implements FakerInterface
 {
-    private const VARIABLE_PERCENTAGE = 0.4;
+    private const float VARIABLE_PERCENTAGE = 0.4;
 
-    private const MAX_NUMBER = 100;
+    private const int MAX_NUMBER = 100;
 
-    private const MIN_NUMBER = 1;
+    private const int MIN_NUMBER = 1;
 
-    private const SEPARATOR = '-';
+    private const string SEPARATOR = '-';
 
     /**
      * @param  int  $nbWords  The number of words to include in each slug.
@@ -38,11 +38,9 @@ final readonly class SlugFaker implements FakerInterface
     /**
      * This returns random slug.
      *
-     * @return string|list<string>
-     *
      * @throws InvalidElementNumberException
      */
-    public function generate(): string|array
+    public function generate(): string
     {
         if (! $this->isWordsNumberValid()) {
             throw new InvalidElementNumberException(

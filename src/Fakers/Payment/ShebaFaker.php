@@ -122,9 +122,13 @@ final class ShebaFaker implements FakerInterface
 
         $preparedNumber = $digits.'1827'.'00';
 
-        $reminder = bcmod($preparedNumber, '97');
+        $remainder = 0;
 
-        $checkNumberValue = 98 - $reminder;
+        foreach (mb_str_split($preparedNumber) as $digit) { // Digit by digit, because the number is too big for an int
+            $remainder = ($remainder * 10 + (int) $digit) % 97;
+        }
+
+        $checkNumberValue = 98 - $remainder;
 
         return str_pad((string) $checkNumberValue, 2, '0', STR_PAD_LEFT);
     }

@@ -7,7 +7,7 @@
 -   [city](#city)
 -   [streetName](#streetname)
 -   [address](#address)
--   [postcode](#postcode)
+-   [postCode](#postcode)
 
 ## secondaryAddress
 
@@ -54,16 +54,16 @@ echo $persianFaker->streetName();
 //  'بلوار خلیج فارس، خیابان لاله زار، خیابان پیروزی، کوچه چشمه نور، پلاک 425'
 ```
 
-## postcode
+## postCode
 
 Generates a random valid postal code in Iran.
 
 **Note:** This method has been modified to include an optional `$withSeparator` argument. Set this argument to `true` if you wish to format the postal code with a dash (-) separator.
 
 ```php
-echo $persianFaker->postcode();
+echo $persianFaker->postCode();
 //  '1234567890'
 
-echo $persianFaker->postcode(withSeparator: true);
+echo $persianFaker->postCode(withSeparator: true);
 //  '12345-67890'
 ```

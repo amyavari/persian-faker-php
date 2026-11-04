@@ -76,7 +76,7 @@ interface GeneratorInterface
     /**
      * Get a random Iranian national code
      *
-     * @param  string|null  $state  The name of the state in Iran. See https://github.com/amyavari/persian-faker-php?tab=readme-ov-file#person
+     * @param  string|null  $state  The name of the state in Iran. See https://github.com/amyavari/persian-faker-php/blob/main/docs/en/02-person.md#nationalcode
      *
      * @example '0087199084', '1127905589'
      */
@@ -135,7 +135,7 @@ interface GeneratorInterface
      * Get a random phone number in Iran
      *
      * @param  string  $separator  The separator between the state prefix and the phone number.
-     * @param  string|null  $state  The name of the state in Iran. See https://github.com/amyavari/persian-faker-php?tab=readme-ov-file#phone
+     * @param  string|null  $state  The name of the state in Iran. See https://github.com/amyavari/persian-faker-php/blob/main/docs/en/04-phone.md#phonenumber
      *
      * @example '03512345678', '02112345678', '035-12345678', '013 12345678'
      */
@@ -145,7 +145,7 @@ interface GeneratorInterface
      * Get a random cell phone number in Iran
      *
      * @param  string  $separator  The separator between the mobile provider prefix, the first three digits, and the last four digits.
-     * @param  string|null  $provider  The name of the mobile provider in Iran. See https://github.com/amyavari/persian-faker-php?tab=readme-ov-file#phone
+     * @param  string|null  $provider  The name of the mobile provider in Iran. See https://github.com/amyavari/persian-faker-php/blob/main/docs/en/04-phone.md#cellphone
      *
      * @example '09121234567', '09301234567', '0912-123-4567', '0912 123 4567'
      */
@@ -209,7 +209,7 @@ interface GeneratorInterface
      * @return string|array<string> If $nb is equal to 1, or $asText is true, the sentence(s) are returned as a string.
      *                              If $nb is greater than 1, and $asText is false, an array of sentences is returned.
      *
-     * @example ['خاکستری سریع دارچین','.یخ در بهشت.'], 'خاکستری سریع دارچین. یخ در بهشت.'
+     * @example ['خاکستری سریع دارچین.', 'یخ در بهشت.'], 'خاکستری سریع دارچین. یخ در بهشت.'
      */
     public function sentences(int $nb = 3, bool $asText = false): string|array;
 
@@ -222,7 +222,7 @@ interface GeneratorInterface
     public function paragraph(int $nbSentences = 3, bool $variableNbSentences = true): string;
 
     /**
-     * Get random sentence(s)
+     * Get random paragraph(s)
      *
      * @param  int  $nb  The number of paragraphs to be returned.
      * @param  bool  $asText  Whether the paragraphs should be returned as a string (true) or as an array (false).
@@ -249,7 +249,7 @@ interface GeneratorInterface
      * Get a random bank card number in Iran
      *
      * @param  string  $separator  The separator between the each four digits.
-     * @param  string|null  $bank  The name of the bank in Iran. See https://github.com/amyavari/persian-faker-php?tab=readme-ov-file#payment
+     * @param  string|null  $bank  The name of the bank in Iran. See https://github.com/amyavari/persian-faker-php/blob/main/docs/en/07-payment.md#cardnumber
      *
      * @example '6395 9969 9173 6339', '5894639748556308'
      */
@@ -260,7 +260,7 @@ interface GeneratorInterface
      *
      * @param  bool  $withIR  Determines whether the output should include 'IR' (true) or not (false)
      * @param  string  $separator  The separator used to format the Sheba number in its standard representation.
-     * @param  string|null  $bank  The name of the bank in Iran. See https://github.com/amyavari/persian-faker-php?tab=readme-ov-file#payment
+     * @param  string|null  $bank  The name of the bank in Iran. See https://github.com/amyavari/persian-faker-php/blob/main/docs/en/07-payment.md#shebanumber
      *
      * @example '830140000740311641195878', 'IR72-0540-0008-5961-5112-7527-92'
      */

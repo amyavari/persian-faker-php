@@ -16,7 +16,8 @@
         }
     ],
     "require": {
-        "php": "^8.3.0"
+        "php": "^8.3.0",
+        "ext-mbstring": "*"
     },
     "require-dev": {
         "laravel/pao": "^1.1",

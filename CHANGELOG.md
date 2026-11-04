@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [Unreleased]
+
+### Removed
+
+- Support for PHP `8.2`.
+- **Breaking:** The undocumented `post` bank name in the `shebaNumber()` method. Use `post_bank` instead.
+
+### Fixed
+
+- The `shebaNumber()` method now accepts the documented `post_bank` bank name.
+
 ## [1.4.0] - 2026-02-19
 
 ### Added
@@ -50,6 +61,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - The first release of this package.
 - Includes fake data generation methods for Address, Company, Person, phone details, and text/paragraphs.
 
+[Unreleased]: https://github.com/amyavari/persian-faker-php/compare/v1.4.0...HEAD
 [1.4.0]: https://github.com/amyavari/persian-faker-php/compare/v1.3.1...v1.4.0
 [1.3.1]: https://github.com/amyavari/persian-faker-php/compare/v1.3.0...v1.3.1
 [1.3.0]: https://github.com/amyavari/persian-faker-php/compare/v1.2.0...v1.3.0

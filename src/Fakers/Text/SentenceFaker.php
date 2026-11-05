@@ -61,19 +61,20 @@ final class SentenceFaker implements FakerInterface
             );
         }
 
-        $sentences = $this->getRandomSentences();
+        $sentences = $this->getRandomSentences($this->nbWords, $this->nbSentences, $this->variableNbWords);
 
         return $this->shouldBeText() ? $this->convertToString($sentences, self::SEPARATOR) : $sentences;
     }
 
     /**
-     * Returns a new instance of this class which is configured
-     * to return a string containing $nbSentences,
-     * where each sentence contains $nbWords, which is allowed to vary.
+     * Returns $nbSentences random sentences as one string.
+     * The number of words in each sentence varies around $nbWords.
      */
-    public function shouldReturnString(int $nbWords, int $nbSentences): self
+    public function generateText(int $nbWords, int $nbSentences): string
     {
-        return new self($this->wordFaker, nbWords: $nbWords, nbSentences: $nbSentences, asText: true, variableNbWords: true);
+        $sentences = $this->getRandomSentences($nbWords, $nbSentences, variableNbWords: true);
+
+        return $this->convertToString($sentences, self::SEPARATOR);
     }
 
     private function shouldBeText(): bool
@@ -84,12 +85,12 @@ final class SentenceFaker implements FakerInterface
     /**
      * @return list<string>
      */
-    private function getRandomSentences(): array
+    private function getRandomSentences(int $nbWords, int $nbSentences, bool $variableNbWords): array
     {
         $sentences = [];
 
-        for ($i = 1; $i <= $this->nbSentences; $i++) {
-            $wordsNumber = $this->variableNbWords ? $this->getVariableNumber($this->nbWords) : $this->nbWords;
+        for ($i = 1; $i <= $nbSentences; $i++) {
+            $wordsNumber = $variableNbWords ? $this->getVariableNumber($nbWords) : $nbWords;
 
             $sentences[] = $this->getSentence($wordsNumber);
         }
@@ -99,7 +100,7 @@ final class SentenceFaker implements FakerInterface
 
     private function getSentence(int $wordsNumber): string
     {
-        $sentence = $this->wordFaker->shouldReturnString($wordsNumber)->generate();
+        $sentence = $this->wordFaker->generateText($wordsNumber);
 
         return $this->addDotAtTheEnd($sentence);
     }

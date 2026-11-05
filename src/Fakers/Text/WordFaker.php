@@ -39,7 +39,7 @@ final class WordFaker implements FakerInterface
      * @param  bool  $asText  Whether the words should be returned as a string (true) or as an array (false).
      */
     public function __construct(
-        private DataLoaderInterface $loader,
+        DataLoaderInterface $loader,
         private int $nbWords = 1,
         private bool $asText = false,
     ) {
@@ -64,26 +64,27 @@ final class WordFaker implements FakerInterface
             );
         }
 
-        $words = $this->getWords();
+        $words = $this->getWords($this->nbWords);
 
         return $this->shouldBeText() ? $this->convertToString($words, self::SEPARATOR) : $words;
     }
 
     /**
-     * Returns a new instance of this class which is configured
-     * to return a string containing $nbWords.
+     * Returns $nbWords random words as one string.
      */
-    public function shouldReturnString(int $nbWords): self
+    public function generateText(int $nbWords): string
     {
-        return new self($this->loader, nbWords: $nbWords, asText: true);
+        $words = $this->getWords($nbWords);
+
+        return $this->convertToString($words, self::SEPARATOR);
     }
 
     /**
      * @return list<string>
      */
-    private function getWords(): array
+    private function getWords(int $nbWords): array
     {
-        return $this->getMultipleRandomElements($this->words, $this->nbWords);
+        return $this->getMultipleRandomElements($this->words, $nbWords);
     }
 
     private function shouldBeText(): bool

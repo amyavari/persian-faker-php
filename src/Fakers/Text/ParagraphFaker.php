@@ -91,6 +91,6 @@ final class ParagraphFaker implements FakerInterface
 
     private function getParagraph(int $sentencesNumber): string
     {
-        return $this->sentenceFaker->shouldReturnString(self::NB_WORDS, $sentencesNumber)->generate();
+        return $this->sentenceFaker->generateText(self::NB_WORDS, $sentencesNumber);
     }
 }

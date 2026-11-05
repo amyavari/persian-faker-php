@@ -52,7 +52,7 @@ final readonly class SlugFaker implements FakerInterface
 
     private function getSlug(int $wordsNumber): string
     {
-        $slug = $this->wordFaker->shouldReturnString($wordsNumber)->generate();
+        $slug = $this->wordFaker->generateText($wordsNumber);
 
         return $this->replaceWordsSeparator($slug);
     }

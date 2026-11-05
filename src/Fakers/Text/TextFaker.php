@@ -31,8 +31,6 @@ final class TextFaker implements FakerInterface
 
     private const string SEPARATOR = ' ';
 
-    private const int WORD_LEN_FOR_MIN_CALC = 10;
-
     /**
      * @var list<string>
      */
@@ -60,17 +58,13 @@ final class TextFaker implements FakerInterface
             );
         }
 
-        $words = $this->getMultipleRandomElements($this->words, $this->getMinNumberOfWords());
+        $words = [];
 
-        while (true) {
-            if (! $this->isWithinCharLimit($words)) {
-                $words = $this->removeExtraWords($words);
-
-                break;
-            }
-
+        while ($this->isWithinCharLimit($words)) {
             $words[] = $this->getOneRandomElement($this->words);
         }
+
+        array_pop($words); // The last word went over the limit
 
         return $this->convertToString($words, self::SEPARATOR);
     }
@@ -80,33 +74,11 @@ final class TextFaker implements FakerInterface
         return $number >= self::MIN_NUMBER && $number <= self::MAX_NUMBER;
     }
 
-    private function getMinNumberOfWords(): int
-    {
-        return (int) ($this->maxNbChars / self::WORD_LEN_FOR_MIN_CALC);
-    }
-
     /**
      * @param  list<string>  $words
      */
     private function isWithinCharLimit(array $words): bool
     {
         return mb_strlen($this->convertToString($words, self::SEPARATOR)) <= $this->maxNbChars;
-    }
-
-    /**
-     * @param  list<string>  $words
-     * @return list<string>
-     */
-    private function removeExtraWords(array $words): array
-    {
-        while (true) {
-            if (! $this->isWithinCharLimit($words)) {
-                array_pop($words);
-
-                continue;
-            }
-
-            return $words;
-        }
     }
 }

@@ -47,9 +47,7 @@ final class Generator implements GeneratorInterface
      */
     public function titleMale(): string
     {
-        $dataLoader = $this->getDataLoaderInstance('person.titles');
-
-        return $this->exec(new GenderPicker($dataLoader, 'male'));
+        return $this->title('male');
     }
 
     /**
@@ -57,9 +55,7 @@ final class Generator implements GeneratorInterface
      */
     public function titleFemale(): string
     {
-        $dataLoader = $this->getDataLoaderInstance('person.titles');
-
-        return $this->exec(new GenderPicker($dataLoader, 'female'));
+        return $this->title('female');
     }
 
     /**
@@ -77,9 +73,7 @@ final class Generator implements GeneratorInterface
      */
     public function firstNameMale(): string
     {
-        $dataLoader = $this->getDataLoaderInstance('person.first_names');
-
-        return $this->exec(new GenderPicker($dataLoader, 'male'));
+        return $this->firstName('male');
     }
 
     /**
@@ -87,9 +81,7 @@ final class Generator implements GeneratorInterface
      */
     public function firstNameFemale(): string
     {
-        $dataLoader = $this->getDataLoaderInstance('person.first_names');
-
-        return $this->exec(new GenderPicker($dataLoader, 'female'));
+        return $this->firstName('female');
     }
 
     /**

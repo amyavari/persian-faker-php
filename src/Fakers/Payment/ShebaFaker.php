@@ -54,7 +54,7 @@ final class ShebaFaker implements FakerInterface
 
         $bankCode = $this->getBankCode();
 
-        $accountNumber = $this->generateRandomAccountNumber();
+        $accountNumber = $this->generateAccountNumber();
 
         $formattedAccountNum = $this->fillEmptyPlaces($accountNumber);
 
@@ -79,7 +79,7 @@ final class ShebaFaker implements FakerInterface
         return is_null($this->bank) ? $this->getOneRandomElement($this->bankCodes) : $this->bankCodes[$this->bank];
     }
 
-    private function generateRandomAccountNumber(): string
+    private function generateAccountNumber(): string
     {
         return random_int(100_000_000, 999_999_999).random_int(0, 999_999);
     }

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace AliYavari\PersianFaker\Fakers\Colors;
+namespace AliYavari\PersianFaker\Fakers\Color;
 
 use AliYavari\PersianFaker\Contracts\DataLoaderInterface;
 use AliYavari\PersianFaker\Contracts\FakerInterface;

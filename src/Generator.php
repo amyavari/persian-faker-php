@@ -9,7 +9,7 @@ use AliYavari\PersianFaker\Contracts\FakerInterface;
 use AliYavari\PersianFaker\Contracts\GeneratorInterface;
 use AliYavari\PersianFaker\Fakers\Address\PostCodeFaker;
 use AliYavari\PersianFaker\Fakers\Address\SecondaryAddressFaker;
-use AliYavari\PersianFaker\Fakers\Colors\ColorNameFaker;
+use AliYavari\PersianFaker\Fakers\Color\ColorNameFaker;
 use AliYavari\PersianFaker\Fakers\Internet\SlugFaker;
 use AliYavari\PersianFaker\Fakers\Payment\CardNumberFaker;
 use AliYavari\PersianFaker\Fakers\Payment\ShebaFaker;

@@ -53,7 +53,7 @@ final class CardNumberFaker implements FakerInterface
 
         $bankBin = $this->getBin();
 
-        $cardNumber = $this->generateRandomCardNumber();
+        $cardNumber = $this->generateCardNumber();
 
         $checkDigit = $this->calculateCheckDigit($bankBin.$cardNumber);
 
@@ -74,7 +74,7 @@ final class CardNumberFaker implements FakerInterface
         return is_null($this->bank) ? $this->getOneRandomElement($this->bankBins) : $this->bankBins[$this->bank];
     }
 
-    private function generateRandomCardNumber(): int
+    private function generateCardNumber(): int
     {
         return random_int(100_000_000, 999_999_999);
     }
@@ -86,9 +86,9 @@ final class CardNumberFaker implements FakerInterface
     {
         $sum = 0;
         foreach (mb_str_split($digits) as $key => $value) {
-            $multipleBy = (($key + 1) % 2 === 0) ? 1 : 2;
+            $multiplier = (($key + 1) % 2 === 0) ? 1 : 2;
 
-            $product = (int) $value * $multipleBy;
+            $product = (int) $value * $multiplier;
 
             if ($product >= 10) {
                 $product -= 9;

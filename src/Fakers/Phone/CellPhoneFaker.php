@@ -28,7 +28,7 @@ final class CellPhoneFaker implements FakerInterface
     /**
      * @var array<string, list<string>>
      */
-    private array $phonePrefixes;
+    private array $mobilePrefixes;
 
     /**
      * @param  DataLoaderInterface<string, list<string>>  $loader
@@ -37,7 +37,7 @@ final class CellPhoneFaker implements FakerInterface
      */
     public function __construct(DataLoaderInterface $loader, private string $separator = '', private ?string $provider = null)
     {
-        $this->phonePrefixes = $loader->get();
+        $this->mobilePrefixes = $loader->get();
     }
 
     /**
@@ -53,7 +53,7 @@ final class CellPhoneFaker implements FakerInterface
 
         $randomPrefix = $this->getOneRandomElement($this->getPrefixes());
 
-        return $this->formatPhone($randomPrefix, $this->generateRandomCellPhone());
+        return $this->formatPhone($randomPrefix, $this->generateCellPhone());
     }
 
     private function isProviderValid(): bool
@@ -62,7 +62,7 @@ final class CellPhoneFaker implements FakerInterface
             return true;
         }
 
-        return array_key_exists($this->provider, $this->phonePrefixes);
+        return array_key_exists($this->provider, $this->mobilePrefixes);
     }
 
     /**
@@ -70,10 +70,10 @@ final class CellPhoneFaker implements FakerInterface
      */
     private function getPrefixes(): array
     {
-        return is_null($this->provider) ? $this->flatten($this->phonePrefixes) : $this->phonePrefixes[$this->provider];
+        return is_null($this->provider) ? $this->flatten($this->mobilePrefixes) : $this->mobilePrefixes[$this->provider];
     }
 
-    private function generateRandomCellPhone(): string
+    private function generateCellPhone(): string
     {
         return (string) random_int(1_000_000, 9_999_999);
     }

@@ -26,12 +26,12 @@ final class PostCodeFaker implements FakerInterface
      */
     public function generate(): string
     {
-        $postCode = $this->generateRandomPostCode();
+        $postCode = $this->generatePostCode();
 
         return $this->withSeparator ? $this->addSeparator($postCode) : $postCode;
     }
 
-    private function generateRandomPostCode(): string
+    private function generatePostCode(): string
     {
         // Only for safety, valid digits are restricted to the range of 1-9.
         $validDigits = range(1, 9);

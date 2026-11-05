@@ -47,7 +47,7 @@ final class PhoneNumberFaker implements FakerInterface
             throw new InvalidStateNameException(sprintf('The state name %s is not valid.', $this->state));
         }
 
-        return $this->formatPhone($this->getStatePrefix(), $this->generateRandomPhoneNumber());
+        return $this->formatPhone($this->getStatePrefix(), $this->generatePhoneNumber());
     }
 
     private function isStateValid(): bool
@@ -64,7 +64,7 @@ final class PhoneNumberFaker implements FakerInterface
         return is_null($this->state) ? $this->getOneRandomElement($this->statePrefixes) : $this->statePrefixes[$this->state];
     }
 
-    private function generateRandomPhoneNumber(): string
+    private function generatePhoneNumber(): string
     {
         return (string) random_int(10_000_000, 99_999_999);
     }

@@ -52,7 +52,7 @@ final class NationalCodeFaker implements FakerInterface
 
         $statePrefix = $this->getStatePrefix();
 
-        $nationalCode = $this->generateRandomNationalCode();
+        $nationalCode = $this->generateNationalCode();
 
         $checkDigit = $this->calculateCheckDigit($statePrefix.$nationalCode);
 
@@ -75,7 +75,7 @@ final class NationalCodeFaker implements FakerInterface
         return $this->getOneRandomElement($prefixes);
     }
 
-    private function generateRandomNationalCode(): int
+    private function generateNationalCode(): int
     {
         return random_int(100_000, 999_999);
     }

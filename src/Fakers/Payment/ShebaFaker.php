@@ -9,13 +9,11 @@ use AliYavari\PersianFaker\Contracts\FakerInterface;
 use AliYavari\PersianFaker\Cores\Arrayable;
 use AliYavari\PersianFaker\Cores\Randomable;
 use AliYavari\PersianFaker\Exceptions\InvalidBankNameException;
-use RangeException;
-use TypeError;
 
 /**
  * @internal
  *
- * Generates a random Iran's account Sheba numbe.
+ * Generates a random Iran's account Sheba number.
  *
  * @implements FakerInterface<string>
  */
@@ -56,7 +54,7 @@ final class ShebaFaker implements FakerInterface
 
         $bankCode = $this->getBankCode();
 
-        $accountNumber = $this->generateRandomAccountNumber();
+        $accountNumber = $this->generateAccountNumber();
 
         $formattedAccountNum = $this->fillEmptyPlaces($accountNumber);
 
@@ -81,7 +79,7 @@ final class ShebaFaker implements FakerInterface
         return is_null($this->bank) ? $this->getOneRandomElement($this->bankCodes) : $this->bankCodes[$this->bank];
     }
 
-    private function generateRandomAccountNumber(): string
+    private function generateAccountNumber(): string
     {
         return random_int(100_000_000, 999_999_999).random_int(0, 999_999);
     }
@@ -93,24 +91,9 @@ final class ShebaFaker implements FakerInterface
 
     /**
      * To see Iran's Sheba Number Validation algorithm, please check shebaNumberRemainder() in tests/Feature/PaymentTest.php.
-     *
-     * @throws RangeException
-     * @throws TypeError
      */
     private function calculateCheckNumber(string $digits): string
     {
-        if (mb_strlen($digits) !== 22) {
-            throw new RangeException(
-                sprintf('The input number must have 22 digits, %s-digit number is given.', mb_strlen($digits))
-            );
-        }
-
-        if (! is_numeric($digits)) {
-            throw new TypeError(
-                sprintf('The input must be numeric. %s is given.', get_debug_type($digits))
-            );
-        }
-
         /*
         / Summary of Check Number Calculation Algorithm:
         /

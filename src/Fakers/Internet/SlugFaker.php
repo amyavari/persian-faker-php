@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace AliYavari\PersianFaker\Fakers\Internet;
 
 use AliYavari\PersianFaker\Contracts\FakerInterface;
+use AliYavari\PersianFaker\Cores\HasVariableCount;
 use AliYavari\PersianFaker\Exceptions\InvalidElementNumberException;
 use AliYavari\PersianFaker\Fakers\Text\WordFaker;
 
@@ -13,15 +14,11 @@ use AliYavari\PersianFaker\Fakers\Text\WordFaker;
  *
  * Generates fake slug
  *
- * @implements FakerInterface<string|list<string>>
+ * @implements FakerInterface<string>
  */
 final readonly class SlugFaker implements FakerInterface
 {
-    private const float VARIABLE_PERCENTAGE = 0.4;
-
-    private const int MAX_NUMBER = 100;
-
-    private const int MIN_NUMBER = 1;
+    use HasVariableCount;
 
     private const string SEPARATOR = '-';
 
@@ -42,43 +39,20 @@ final readonly class SlugFaker implements FakerInterface
      */
     public function generate(): string
     {
-        if (! $this->isWordsNumberValid()) {
+        if (! $this->isNumberInRange($this->nbWords)) {
             throw new InvalidElementNumberException(
                 sprintf('The number of words should be in range %s-%s, %s is given.', self::MIN_NUMBER, self::MAX_NUMBER, $this->nbWords)
             );
         }
 
-        $wordsNumber = $this->variableNbWords ? $this->getVariableWordsNumber() : $this->nbWords;
+        $wordsNumber = $this->variableNbWords ? $this->getVariableNumber($this->nbWords) : $this->nbWords;
 
         return $this->getSlug($wordsNumber);
     }
 
-    private function isWordsNumberValid(): bool
-    {
-        return $this->nbWords >= self::MIN_NUMBER && $this->nbWords <= self::MAX_NUMBER;
-    }
-
-    private function getVariableWordsNumber(): int
-    {
-        $min = (int) ($this->nbWords * (1 - self::VARIABLE_PERCENTAGE));
-        $max = (int) ($this->nbWords * (1 + self::VARIABLE_PERCENTAGE));
-
-        $wordsNumber = random_int($min, $max);
-
-        if ($wordsNumber < self::MIN_NUMBER) {
-            return self::MIN_NUMBER;
-        }
-
-        if ($wordsNumber > self::MAX_NUMBER) {
-            return self::MAX_NUMBER;
-        }
-
-        return $wordsNumber;
-    }
-
     private function getSlug(int $wordsNumber): string
     {
-        $slug = $this->wordFaker->shouldReturnString($wordsNumber)->generate();
+        $slug = $this->wordFaker->generateText($wordsNumber);
 
         return $this->replaceWordsSeparator($slug);
     }

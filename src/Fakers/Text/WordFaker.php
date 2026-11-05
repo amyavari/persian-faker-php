@@ -7,6 +7,7 @@ namespace AliYavari\PersianFaker\Fakers\Text;
 use AliYavari\PersianFaker\Contracts\DataLoaderInterface;
 use AliYavari\PersianFaker\Contracts\FakerInterface;
 use AliYavari\PersianFaker\Cores\Arrayable;
+use AliYavari\PersianFaker\Cores\HasVariableCount;
 use AliYavari\PersianFaker\Cores\Randomable;
 use AliYavari\PersianFaker\Exceptions\InvalidElementNumberException;
 
@@ -23,11 +24,7 @@ final class WordFaker implements FakerInterface
      * @use Arrayable<string>
      * @use Randomable<string>
      */
-    use Arrayable, Randomable;
-
-    private const int MAX_NUMBER = 100;
-
-    private const int MIN_NUMBER = 1;
+    use Arrayable, HasVariableCount, Randomable;
 
     private const string SEPARATOR = ' ';
 
@@ -42,7 +39,7 @@ final class WordFaker implements FakerInterface
      * @param  bool  $asText  Whether the words should be returned as a string (true) or as an array (false).
      */
     public function __construct(
-        private DataLoaderInterface $loader,
+        DataLoaderInterface $loader,
         private int $nbWords = 1,
         private bool $asText = false,
     ) {
@@ -61,37 +58,33 @@ final class WordFaker implements FakerInterface
      */
     public function generate(): string|array
     {
-        if (! $this->isNumberValid()) {
+        if (! $this->isNumberInRange($this->nbWords)) {
             throw new InvalidElementNumberException(
                 sprintf('The number should be in range %s-%s, %s is given.', self::MIN_NUMBER, self::MAX_NUMBER, $this->nbWords)
             );
         }
 
-        $words = $this->getWords();
+        $words = $this->getWords($this->nbWords);
 
         return $this->shouldBeText() ? $this->convertToString($words, self::SEPARATOR) : $words;
     }
 
     /**
-     * Returns a new instance of this class which is configured
-     * to return a string containing $nbWords.
+     * Returns $nbWords random words as one string.
      */
-    public function shouldReturnString(int $nbWords): self
+    public function generateText(int $nbWords): string
     {
-        return new self($this->loader, nbWords: $nbWords, asText: true);
-    }
+        $words = $this->getWords($nbWords);
 
-    private function isNumberValid(): bool
-    {
-        return $this->nbWords >= self::MIN_NUMBER && $this->nbWords <= self::MAX_NUMBER;
+        return $this->convertToString($words, self::SEPARATOR);
     }
 
     /**
      * @return list<string>
      */
-    private function getWords(): array
+    private function getWords(int $nbWords): array
     {
-        return $this->getMultipleRandomElements($this->words, $this->nbWords);
+        return $this->getMultipleRandomElements($this->words, $nbWords);
     }
 
     private function shouldBeText(): bool

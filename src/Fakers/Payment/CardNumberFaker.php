@@ -9,8 +9,6 @@ use AliYavari\PersianFaker\Contracts\FakerInterface;
 use AliYavari\PersianFaker\Cores\Arrayable;
 use AliYavari\PersianFaker\Cores\Randomable;
 use AliYavari\PersianFaker\Exceptions\InvalidBankNameException;
-use RangeException;
-use TypeError;
 
 /**
  * @internal
@@ -55,7 +53,7 @@ final class CardNumberFaker implements FakerInterface
 
         $bankBin = $this->getBin();
 
-        $cardNumber = $this->generateRandomCardNumber();
+        $cardNumber = $this->generateCardNumber();
 
         $checkDigit = $this->calculateCheckDigit($bankBin.$cardNumber);
 
@@ -76,36 +74,21 @@ final class CardNumberFaker implements FakerInterface
         return is_null($this->bank) ? $this->getOneRandomElement($this->bankBins) : $this->bankBins[$this->bank];
     }
 
-    private function generateRandomCardNumber(): int
+    private function generateCardNumber(): int
     {
         return random_int(100_000_000, 999_999_999);
     }
 
     /**
      * To see Iran's Bank Card Number Validation algorithm, please check cardNumberCheckDigit() in tests/Feature/PaymentTest.php.
-     *
-     * @throws RangeException
-     * @throws TypeError
      */
     private function calculateCheckDigit(string $digits): int
     {
-        if (mb_strlen($digits) !== 15) {
-            throw new RangeException(
-                sprintf('The input number must have 15 digits, %s-digit number is given.', mb_strlen($digits))
-            );
-        }
-
-        if (! is_numeric($digits)) {
-            throw new TypeError(
-                sprintf('The input must be numeric. %s is given.', get_debug_type($digits))
-            );
-        }
-
         $sum = 0;
         foreach (mb_str_split($digits) as $key => $value) {
-            $multipleBy = (($key + 1) % 2 === 0) ? 1 : 2;
+            $multiplier = (($key + 1) % 2 === 0) ? 1 : 2;
 
-            $product = (int) $value * $multipleBy;
+            $product = (int) $value * $multiplier;
 
             if ($product >= 10) {
                 $product -= 9;

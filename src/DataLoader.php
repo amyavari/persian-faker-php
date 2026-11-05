@@ -5,9 +5,6 @@ declare(strict_types=1);
 namespace AliYavari\PersianFaker;
 
 use AliYavari\PersianFaker\Contracts\DataLoaderInterface;
-use AliYavari\PersianFaker\Exceptions\FileNotFoundException;
-use AliYavari\PersianFaker\Exceptions\InvalidDataKeyException;
-use AliYavari\PersianFaker\Exceptions\InvalidDataPathException;
 
 /**
  * @internal
@@ -23,10 +20,17 @@ use AliYavari\PersianFaker\Exceptions\InvalidDataPathException;
  *
  * @implements DataLoaderInterface<TKey, TData>
  */
-final readonly class DataLoader implements DataLoaderInterface
+final class DataLoader implements DataLoaderInterface
 {
+    /**
+     * The data files that are already loaded, by file name. Each file is loaded only once.
+     *
+     * @var array<string, array<string, mixed>>
+     */
+    private static array $loadedFiles = [];
+
     public function __construct(
-        private string $path
+        private readonly string $path
     ) {}
 
     /**
@@ -45,18 +49,10 @@ final readonly class DataLoader implements DataLoaderInterface
 
     /**
      * @return array{file_name: string, keys: list<string>}
-     *
-     * @throws InvalidDataPathException
      */
     private function getFileNameAndKeys(): array
     {
         $fileKeys = explode('.', $this->path);
-
-        if (count($fileKeys) < 2) {
-            throw new InvalidDataPathException(
-                sprintf('The path %s is not correct path for file name and array key separated with dot(.).', $this->path)
-            );
-        }
 
         return [
             'file_name' => array_shift($fileKeys),
@@ -66,33 +62,27 @@ final readonly class DataLoader implements DataLoaderInterface
 
     /**
      * @return array<string, mixed>
-     *
-     * @throws FileNotFoundException
      */
     private function loadFile(string $fileName): array
     {
-        $filePath = __DIR__.DIRECTORY_SEPARATOR.'data'.DIRECTORY_SEPARATOR.$fileName.'.php';
-
-        if (! file_exists($filePath)) {
-            throw new FileNotFoundException(sprintf('The file %s is not found.', $filePath));
+        if (array_key_exists($fileName, self::$loadedFiles)) {
+            return self::$loadedFiles[$fileName];
         }
 
-        return require $filePath;
+        $filePath = __DIR__.DIRECTORY_SEPARATOR.'data'.DIRECTORY_SEPARATOR.$fileName.'.php';
+
+        self::$loadedFiles[$fileName] = require $filePath;
+
+        return self::$loadedFiles[$fileName];
     }
 
     /**
      * @param  array<mixed>  $array
      * @param  list<string>  $keys
-     *
-     * @throws FileNotFoundException
      */
     private function getArrayDataByNestedKeys(array $array, array $keys): mixed
     {
         $currentKey = array_shift($keys);
-
-        if (! array_key_exists($currentKey, $array)) {
-            throw new InvalidDataKeyException(sprintf('The key %s is not a valid key inside the file.', $currentKey));
-        }
 
         $content = $array[$currentKey];
 

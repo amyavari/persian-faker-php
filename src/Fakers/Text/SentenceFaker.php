@@ -6,6 +6,7 @@ namespace AliYavari\PersianFaker\Fakers\Text;
 
 use AliYavari\PersianFaker\Contracts\FakerInterface;
 use AliYavari\PersianFaker\Cores\Arrayable;
+use AliYavari\PersianFaker\Cores\HasVariableCount;
 use AliYavari\PersianFaker\Exceptions\InvalidElementNumberException;
 
 /**
@@ -18,13 +19,7 @@ use AliYavari\PersianFaker\Exceptions\InvalidElementNumberException;
 final class SentenceFaker implements FakerInterface
 {
     /** @use Arrayable<string> */
-    use Arrayable;
-
-    private const float VARIABLE_PERCENTAGE = 0.4;
-
-    private const int MAX_NUMBER = 100;
-
-    private const int MIN_NUMBER = 1;
+    use Arrayable, HasVariableCount;
 
     private const string SEPARATOR = ' ';
 
@@ -54,59 +49,32 @@ final class SentenceFaker implements FakerInterface
      */
     public function generate(): string|array
     {
-        if (! $this->isWordsNumberValid()) {
+        if (! $this->isNumberInRange($this->nbWords)) {
             throw new InvalidElementNumberException(
                 sprintf('The number of words should be in range %s-%s, %s is given.', self::MIN_NUMBER, self::MAX_NUMBER, $this->nbWords)
             );
         }
 
-        if (! $this->isSentencesNumberValid()) {
+        if (! $this->isNumberInRange($this->nbSentences)) {
             throw new InvalidElementNumberException(
                 sprintf('The number of sentences should be in range %s-%s, %s is given.', self::MIN_NUMBER, self::MAX_NUMBER, $this->nbSentences)
             );
         }
 
-        $sentences = $this->getRandomSentences();
+        $sentences = $this->getRandomSentences($this->nbWords, $this->nbSentences, $this->variableNbWords);
 
         return $this->shouldBeText() ? $this->convertToString($sentences, self::SEPARATOR) : $sentences;
     }
 
     /**
-     * Returns a new instance of this class which is configured
-     * to return a string containing $nbSentences,
-     * where each sentence contains $nbWords, which is allowed to vary.
+     * Returns $nbSentences random sentences as one string.
+     * The number of words in each sentence varies around $nbWords.
      */
-    public function shouldReturnString(int $nbWords, int $nbSentences): self
+    public function generateText(int $nbWords, int $nbSentences): string
     {
-        return new self($this->wordFaker, nbWords: $nbWords, nbSentences: $nbSentences, asText: true, variableNbWords: true);
-    }
+        $sentences = $this->getRandomSentences($nbWords, $nbSentences, variableNbWords: true);
 
-    private function isWordsNumberValid(): bool
-    {
-        return $this->nbWords >= self::MIN_NUMBER && $this->nbWords <= self::MAX_NUMBER;
-    }
-
-    private function isSentencesNumberValid(): bool
-    {
-        return $this->nbSentences >= self::MIN_NUMBER && $this->nbSentences <= self::MAX_NUMBER;
-    }
-
-    private function getVariableWordsNumber(): int
-    {
-        $min = (int) ($this->nbWords * (1 - self::VARIABLE_PERCENTAGE));
-        $max = (int) ($this->nbWords * (1 + self::VARIABLE_PERCENTAGE));
-
-        $wordsNumber = random_int($min, $max);
-
-        if ($wordsNumber < self::MIN_NUMBER) {
-            return self::MIN_NUMBER;
-        }
-
-        if ($wordsNumber > self::MAX_NUMBER) {
-            return self::MAX_NUMBER;
-        }
-
-        return $wordsNumber;
+        return $this->convertToString($sentences, self::SEPARATOR);
     }
 
     private function shouldBeText(): bool
@@ -117,12 +85,12 @@ final class SentenceFaker implements FakerInterface
     /**
      * @return list<string>
      */
-    private function getRandomSentences(): array
+    private function getRandomSentences(int $nbWords, int $nbSentences, bool $variableNbWords): array
     {
         $sentences = [];
 
-        for ($i = 1; $i <= $this->nbSentences; $i++) {
-            $wordsNumber = $this->variableNbWords ? $this->getVariableWordsNumber() : $this->nbWords;
+        for ($i = 1; $i <= $nbSentences; $i++) {
+            $wordsNumber = $variableNbWords ? $this->getVariableNumber($nbWords) : $nbWords;
 
             $sentences[] = $this->getSentence($wordsNumber);
         }
@@ -132,7 +100,7 @@ final class SentenceFaker implements FakerInterface
 
     private function getSentence(int $wordsNumber): string
     {
-        $sentence = $this->wordFaker->shouldReturnString($wordsNumber)->generate();
+        $sentence = $this->wordFaker->generateText($wordsNumber);
 
         return $this->addDotAtTheEnd($sentence);
     }

@@ -25,13 +25,11 @@ final class TextFaker implements FakerInterface
      */
     use Arrayable, Randomable;
 
-    private const int MAX_NUMBER = 1000;
-
     private const int MIN_NUMBER = 10;
 
-    private const string SEPARATOR = ' ';
+    private const int MAX_NUMBER = 1000;
 
-    private const int WORD_LEN_FOR_MIN_CALC = 10;
+    private const string SEPARATOR = ' ';
 
     /**
      * @var list<string>
@@ -54,35 +52,26 @@ final class TextFaker implements FakerInterface
      */
     public function generate(): string
     {
-        if (! $this->isCharsNumberValid()) {
+        if (! $this->isNumberInRange($this->maxNbChars)) {
             throw new InvalidElementNumberException(
                 sprintf('The number of chars should be in range %s-%s, %s is given.', self::MIN_NUMBER, self::MAX_NUMBER, $this->maxNbChars)
             );
         }
 
-        $words = $this->getMultipleRandomElements($this->words, $this->getMinNumberOfWords());
+        $words = [];
 
-        while (true) {
-            if (! $this->isWithinCharLimit($words)) {
-                $words = $this->removeExtraWords($words);
-
-                break;
-            }
-
+        while ($this->isWithinCharLimit($words)) {
             $words[] = $this->getOneRandomElement($this->words);
         }
+
+        array_pop($words); // The last word went over the limit
 
         return $this->convertToString($words, self::SEPARATOR);
     }
 
-    private function isCharsNumberValid(): bool
+    private function isNumberInRange(int $number): bool
     {
-        return $this->maxNbChars >= self::MIN_NUMBER && $this->maxNbChars <= self::MAX_NUMBER;
-    }
-
-    private function getMinNumberOfWords(): int
-    {
-        return (int) ($this->maxNbChars / self::WORD_LEN_FOR_MIN_CALC);
+        return $number >= self::MIN_NUMBER && $number <= self::MAX_NUMBER;
     }
 
     /**
@@ -91,22 +80,5 @@ final class TextFaker implements FakerInterface
     private function isWithinCharLimit(array $words): bool
     {
         return mb_strlen($this->convertToString($words, self::SEPARATOR)) <= $this->maxNbChars;
-    }
-
-    /**
-     * @param  list<string>  $words
-     * @return list<string>
-     */
-    private function removeExtraWords(array $words): array
-    {
-        while (true) {
-            if (! $this->isWithinCharLimit($words)) {
-                array_pop($words);
-
-                continue;
-            }
-
-            return $words;
-        }
     }
 }

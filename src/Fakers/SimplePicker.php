@@ -5,29 +5,28 @@ declare(strict_types=1);
 namespace AliYavari\PersianFaker\Fakers;
 
 use AliYavari\PersianFaker\Contracts\DataLoaderInterface;
+use AliYavari\PersianFaker\Contracts\FakerInterface;
 use AliYavari\PersianFaker\Cores\Randomable;
 
 /**
  * @internal
  *
- * Returns a randomly selected element from the loaded one-dimensional data array.
- * It ensures consistent and reusable logic for random selection across all child classes.
+ * Returns a random element from a one-dimensional data list.
  *
- * @template TKey of array-key
- * @template TValue
+ * @implements FakerInterface<string>
  */
-abstract class SimplePicker
+final class SimplePicker implements FakerInterface
 {
-    /** @use Randomable<TValue> */
+    /** @use Randomable<string> */
     use Randomable;
 
     /**
-     * @var array<TKey, TValue>
+     * @var array<array-key, string>
      */
-    protected array $data;
+    private array $data;
 
     /**
-     * @param  DataLoaderInterface<TKey, TValue>  $loader
+     * @param  DataLoaderInterface<array-key, string>  $loader
      */
     public function __construct(DataLoaderInterface $loader)
     {
@@ -36,10 +35,8 @@ abstract class SimplePicker
 
     /**
      * This returns a random element
-     *
-     * @return TValue
      */
-    protected function generate(): mixed
+    public function generate(): string
     {
         return $this->getOneRandomElement($this->data);
     }

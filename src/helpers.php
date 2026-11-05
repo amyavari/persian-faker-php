@@ -20,7 +20,7 @@ if (! function_exists('persian_faker') && class_exists(Factory::class)) {
         $abstract = 'persianFaker';
 
         if (! app()->bound($abstract)) {
-            app()->singleton($abstract, fn () => Factory::create());
+            app()->singleton($abstract, fn (): GeneratorInterface => Factory::create());
         }
 
         return app()->make($abstract);

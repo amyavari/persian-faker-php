@@ -2,13 +2,12 @@
 
 declare(strict_types=1);
 
-namespace AliYavari\PersianFaker\Fakers\Colors;
+namespace AliYavari\PersianFaker\Fakers\Color;
 
 use AliYavari\PersianFaker\Contracts\DataLoaderInterface;
 use AliYavari\PersianFaker\Contracts\FakerInterface;
 use AliYavari\PersianFaker\Cores\Arrayable;
 use AliYavari\PersianFaker\Cores\Randomable;
-use AliYavari\PersianFaker\Exceptions\InvalidDataKeyException;
 
 /**
  * @internal
@@ -38,13 +37,7 @@ final class ColorNameFaker implements FakerInterface
      */
     public function __construct(DataLoaderInterface $loader, private bool $onlyMain = false)
     {
-        $colors = $loader->get();
-
-        if (! $this->hasNecessaryKeys($colors)) {
-            throw new InvalidDataKeyException('The colors array must have "main" and "all" keys.');
-        }
-
-        $this->colors = $colors;
+        $this->colors = $loader->get();
     }
 
     /**
@@ -53,14 +46,6 @@ final class ColorNameFaker implements FakerInterface
     public function generate(): string
     {
         return $this->getOneRandomElement($this->getColors());
-    }
-
-    /**
-     * @param  array<mixed>  $data
-     */
-    private function hasNecessaryKeys(array $data): bool
-    {
-        return array_key_exists('main', $data) && array_key_exists('all', $data);
     }
 
     /**

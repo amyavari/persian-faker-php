@@ -9,8 +9,6 @@ use AliYavari\PersianFaker\Contracts\FakerInterface;
 use AliYavari\PersianFaker\Cores\Arrayable;
 use AliYavari\PersianFaker\Cores\Randomable;
 use AliYavari\PersianFaker\Exceptions\InvalidStateNameException;
-use RangeException;
-use TypeError;
 
 /**
  * @internal
@@ -54,7 +52,7 @@ final class NationalCodeFaker implements FakerInterface
 
         $statePrefix = $this->getStatePrefix();
 
-        $nationalCode = $this->generateRandomNationalCode();
+        $nationalCode = $this->generateNationalCode();
 
         $checkDigit = $this->calculateCheckDigit($statePrefix.$nationalCode);
 
@@ -77,31 +75,16 @@ final class NationalCodeFaker implements FakerInterface
         return $this->getOneRandomElement($prefixes);
     }
 
-    private function generateRandomNationalCode(): int
+    private function generateNationalCode(): int
     {
         return random_int(100_000, 999_999);
     }
 
     /**
      * To see Iranian National Code algorithm, please check nationalCodeCheckDigit() in tests/Feature/PersonTest.php.
-     *
-     * @throws RangeException
-     * @throws TypeError
      */
     private function calculateCheckDigit(string $digits): int
     {
-        if (mb_strlen($digits) !== 9) {
-            throw new RangeException(
-                sprintf('The input number must have 9 digits, %s-digit number is given.', mb_strlen($digits))
-            );
-        }
-
-        if (! is_numeric($digits)) {
-            throw new TypeError(
-                sprintf('The input must be numeric. %s is given.', get_debug_type($digits))
-            );
-        }
-
         $sum = 0;
         foreach (mb_str_split($digits) as $key => $value) {
             $sum += (int) $value * (10 - $key);

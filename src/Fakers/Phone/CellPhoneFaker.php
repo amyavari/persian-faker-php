@@ -32,8 +32,8 @@ final class CellPhoneFaker implements FakerInterface
 
     /**
      * @param  DataLoaderInterface<string, list<string>>  $loader
-     * @param  string  $separator  The separator between the state prefix and the phone number.
-     * @param  string|null  $provider  The name of the mobile provider in Iran. See ./src/Data/phone.php
+     * @param  string  $separator  The separator between the mobile provider prefix, the first three digits, and the last four digits.
+     * @param  string|null  $provider  The name of the mobile provider in Iran. See ./src/data/phone.php
      */
     public function __construct(DataLoaderInterface $loader, private string $separator = '', private ?string $provider = null)
     {

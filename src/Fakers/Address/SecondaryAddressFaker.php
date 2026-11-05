@@ -23,7 +23,7 @@ final class SecondaryAddressFaker implements FakerInterface
     /**
      * @var list<string>
      */
-    public array $prefixes;
+    private array $prefixes;
 
     /**
      * @param  DataLoaderInterface<int, string>  $loader

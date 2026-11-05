@@ -14,7 +14,7 @@ use AliYavari\PersianFaker\Fakers\Text\WordFaker;
  *
  * Generates fake slug
  *
- * @implements FakerInterface<string|list<string>>
+ * @implements FakerInterface<string>
  */
 final readonly class SlugFaker implements FakerInterface
 {

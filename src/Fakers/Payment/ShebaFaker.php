@@ -13,7 +13,7 @@ use AliYavari\PersianFaker\Exceptions\InvalidBankNameException;
 /**
  * @internal
  *
- * Generates a random Iran's account Sheba numbe.
+ * Generates a random Iran's account Sheba number.
  *
  * @implements FakerInterface<string>
  */

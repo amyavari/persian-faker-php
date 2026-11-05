@@ -8,8 +8,6 @@ use AliYavari\PersianFaker\Contracts\GeneratorInterface;
 
 /**
  * This class initiates and returns an instance of this package.
- *
- * @method static \AliYavari\PersianFaker\Generator create() Initiates and returns an instance of Persian Faker package.
  */
 final class Factory
 {

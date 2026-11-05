@@ -25,9 +25,9 @@ final class TextFaker implements FakerInterface
      */
     use Arrayable, Randomable;
 
-    private const int MAX_NUMBER = 1000;
-
     private const int MIN_NUMBER = 10;
+
+    private const int MAX_NUMBER = 1000;
 
     private const string SEPARATOR = ' ';
 
@@ -54,7 +54,7 @@ final class TextFaker implements FakerInterface
      */
     public function generate(): string
     {
-        if (! $this->isCharsNumberValid()) {
+        if (! $this->isNumberInRange($this->maxNbChars)) {
             throw new InvalidElementNumberException(
                 sprintf('The number of chars should be in range %s-%s, %s is given.', self::MIN_NUMBER, self::MAX_NUMBER, $this->maxNbChars)
             );
@@ -75,9 +75,9 @@ final class TextFaker implements FakerInterface
         return $this->convertToString($words, self::SEPARATOR);
     }
 
-    private function isCharsNumberValid(): bool
+    private function isNumberInRange(int $number): bool
     {
-        return $this->maxNbChars >= self::MIN_NUMBER && $this->maxNbChars <= self::MAX_NUMBER;
+        return $number >= self::MIN_NUMBER && $number <= self::MAX_NUMBER;
     }
 
     private function getMinNumberOfWords(): int
